@@ -45,7 +45,7 @@
         ?>
 
         <p style="font-size: 20px; border: 2px solid #BB7722; border-radius: 8px; padding: 8px; margin-top: 32px; width: 80%;">
-            Please enter what your role will be and your cell carrier below:
+            Enter what your role will be and your cell carrier below:
         </p>
 
         
