@@ -19,7 +19,7 @@
     <div role="main" class="ui-content">
 
         <h1>Wheels4Meals Test Page</h1>
-        <h2>DB Connection</h2>
+        <h2>DB Connection NEW</h2>
 
         <?php require_once('connection.php'); ?>
 
