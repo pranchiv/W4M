@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Wheels4Meals</title>
+    <title>WheelsForMeals</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
@@ -19,7 +19,7 @@
     <div role="main" class="ui-content">
 
         <h1>Wheels4Meals Test Page</h1>
-        <h2>DB Connection NEW</h2>
+        <h2>DB Connection</h2>
 
         <?php require_once('connection.php'); ?>
 
@@ -54,7 +54,7 @@
             <div class="ui-field-contain">
                 <label for="memberType" style="white-space: nowrap;">Member Role:</label>
 
-                <select id="memberType" name="memberType" style="min-width:200px" data-native-menu="false" data-inline="true">
+                <select id="memberType" name="memberType" data-native-menu="false" data-inline="true">
                     <option value="1" data-placeholder="true"></option>
 
                     <?php while ($row = $dataset->fetch_assoc()): ?>
