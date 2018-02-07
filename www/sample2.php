@@ -16,7 +16,7 @@
 <div data-role="page">
  
     <div data-role="header" data-position="fixed">
-        include("includes/header.php");
+        <?php include("includes/header.php"); ?>
     </div>
 
     <div role="main" class="ui-content">
@@ -83,7 +83,7 @@
     </div><!-- /content -->
 
     <div data-role="footer" data-position="fixed">
-        include("includes/footer.php");
+        <?php include("includes/footer.php"); ?>
     </div>
 
 </div><!-- /page -->
