@@ -19,7 +19,7 @@
     <div role="main" class="ui-content">
 
         <h1>Login/Register</h1>
-        <h2>Start the registration process below!</h2>
+        <h2>Continue the process below:</h2>
 		
 		
         <?php require_once('connection.php'); ?>
@@ -46,22 +46,20 @@
         ?>
 
         <p style="font-size: 20px; border: 2px solid #BB7722; border-radius: 8px; padding: 8px; margin-top: 32px; width: 80%;">
-            Enter what your role will be and your cell carrier below:
+            Please enter your company or organization's ZIP code below:
         </p>
 
         
 
         <?php if ($dataset->num_rows > 0) { ?>
             <div class="ui-field-contain">
-                <label for="memberType" style="white-space: nowrap;">Member Role:</label>
+                <label for="memberType" style="white-space: nowrap;">ZIP code:</label>
 
-                <select id="memberType" name="memberType" data-native-menu="false" data-inline="true">
-                    <option value="1" data-placeholder="true"></option>
-
-                    <?php while ($row = $dataset->fetch_assoc()): ?>
-                        <option value="<?php echo $row["MemberTypeID"]; ?>"><?php echo $row["Name"]; ?></option>
-                    <?php endwhile; ?>
-                </select>
+                <form>
+                     
+                     <input type="number" data-clear-btn="false" name="number-1" id="number-1" value="">
+                     
+                </form>
             </div>
         <?php
         }
@@ -69,24 +67,14 @@
         $sql = "SELECT CellCarrierID, Name FROM CellCarrier";
         $dataset = $db->query($sql);
 
-        if (!$dataset) {
+      if (!$dataset) {
             echo '<p style="color: red; font-style: italic;">Query failed: ' . $db->error . "</p>\n";
         }
         ?>
+        <a href="#" class="ui-btn ui-btn-inline">Previous Page</a>
+        <button class="ui-btn ui-btn-inline">Continue</button>
 
-        <?php if ($dataset->num_rows > 0) { ?>
-            <div class="ui-field-contain">
-                <label for="CellCarrier" style="white-space: nowrap;">Mobile Cell Carrier:</label>
-
-                <select id="CellCarrier" name="CellCarrier" data-native-menu="false" data-inline="true">
-                    <option value="0" data-placeholder="true"></option>
-
-                    <?php while ($row = $dataset->fetch_assoc()): ?>
-                        <option value="<?php echo $row["CellCarrierID"]; ?>"><?php echo $row["Name"]; ?></option>
-                    <?php endwhile; ?>
-                </select>
-            </div>
-        <?php
+        
         }
 
         $dataset = null;

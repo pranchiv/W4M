@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Wheels4Meals</title>
+    <title>WheelsForMeals</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
@@ -18,8 +18,8 @@
 
     <div role="main" class="ui-content">
 
-        <h1>Login/Register</h1>
-        <h2>Start the registration process below!</h2>
+        <h1>Please enter the ZIP code of your restaurant or business below:</h1>
+        <h2>Note: Must be 19067, 19047, 19030, 19053, 19054, 19055, 19056, 19057, or 18940</h2>
 		
 		
         <?php require_once('connection.php'); ?>

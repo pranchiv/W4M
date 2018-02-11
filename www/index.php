@@ -45,7 +45,7 @@ Licence URI: http://www.os-templates.com/template-terms
 			
 				<li><a href="#" scroll-to="#footer">Contact Us</a></li>
 				<li><a href="#">About Us</a></li>
-				<li><a href="#">Login</a></li>
+				<li><a href="sample.php">Login</a></li>
 				
 				<!-- <li><a class="drop" href="#">[Dropdown]</a>
 					<ul>
