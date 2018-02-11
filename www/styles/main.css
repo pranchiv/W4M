@@ -26,3 +26,9 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
     padding: 2px 0;
     text-align: center;
 }
+
+.error {
+    color: red;
+    font-style: italic;
+    font-size: 12px;
+}
