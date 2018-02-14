@@ -7,12 +7,23 @@ $controller->{ $_REQUEST['action'] }();
 class CompanyController {
     public function register() {
         $result = null;
+        $db = DB::getInstance();
         header('content-type:application/json');
 
         // use form data $_POST array as parameters for DB call
-        // put single quotes around any text fields: '$_POST[CompanyName]'
-        // no quotes are necessary around numeric fields: $_POST[CompanyType]
-        $DBResult = DB::callProcWithRecordset("CALL RegisterCompany(1, '$_POST[CompanyName]', 'address1', 'address2', 'city', 'state', 'zip', 1)");
+        // use real_escape_string function to allow quotes and prevent SQL injection hacks
+        $CompanyTypeID  = $db->real_escape_string('1');
+        $CompanyName    = $db->real_escape_string($_POST[CompanyName]);
+        $Address1       = $db->real_escape_string('123 Main St');
+        $Address2       = $db->real_escape_string('');
+        $City           = $db->real_escape_string('Yardley');
+        $State          = $db->real_escape_string('PA');
+        $Zip            = $db->real_escape_string('19067');
+        $Exists         = $db->real_escape_string('1');
+
+        // put single quotes around any text fields: '$CompanyName'
+        // no quotes are necessary around numeric fields: $CompanyTypeID
+        $DBResult = DB::callProcWithRecordset("CALL RegisterCompany($CompanyTypeID, '$CompanyName', '$Address1', '$Address2', '$City', '$State', '$Zip', $Exists)");
 
         if (is_null($DBResult)) {
             $result = array('error' => true, 'errorMessage' => 'Database error');
@@ -27,6 +38,10 @@ class CompanyController {
         }
 
         echo json_encode($result);
+    }
+
+    public function getAvailableCompanies() {
+        
     }
 }
 ?>
