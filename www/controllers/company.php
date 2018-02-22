@@ -1,10 +1,18 @@
 <?php
+require_once('../includes/common.php');
 require_once('../connection.php');
 
 $controller = new CompanyController();
 $controller->{ $_REQUEST['action'] }();
 
 class CompanyController {
+    public function startRegistration() {
+        $_SESSION['RegistrationType'] = $_POST['RegistrationType'];
+        $_SESSION['Zip'] = $_POST['Zip'];
+
+        echo true;
+    }
+
     public function register() {
         $result = null;
         $db = DB::getInstance();
