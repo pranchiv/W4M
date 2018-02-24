@@ -18,15 +18,19 @@ class CompanyController {
         $db = DB::getInstance();
         header('content-type:application/json');
 
+        switch ($_SESSION['RegistrationType']) {
+            case 'Donor':       $CompanyTypeID = 1; break;
+            case 'Beneficiary': $CompanyTypeID = 2; break;
+        }
+
         // use form data $_POST array as parameters for DB call
         // use real_escape_string function to allow quotes and prevent SQL injection hacks
-        $CompanyTypeID  = $db->real_escape_string('1');
-        $CompanyName    = $db->real_escape_string($_POST[CompanyName]);
-        $Address1       = $db->real_escape_string('123 Main St');
-        $Address2       = $db->real_escape_string('');
-        $City           = $db->real_escape_string('Yardley');
-        $State          = $db->real_escape_string('PA');
-        $Zip            = $db->real_escape_string('19067');
+        $CompanyName    = $db->real_escape_string($_POST['CompanyName']);
+        $Address1       = $db->real_escape_string($_POST['Address1']);
+        $Address2       = $db->real_escape_string($_POST['Address2']);
+        $City           = $db->real_escape_string($_POST['City']);
+        $State          = $db->real_escape_string($_POST['State']);
+        $Zip            = $db->real_escape_string($_POST['Zip']);
         $Exists         = $db->real_escape_string('1');
 
         // put single quotes around any text fields: '$CompanyName'

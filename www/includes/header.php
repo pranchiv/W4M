@@ -1,4 +1,3 @@
 <div class="header">
-    <!-- <a href="index.php"><img src="images/logo.svg" height="40px;" /></a> -->
-    <img src="<?php echo $root ?>/images/logo.svg" height="40px;" />
+    <a href="<?php echo $root ?>" data-ajax="false"><img src="<?php echo $root ?>/images/logo.svg" height="40px;" /></a>
 </div>

@@ -20,6 +20,7 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
 }
 
 .banner {
+    display: block;
     margin: 0 auto;
     width: 90%;
     position: relative;
@@ -27,9 +28,11 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
 
 .banner img {
     max-width: 100%;
+    max-height: 300px;
     height: auto;
     border: 4px solid;
-    margin-left: -4px;
+    display: block;
+    margin: 0 auto;
 }
 
 .footer {
@@ -44,4 +47,52 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
     color: red;
     font-style: italic;
     font-size: 12px;
+}
+
+/* responsive grids */
+.responsive-grid.padded .ui-block-b,
+.responsive-grid.padded .ui-block-c,
+.responsive-grid.padded .ui-block-d,
+.responsive-grid.padded .ui-block-e {
+    padding-left: 6px;
+}
+
+.responsive-grid .ui-field-contain label {
+    text-align: right;
+}
+
+.reasonable-width-1 .ui-input-text {
+    max-width: 140px;
+}
+
+.reasonable-width-2 .ui-input-text {
+    max-width: 200px;
+}
+
+/* styles applied to widths less than 40em */
+@media (max-width: 40em) {
+    .responsive-grid .ui-block-a,
+    .responsive-grid .ui-block-b,
+    .responsive-grid .ui-block-c,
+    .responsive-grid .ui-block-d,
+    .responsive-grid .ui-block-e {
+        width: 100%;
+        float: none;
+    }
+
+    .responsive-grid.padded .ui-block-b,
+    .responsive-grid.padded .ui-block-c,
+    .responsive-grid.padded .ui-block-d,
+    .responsive-grid.padded .ui-block-e {
+        padding-left: 0px;
+    }
+
+    .responsive-grid .ui-field-contain label {
+        text-align: inherit;
+    }
+
+    .reasonable-width-1 .ui-input-text,
+    .reasonable-width-2 .ui-input-text {
+        max-width: none;
+    }
 }

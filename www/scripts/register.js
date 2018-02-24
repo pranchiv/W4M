@@ -1,8 +1,4 @@
-$(document).delegate('#register', 'pageinit', function() {
-    alert('A page with an id of "register" was just created by jQuery Mobile!');
-});
-
-$(document).ready(function() {
+$(document).on('pagecreate', function() {
     $('#register_registerButton').on('click', function(e) {
         e.preventDefault();
         var validZips = ['19067', '19030', '19047', '19053', '19054', '19055', '19056', '19057', '18940'];
@@ -26,5 +22,22 @@ $(document).ready(function() {
                 $.mobile.changePage('/pages/' + nextPage + '.php', { transition: 'flip' } );
             }, 'json');
         }
+    });
+
+    $('#registerCompany_registerButton').on('click', function(e) {
+        e.preventDefault();
+        var name = $('#registerCompany_Name').val();
+
+        $.post('../controllers/company.php?action=register', $('#registerCompany_form').serialize(), function(data) {
+
+            if (data.error) {
+                $('#registerCompany_registerError').html(data.errorMessage);
+            } else if (data.exists) {
+                $('#registerCompany_registerError').html('Error: "' + name + '" already exists.');
+            } else {
+                $('#registerCompany_registerError').html('Company created (ID ' + data.company.CompanyID + ')');
+            }
+
+        }, 'json');
     });
 });
