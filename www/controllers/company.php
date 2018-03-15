@@ -55,5 +55,32 @@ class CompanyController {
     public function getAvailableCompanies() {
         
     }
+
+    public function testEmail() {
+        // test sending emails (texts)
+        $result = null;
+        $isError = false;
+        $errorMessage = '';
+
+        $to = 'brimer@gmail.com';
+        $subject = 'Notification from W4M';
+        $body = 'New company registered: ' . $_POST['CompanyName'];
+        $headers = "From: admin@wheels4meals.org\r\n";
+
+        try {
+            $isError = ! mail($to, $subject, $body, $headers);
+            if ($isError) { $errorMessage = 'ERROR: dunno'; }
+        } catch (Exception $ex) {
+            $isError = true;
+            $errorMessage = $ex->getMessage();
+        } catch (Error $er) {
+            $isError = true;
+            $errorMessage = 'ERROR: dunno';
+        }
+        
+        $result = array('error' => $isError, 'errorMessage' => $errorMessage);
+
+        echo json_encode($result);
+    }
 }
 ?>

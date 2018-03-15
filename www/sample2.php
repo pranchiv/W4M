@@ -1,3 +1,5 @@
+<?php require_once('includes/common.php'); ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,8 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="scripts/jquery.toast.min.js"></script>
     <script src="scripts/sample.js"></script>
     <link href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+    <link href="styles/jquery.toast.min.css" rel="stylesheet" type="text/css">
     <link href="styles/main.css?1" rel="stylesheet" type="text/css" media="all">
 </head>
 <body>
@@ -20,7 +24,7 @@
     </div>
 
     <div role="main" class="ui-content">
-        <form id="register_form">
+        <form id="sample_form">
             <?php
             $cellCarriers = DB::callProcWithRecordset('CALL GetCellCarriers()');
 
@@ -72,7 +76,7 @@
                 <input type="text" id="register_companyName" name="CompanyName" placeholder="Company Name">
             </div>
 
-            <button id="register_registerButton" class="ui-btn ui-btn-b ui-corner-all">Register Company</button>
+            <button id="sample_sampleButton" class="ui-btn ui-btn-b ui-corner-all" data-env="<?php echo ENV; ?>">Sample Button</button>
 
             <div id="register_registerError" class="error" style="margin: 6px 4px;"></div>
 
