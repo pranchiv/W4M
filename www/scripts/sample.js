@@ -33,4 +33,20 @@ $(document).ready(function() {
 
         // }, 'json');
     });
+
+    $('#store_passwordButton').on('click', function(e) {
+        e.preventDefault();
+
+        $.post('controllers/company.php?action=testStorePassword', $('#sample_formPassword').serialize(), function(data) {
+            $('#register_registerError').html(data.errorMessage);
+        }, 'json');
+    });
+
+    $('#loginButton').on('click', function(e) {
+        e.preventDefault();
+
+        $.post('controllers/company.php?action=testLogIn', $('#sample_formLogin').serialize(), function(data) {
+            $('#loginError').html(data.errorMessage);
+        }, 'json');
+    });
 });

@@ -82,5 +82,84 @@ class CompanyController {
 
         echo json_encode($result);
     }
+
+    public function testStorePassword() {
+        $result = null;
+        $isError = false;
+        $errorMessage = '';
+
+        $db = DB::getInstance();
+
+        try {
+            $raw = $db->real_escape_string($_POST['Password']);
+            $hash = password_hash($raw, PASSWORD_DEFAULT);
+            $sql = "UPDATE Member SET Password = '" . $hash . "' WHERE MemberID = 1";
+
+            if ($db->query($sql) === TRUE) {
+                $isError = false;
+                $errorMessage = 'stored "' . $hash . '"';
+            } else {
+                $isError = true;
+                $errorMessage = $db->error;
+            }
+        } catch (Exception $ex) {
+            $isError = true;
+            $errorMessage = $ex->getMessage();
+        } catch (Error $er) {
+            $isError = true;
+            $errorMessage = 'ERROR: dunno';
+        }
+
+        $result = array('error' => $isError, 'errorMessage' => $errorMessage);
+        echo json_encode($result);
+    }
+
+    public function testLogIn() {
+        $result = null;
+        $isError = false;
+        $errorMessage = '';
+
+        $db = DB::getInstance();
+
+        try {
+            $username = $db->real_escape_string($_POST['Username']);
+            $password = $db->real_escape_string($_POST['Password']);
+
+            $sql = "SELECT * FROM Member WHERE Username = '$username'";
+            $dataset = $db->query($sql);
+
+            if ($dataset) {
+                if ($dataset->num_rows > 0) {
+                    while ($row = $dataset->fetch_assoc()):
+                        $MemberID = $row["MemberID"];
+                        $hashPswd = $row["Password"];
+                    endwhile;
+                    
+                    if (password_verify($password, $hashPswd)) {
+                        $isError = false;
+                        $errorMessage = "login successful (MemberID $MemberID)";
+                    } else {
+                        $isError = true;
+                        $errorMessage = "passwords do not match";
+                    }
+                } else {
+                    $isError = true;
+                    $errorMessage = "no account matches those credentials";
+                }
+            } else {
+                $isError = true;
+                $errorMessage = $db->error;
+            }
+        } catch (Exception $ex) {
+            $isError = true;
+            $errorMessage = $ex->getMessage();
+        } catch (Error $er) {
+            $isError = true;
+            $errorMessage = 'ERROR: dunno';
+        }
+
+        $result = array('error' => $isError, 'errorMessage' => $errorMessage);
+        echo json_encode($result);
+    }
 }
 ?>

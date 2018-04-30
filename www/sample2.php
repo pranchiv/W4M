@@ -84,6 +84,12 @@
             DB::closeConnection();
             ?>
         </form>
+
+        <form id="sample_formPassword" style="margin-top: 40px">
+            <input type="password" id="sample_password" name="Password" placeholder="password">
+
+            <button id="store_passwordButton" class="ui-btn ui-btn-b ui-corner-all">Store Password</button>
+        </form>
     </div><!-- /content -->
 
     <div data-role="footer" data-position="fixed">
