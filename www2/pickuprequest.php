@@ -107,7 +107,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
                 </tr>
         <?php
 		$query = "select * from donatefood where curDate>='$dateToday' and foodStatus='hold'";
-		$donateReq = $db->fetchQuery($query);//('userregister',array('where'=>array('email'=>$uname,'passWord'=>$passwd,'profileStatus'=>'Y'),'order_by'=>'id DESC'));
+		$donateReq = $db->fetchQuery($query);//('userregister',array('where'=>array('email'=>$uname,'password'=>$passwd,'profileStatus'=>'Y'),'order_by'=>'id DESC'));
 		if($donateReq[0]['id']>0)
 		{
 			$count = 1; //print_r($donateReq);

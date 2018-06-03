@@ -5,7 +5,7 @@ $msg='';
 if($_SERVER['REQUEST_METHOD']=='POST')
 {
 	extract($_POST);
-	$users = $db->getRows('userregister',array('where'=>array('email'=>$uname,'passWord'=>$passwd),'return_type'=>'single'));
+	$users = $db->getRows('userregister',array('where'=>array('email'=>$uname,'password'=>$passwd),'return_type'=>'single'));
 	//$countuser=count($users);
 	if($users['id']>0)
 	{

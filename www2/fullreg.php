@@ -38,7 +38,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 			'state' => $orgState,
 			'mobile' => $orgMobile,
 			'email' => $orgEmail,
-			'passWord' => $orgPass
+			'password' => $orgPass
 		);
 		$updtID=array('id'=>$extID);
 		$update_id = $db->update('userregister',$userData,$updtID);
@@ -63,7 +63,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 			'state' => $orgState,
 			'mobile' => $orgMobile,
 			'email' => $orgEmail,
-			'passWord' => $orgPass
+			'password' => $orgPass
 		);
 		$updtID=array('id'=>$extID);
 		$update_id = $db->update('userregister',$userData,$updtID);
@@ -99,7 +99,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 			'lastName' => $drvrLname,
 			'mobile' => $drvrMobile,
 			'email' => $drvrEmail,
-			'passWord' => $drvrPass
+			'password' => $drvrPass
 		);
 		$updtID=array('id'=>$extID);
 		$update_id = $db->update('userregister',$userData,$updtID);
