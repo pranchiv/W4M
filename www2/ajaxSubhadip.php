@@ -71,7 +71,7 @@ if($actionName=='startReg')
                 <input type="password" required="required" name="orgPass" id="orgPass" /> 
             </label><br/>
             <label>
-            <span>Preferred Type of Donatioon : </span>
+            <span>Preferred Type of Donation : </span>
             <div><input type="checkbox" name="pDon[]" id="pDon" value="Hot" />&nbsp;&nbsp; Hot</div>
             <div><input type="checkbox" name="pDon[]" id="pDon1" value="Cold" />&nbsp;&nbsp; Cold </div>
             <div><input type="checkbox" name="pDon[]" id="pDon2" value="Canned" />&nbsp;&nbsp; Canned</div>
@@ -211,11 +211,11 @@ if($actionName=='startReg')
 if($actionName=='donateFood')
 {
 	$restaurantID = $_REQUEST['hideID'];
-	$pickbefore = $_REQUEST['pickbefore'];
+	$pickbefore = $_REQUEST['pickupbefore'];
 	$minutedata = $_REQUEST['minutedata'];
 	$dayNight = $_REQUEST['timing'];
-	$preferredFood = $_REQUEST['pdon'];
-	$nbox = $_REQUEST['nbox'];
+	$preferredFood = $_REQUEST['preferreddonation'];
+	$nbox = $_REQUEST['numbox'];
 	$appwght = $_REQUEST['appwght'];
 	$onlydate = date('Y-m-d');
 	$onlytime = date('H:iA');
@@ -248,7 +248,7 @@ if($actionName=='changestatus')
 	?>	
 	<table class="table" border="1">
         <tr>
-            <th>Organisation Name</th>
+            <th>Organization Name</th>
             <th>Contact Name</th>
             <th>Phone No.</th>
             <th>Address</th>
@@ -291,7 +291,7 @@ if($actionName=='changestatus')
     
     <table class="table" border="1">
         <tr>
-            <th>Organisation Name</th>
+            <th>Organization Name</th>
             <th>Contact Name</th>
             <th>Phone No.</th>
             <th>Address</th>
@@ -325,7 +325,7 @@ if($actionName=='changestatus')
 		  {
 			  ?>
 			  <tr>
-			  <td colspan="6" align="center">No Donors there with Status 'N'</td>
+			  <td colspan="6" align="center">No Donors with Status 'N'</td>
               </tr>
 			  <?php
 		  }
@@ -338,7 +338,7 @@ if($actionName=='changestatus')
 	?>	
 	<table class="table" border="1">
         <tr>
-            <th>Organisation Name</th>
+            <th>Organization Name</th>
             <th>Contact Name</th>
             <th>Phone No.</th>
             <th>Address</th>
@@ -372,7 +372,7 @@ if($actionName=='changestatus')
 		  {
 			  ?>
 			  <tr>
-			  <td colspan="6" align="center">No Drivers there with Status 'Y'</td>
+			  <td colspan="6" align="center">No Drivers with Status 'Y'</td>
               </tr>
 			  <?php
 		  }
@@ -381,7 +381,7 @@ if($actionName=='changestatus')
     
     <table class="table" border="1">
         <tr>
-            <th>Organisation Name</th>
+            <th>Organization Name</th>
             <th>Contact Name</th>
             <th>Phone No.</th>
             <th>Address</th>
@@ -415,7 +415,7 @@ if($actionName=='changestatus')
 		  {
 			  ?>
 			  <tr>
-			  <td colspan="6" align="center">No Drivers there with Status 'N'</td>
+			  <td colspan="6" align="center">No Drivers with Status 'N'</td>
               </tr>
 			  <?php
 		  }
@@ -428,7 +428,7 @@ if($actionName=='changestatus')
 	?>	
 	<table class="table" border="1">
         <tr>
-            <th>Organisation Name</th>
+            <th>Organization Name</th>
             <th>Contact Name</th>
             <th>Phone No.</th>
             <th>Address</th>
@@ -462,7 +462,7 @@ if($actionName=='changestatus')
 		  {
 			  ?>
 			  <tr>
-			  <td colspan="6" align="center">No Beneficiary there with Status 'Y'</td>
+			  <td colspan="6" align="center">No Beneficiary with Status 'Y'</td>
               </tr>
 			  <?php
 		  }
@@ -471,7 +471,7 @@ if($actionName=='changestatus')
     
     <table class="table" border="1">
         <tr>
-            <th>Organisation Name</th>
+            <th>Organization Name</th>
             <th>Contact Name</th>
             <th>Phone No.</th>
             <th>Address</th>
@@ -505,7 +505,7 @@ if($actionName=='changestatus')
 		  {
 			  ?>
 			  <tr>
-			  <td colspan="6" align="center">No Beneficiary there with Status 'N'</td>
+			  <td colspan="6" align="center">No Beneficiary with Status 'N'</td>
               </tr>
 			  <?php
 		  }
