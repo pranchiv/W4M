@@ -12,7 +12,8 @@ if (isset($_REQUEST['to'])) {
 
 $subject = 'Notification from W4M';
 $body = 'New company registered';
-$headers = "From: admin@wheels4meals.org\r\n";
+$headers = "From: admin@wheels4meals.org" . PHP_EOL;
+$headers .= "Cc: brimer@gmail.com" . PHP_EOL;
 
 try {
     $isError = ! mail($to, $subject, $body, $headers);

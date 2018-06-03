@@ -36,6 +36,7 @@ $(document).on('pagecreate', function() {
                 $('#registerCompany_registerError').html('Error: "' + name + '" already exists.');
             } else {
                 $('#registerCompany_registerError').html('Company created (ID ' + data.company.CompanyID + ')');
+                if (data.notifications) { ShowToastFromNotificationSend(data.notifications); }
             }
 
         }, 'json');

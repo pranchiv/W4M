@@ -3,15 +3,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>WheelsForMeals</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <script src="scripts/jquery.toast.min.js"></script>
+    <?php include("../includes/head.php"); ?>
     <script src="scripts/sample.js"></script>
-    <link href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
-    <link href="styles/jquery.toast.min.css" rel="stylesheet" type="text/css">
-    <link href="styles/main.css?1" rel="stylesheet" type="text/css" media="all">
 </head>
 <body>
 

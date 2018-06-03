@@ -1,6 +1,7 @@
 <?php
 require_once('../includes/common.php');
 require_once('../connection.php');
+require_once('notification.php');
 
 $controller = new CompanyController();
 $controller->{ $_REQUEST['action'] }();
@@ -45,7 +46,8 @@ class CompanyController {
             if ($company['Exists'] == 1) {
                 $result = array('error' => false, 'exists' => true);
             } else {
-                $result = array('error' => false, 'exists' => false, 'company' => $company);
+                $notifications = NotificationController::send(1, $CompanyName);
+                $result = array('error' => false, 'exists' => false, 'company' => $company, 'notifications' => $notifications);
             }
         }
 
@@ -65,7 +67,7 @@ class CompanyController {
         $to = 'brimer@gmail.com';
         $subject = 'Notification from W4M';
         $body = 'New company registered: ' . $_POST['CompanyName'];
-        $headers = "From: admin@wheels4meals.org\r\n";
+        $headers = "From: admin@wheels4meals.org" . PHP_EOL;
 
         try {
             $isError = ! mail($to, $subject, $body, $headers);
