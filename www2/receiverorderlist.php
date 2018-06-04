@@ -77,9 +77,9 @@ $driverId = $_SESSION['user_id'];
 		{
 			if($fetchcat[$i]['foodStatus']!='open')
 			{
-			  $fetchdri = $db->fetchQuery("select driverId from pickuporder where donorId = '".$fetchcat[$i]['restaurantId']."' ");	
+			  $fetchdri = $db->fetchQuery("select driverId from pickuporder where donorId = '".$fetchcat[$i]['donorId']."' ");	
 			  $dridetails = $db->getRows('userregister',array("where"=>array('id'=>$fetchdri[0]['driverId']),'return_type'=>'single'));
-			  $donordetails = $db->getRows('userregister',array("where"=>array('id'=>$fetchcat[0]['restaurantId']),'return_type'=>'single'));
+			  $donordetails = $db->getRows('userregister',array("where"=>array('id'=>$fetchcat[0]['donorId']),'return_type'=>'single'));
 			  //print_r($receiverdetails);
 			  $driname = $dridetails['firstName'].' '.$dridetails['lastName'];
 			  $driemail = $dridetails['email'];

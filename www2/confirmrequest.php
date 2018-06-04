@@ -66,7 +66,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 	<div class="container low-pad-top">
         <form method="post" action="">
         <?php
-		$query = "select * from donatefood where curDate>='$dateToday' and foodStatus='Hold' and restaurantId in ( select donorId from pickuporder where driverId = '".$driverId."' )";
+		$query = "select * from donatefood where curDate>='$dateToday' and foodStatus='Hold' and donorId in ( select donorId from pickuporder where driverId = '".$driverId."' )";
 		$donateReq = $db->fetchQuery($query);
 		$count = 1; //print_r($donateReq);
 		foreach($donateReq as $recdata)
@@ -75,11 +75,11 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 			$endstr=strtotime($endtime);
 			if($endstr>$currenttimestamp)
 			{
-				$DonorRec=$db->getRows('userregister',array('where'=>array('id'=>$recdata['restaurantId']),'return_type'=>'single'));
+				$DonorRec=$db->getRows('userregister',array('where'=>array('id'=>$recdata['donorId']),'return_type'=>'single'));
 				?>
                     <div class="tabl-row">
                         <div class="checkbox">
-                        	<input type="hidden" name="restauID[]" value="<?=$recdata['restaurantId']?>" />
+                        	<input type="hidden" name="restauID[]" value="<?=$recdata['donorId']?>" />
 							<input type="checkbox" class="first-chk" name="reqID[]" id="chkbx<?=$count?>" value="<?=$recdata['id']?>" />
                             <h3><?php echo $DonorRec['orgName'];?></h3>
                             <p><?php echo $DonorRec['streetAddress'].', '.$DonorRec['city'].'-'.$DonorRec['zipCode'];?></p>

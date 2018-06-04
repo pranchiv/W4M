@@ -47,7 +47,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 		
 		
 		$reqData = array(
-			'order_id' => $_POST['reqID'][$i],
+			'orderId' => $_POST['reqID'][$i],
 			'donorId' => $_POST['restauID'][$i],
 			'driverId' => $_SESSION['user_id'],
 			'addDate' => date('Y-m-d H:i:s')
@@ -117,13 +117,13 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 				$endstr=strtotime($endtime);
 				if($endstr>$currenttimestamp)
 				{
-					$DonorRec=$db->getRows('userregister',array('where'=>array('id'=>$recdata['restaurantId']),'return_type'=>'single'));
+					$DonorRec=$db->getRows('userregister',array('where'=>array('id'=>$recdata['donorId']),'return_type'=>'single'));
 					$ReceiverRec=$db->getRows('userregister',array('where'=>array('id'=>$recdata['receiverId']),'return_type'=>'single'));
 					$actTimePick=date('m/d/Y H:iA');
 					?>
 						<!--<div class="tabl-row">
 							<div class="checkbox">
-								<input type="hidden" name="restauID[]" value="<?=$recdata['restaurantId']?>" />
+								<input type="hidden" name="restauID[]" value="<?=$recdata['donorId']?>" />
 								<input type="checkbox" class="first-chk" name="reqID[]" id="chkbx<?=$count?>" value="<?=$recdata['id']?>" />
 								<h3><?php echo $DonorRec['orgName'];?></h3>
 								<p><?php echo $DonorRec['streetAddress'].', '.$DonorRec['city'].'-'.$DonorRec['zipCode'];?></p>
@@ -132,7 +132,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 								<p class="yes"><a href="availablerecipient.php?reqrec=<?=$recdata['id']?>">Click Here</a> See List of Available Recipients</p>
 							</div>
 						</div>-->
-                        <input type="hidden" name="restauID[]" value="<?=$recdata['restaurantId']?>" />
+                        <input type="hidden" name="restauID[]" value="<?=$recdata['donorId']?>" />
                         <tr>
                         	<td><input type="checkbox" name="reqID[]" value="<?=$recdata['id']?>" /></td>
                             <td><?=$DonorRec['orgName']?></td>

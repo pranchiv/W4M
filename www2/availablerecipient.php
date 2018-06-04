@@ -42,7 +42,7 @@ $strpickup=strtotime($pickupTime);
         <th>Email</th>
     </tr>
     <?php
-	$restaurantID=array();
+	$donorID=array();
     $recipientData=$db->getRows('donoropentime',array('dayName'=>$dateToday));
 	foreach($recipientData as $recData)
 	{
@@ -51,9 +51,9 @@ $strpickup=strtotime($pickupTime);
 		//echo $strlastTime.'>'.$strpickup.'<br/>';
 		if($strlastTime>$strpickup)
 		{
-			if(!in_array($recData['restaurantId'],$restaurantID))
+			if(!in_array($recData['donorId'],$donorID))
 			{
-				$DonorRec=$db->getRows('userregister',array('where'=>array('id'=>$recData['restaurantId']),'return_type'=>'single'));
+				$DonorRec=$db->getRows('userregister',array('where'=>array('id'=>$recData['donorId']),'return_type'=>'single'));
 				?>
 				<tr>
 					<td><?=$DonorRec['orgName']?></td>
@@ -63,7 +63,7 @@ $strpickup=strtotime($pickupTime);
 					<td><?=$DonorRec['email']?></td>
 				</tr>
 				<?php
-				array_push($restaurantID,$recData['restaurantId']);
+				array_push($donorID,$recData['donorId']);
 			}
 		}
 	}

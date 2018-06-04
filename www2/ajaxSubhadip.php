@@ -210,7 +210,7 @@ if($actionName=='startReg')
 }
 if($actionName=='donateFood')
 {
-	$restaurantID = $_REQUEST['hideID'];
+	$donorID = $_REQUEST['hideID'];
 	$pickbefore = $_REQUEST['pickupbefore'];
 	$minutedata = $_REQUEST['minutedata'];
 	$dayNight = $_REQUEST['timing'];
@@ -221,7 +221,7 @@ if($actionName=='donateFood')
 	$onlytime = date('H:iA');
 	
 	$userData = array(
-		'restaurantId' => $restaurantID,
+		'donorId' => $donorID,
 		'curDate' => $onlydate,
 		'curTiming' => $onlytime,
 		'amORpm' => $dayNight,
@@ -520,7 +520,7 @@ if($actionName=='confirmdeliver')
 	$userData = array(
 					'foodStatus' => 'delivered'
 				);
-	$condition = array('id' => $_POST['order_id']);
+	$condition = array('id' => $_POST['orderId']);
 	$update = $db->update('donatefood',$userData,$condition);
 	
 	$dateToday=date('Y-m-d');
@@ -561,13 +561,13 @@ if($actionName=='confirmdeliver')
 			$endstr=strtotime($endtime);
 			if($endstr>$currenttimestamp)
 			{
-				$DonorRec=$db->getRows('userregister',array('where'=>array('id'=>$recdata['restaurantId']),'return_type'=>'single'));
+				$DonorRec=$db->getRows('userregister',array('where'=>array('id'=>$recdata['donorId']),'return_type'=>'single'));
 				$ReceiverRec=$db->getRows('userregister',array('where'=>array('id'=>$recdata['receiverId']),'return_type'=>'single'));
 				$actTimePick=date('m/d/Y H:iA');
 				?>
 					<!--<div class="tabl-row">
 						<div class="checkbox">
-							<input type="hidden" name="restauID[]" value="<?=$recdata['restaurantId']?>" />
+							<input type="hidden" name="restauID[]" value="<?=$recdata['donorId']?>" />
 							<input type="checkbox" class="first-chk" name="reqID[]" id="chkbx<?=$count?>" value="<?=$recdata['id']?>" />
 							<h3><?php echo $DonorRec['orgName'];?></h3>
 							<p><?php echo $DonorRec['streetAddress'].', '.$DonorRec['city'].'-'.$DonorRec['zipCode'];?></p>
@@ -576,7 +576,7 @@ if($actionName=='confirmdeliver')
 							<p class="yes"><a href="availablerecipient.php?reqrec=<?=$recdata['id']?>">Click Here</a> See List of Available Recipients</p>
 						</div>
 					</div>-->
-					<input type="hidden" name="restauID[]" value="<?=$recdata['restaurantId']?>" />
+					<input type="hidden" name="restauID[]" value="<?=$recdata['donorId']?>" />
 					<tr>
 						<td><button id="btn<?=$cnfcounter?>" onClick="confirmdeliver('<?=$recdata['id']?>','newdata','<?=$driverId?>');">Deliver ?</button></td>
 						<td><?=$DonorRec['orgName']?></td>
@@ -641,7 +641,7 @@ if($actionName=='confirmdeliver')
 			$endstr=strtotime($endtime);
 			if($endstr>$currenttimestamp)
 			{
-				$DonorRec=$db->getRows('userregister',array('where'=>array('id'=>$recdata['restaurantId']),'return_type'=>'single'));
+				$DonorRec=$db->getRows('userregister',array('where'=>array('id'=>$recdata['donorId']),'return_type'=>'single'));
 				$ReceiverRec=$db->getRows('userregister',array('where'=>array('id'=>$recdata['receiverId']),'return_type'=>'single'));
 				$actTimePick=date('m/d/Y H:iA');
 				?>

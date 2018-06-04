@@ -47,7 +47,7 @@ $driverId = $_SESSION['user_id'];
 <div class="wrapper row3">
 	<div class="hoc container clear">
         <?php
-		$query = "select * from donatefood where restaurantId ='".$_SESSION['user_id']."' order by id desc";
+		$query = "select * from donatefood where donorId ='".$_SESSION['user_id']."' order by id desc";
 		$fetchcat = $db->fetchQuery($query);
 		if($fetchcat[0]['id']>0)
 		{
@@ -58,7 +58,7 @@ $driverId = $_SESSION['user_id'];
         <div class="table-responsive">
         <table class="table">
         <tr>
-        	<th>Pickup Confirmation(Donor)</th>
+        	<th>Pickup Confirmation (Donor)</th>
             <th>Receiver</th>
             <th>Receiver Address</th>
             <th>Receiver Phone</th>
@@ -67,17 +67,17 @@ $driverId = $_SESSION['user_id'];
             <th>Driver Email</th>
             <th>Driver Phone</th>
             <th>Food Status</th>
-            <th>Preffered Food</th>
+            <th>Preferred Food</th>
             <th>Number of Boxes</th>
             <th>Weight (in lbs)</th>
-            <th>Order Date & Time</th>            
+            <th>Order Date &amp; Time</th>            
         </tr>
 		<?php
 		for($i=0;$i<count($fetchcat);$i++)
 		{
 			if($fetchcat[$i]['foodStatus']!='open')
 			{
-			  $fetchdri = $db->fetchQuery("select driverId from pickuporder where donorId = '".$fetchcat[$i]['restaurantId']."' ");	
+			  $fetchdri = $db->fetchQuery("select driverId from pickuporder where donorId = '".$fetchcat[$i]['donorId']."' ");	
 			  $dridetails = $db->getRows('userregister',array("where"=>array('id'=>$fetchdri[0]['driverId']),'return_type'=>'single'));
 			  $receiverdetails = $db->getRows('userregister',array("where"=>array('id'=>$fetchcat[0]['receiverId']),'return_type'=>'single'));
 			  //print_r($receiverdetails);

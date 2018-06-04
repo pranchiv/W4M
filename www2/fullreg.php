@@ -80,7 +80,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 		for($i=0;$i<count($_POST['selday']);$i++)
 		{
 			$hourData = array(
-				'restaurantId' => $extID,
+				'donorId' => $extID,
 				'dayName' => $_POST['selday'][$i],
 				'fromhr' => $_POST['formhr'][$i],
 				'frommin' => $_POST['formmin'][$i],
