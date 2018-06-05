@@ -47,7 +47,7 @@ $driverId = $_SESSION['user_id'];
 <div class="wrapper row3">
 	<div class="container low-pad-top" id="newdata">
         <?php
-		$query = "select * from donatefood where curDate>='$dateToday' and foodStatus='confirm' and driverId=$driverId";
+		$query = "select * from Donation where curDate>='$dateToday' and foodStatus='confirm' and driverId=$driverId";
 		$fetchcat = $db->fetchQuery($query);
 		?>
         <h2>Picked up donations List</h2><hr>
@@ -74,7 +74,7 @@ $driverId = $_SESSION['user_id'];
             </tr>
         <?php
 		$cnfcounter=1;
-		$query = "select * from donatefood where curDate>='$dateToday' and foodStatus='confirm' and driverId=$driverId order by id desc";
+		$query = "select * from Donation where curDate>='$dateToday' and foodStatus='confirm' and driverId=$driverId order by id desc";
 		$donateReq = $db->fetchQuery($query);
 			foreach($donateReq as $recdata)
 			{
@@ -131,7 +131,7 @@ $driverId = $_SESSION['user_id'];
 		?>
         <h2>Delivered donations List</h2><hr>
         <?php
-		$query = "select * from donatefood where foodStatus='delivered' and driverId = $driverId";
+		$query = "select * from Donation where foodStatus='delivered' and driverId = $driverId";
 		$fetchcat = $db->fetchQuery($query);
 		if($fetchcat[0]['id']>0)
 		{
@@ -153,7 +153,7 @@ $driverId = $_SESSION['user_id'];
                 <th>Receiver Email</th>            
             </tr>
         <?php
-		$query = "select * from donatefood where foodStatus='delivered' and driverId=$driverId order by id desc";
+		$query = "select * from Donation where foodStatus='delivered' and driverId=$driverId order by id desc";
 		$donateReq = $db->fetchQuery($query);
 			foreach($donateReq as $recdata)
 			{

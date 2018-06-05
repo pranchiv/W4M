@@ -1,7 +1,8 @@
 <?php
 session_start();
-date_default_timezone_set('Asia/Calcutta');
-class dbconn{
+date_default_timezone_set('America/New_York');
+
+class dbconn {
     private $dbHost     = "localhost";
     private $dbUsername = "wheelsme_wdbuser";
     private $dbPassword = "wdbuser123#";
@@ -161,6 +162,7 @@ class dbconn{
         $delete = $this->db->exec($sql);
         return $delete?$delete:false;
     }
+
 	public function fetchQuery($query){        
 		$query = $this->db->prepare($query);
 		$query->execute();

@@ -11,8 +11,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 			'foodStatus' => 'Hold'
 		);
 		$updtID=array('id'=>$_POST['reqID'][$i]);
-		$update_id = $db->update('donatefood',$userData,$updtID);
-		
+		$update_id = $db->update('Donation',$userData,$updtID);
 		
 		$reqData = array(
 			'donorId' => $_POST['restauID'][$i],
@@ -53,12 +52,11 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 
 <div class="wrapper row3">
 	<div class="hoc container clear">
-
-						<div class="tabl-row">
-							<div class="conf-log">
-                            	<h2>Profile pending admin approval</h2>
-							</div>
-						</div>
+        <div class="tabl-row">
+            <div class="conf-log">
+                <h2>Profile pending admin approval</h2>
+            </div>
+        </div>
     </div>
 </div>
 

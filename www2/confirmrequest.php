@@ -22,7 +22,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 			'foodStatus' => 'Confirm'
 		);
 		$updtID=array('id'=>$_POST['reqID'][$i]);
-		$update_id = $db->update('donatefood',$userData,$updtID);
+		$update_id = $db->update('Donation',$userData,$updtID);
 		
 		
 		/*$reqData = array(
@@ -66,7 +66,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 	<div class="container low-pad-top">
         <form method="post" action="">
         <?php
-		$query = "select * from donatefood where curDate>='$dateToday' and foodStatus='Hold' and donorId in ( select donorId from pickuporder where driverId = '".$driverId."' )";
+		$query = "select * from Donation where curDate>='$dateToday' and foodStatus='Hold' and donorId in ( select donorId from pickuporder where driverId = '".$driverId."' )";
 		$donateReq = $db->fetchQuery($query);
 		$count = 1; //print_r($donateReq);
 		foreach($donateReq as $recdata)

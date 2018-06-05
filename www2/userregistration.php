@@ -70,7 +70,7 @@ function loadDoc()
             <select name="zip" id="zip">
                 <option value="">Select Zipcode</option>
                 <?php
-                $allZip=$db->getRows('allzipcodes',array('order_by'=>'zipCode ASC'));
+                $allZip=$db->getRows('ZipCode',array('order_by'=>'zipCode ASC'));
                 foreach($allZip as $zipRec)
                 {
                     ?>

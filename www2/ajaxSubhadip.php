@@ -24,7 +24,7 @@ if($actionName=='startReg')
                 <select name="zip">
                     <option value="">Select Zipcode</option>
                     <?php
-                    $allZip=$db->getRows('allzipcodes',array('order_by'=>'zipCode ASC'));
+                    $allZip=$db->getRows('ZipCode',array('order_by'=>'zipCode ASC'));
                     foreach($allZip as $zipRec)
                     {
                         ?>
@@ -94,7 +94,7 @@ if($actionName=='startReg')
                 <select name="zip">
                     <option value="">Select Zipcode</option>
                     <?php
-                    $allZip=$db->getRows('allzipcodes',array('order_by'=>'zipCode ASC'));
+                    $allZip=$db->getRows('ZipCode',array('order_by'=>'zipCode ASC'));
                     foreach($allZip as $zipRec)
                     {
                         ?>
@@ -168,7 +168,7 @@ if($actionName=='startReg')
                 <select name="zip">
                     <option value="">Select Zipcode</option>
                     <?php
-                    $allZip=$db->getRows('allzipcodes',array('order_by'=>'zipCode ASC'));
+                    $allZip=$db->getRows('ZipCode',array('order_by'=>'zipCode ASC'));
                     foreach($allZip as $zipRec)
                     {
                         ?>
@@ -210,12 +210,12 @@ if($actionName=='startReg')
 }
 if($actionName=='donateFood')
 {
-	$donorID = $_REQUEST['hideID'];
-	$pickbefore = $_REQUEST['pickupbefore'];
+	$donorID = $_SESSION['user_id'];
+	$hrdata = $_REQUEST['hrdata'];
 	$minutedata = $_REQUEST['minutedata'];
 	$dayNight = $_REQUEST['timing'];
-	$preferredFood = $_REQUEST['preferreddonation'];
-	$nbox = $_REQUEST['numbox'];
+	$preferredFood = $_REQUEST['types'];
+	$numbox = $_REQUEST['numbox'];
 	$appwght = $_REQUEST['appwght'];
 	$onlydate = date('Y-m-d');
 	$onlytime = date('H:iA');
@@ -226,14 +226,14 @@ if($actionName=='donateFood')
 		'curTiming' => $onlytime,
 		'amORpm' => $dayNight,
 		'preferredFood' => $preferredFood,
-		'numbox' => $nbox,
+		'numbox' => $numbox,
 		'appweight' => $appwght,
-		'hrdata' => $pickbefore,
+		'hrData' => $hrdata,
 		'minuteData' => $minutedata,		
 		'foodStatus' => 'open',
 		'addDate' => $dateNow
 	);
-	$insert_id = $db->insert('donatefood',$userData);
+	$insert_id = $db->insert('Donation',$userData);
 }
 if($actionName=='changestatus')
 {
@@ -521,12 +521,12 @@ if($actionName=='confirmdeliver')
 					'foodStatus' => 'delivered'
 				);
 	$condition = array('id' => $_POST['orderId']);
-	$update = $db->update('donatefood',$userData,$condition);
+	$update = $db->update('Donation',$userData,$condition);
 	
 	$dateToday=date('Y-m-d');
 	$currenttimestamp=time().'<br/>';
 	
-	$query = "select * from donatefood where curDate>='$dateToday' and foodStatus='confirm' and driverId=$driverId";
+	$query = "select * from Donation where curDate>='$dateToday' and foodStatus='confirm' and driverId=$driverId";
 	$fetchcat = $db->fetchQuery($query);
 	?>
 	<h2>Picked up donations List</h2><hr>
@@ -553,7 +553,7 @@ if($actionName=='confirmdeliver')
 		</tr>
 	<?php
 	$cnfcounter=1;
-	$query = "select * from donatefood where curDate>='$dateToday' and foodStatus='confirm' and driverId=$driverId";
+	$query = "select * from Donation where curDate>='$dateToday' and foodStatus='confirm' and driverId=$driverId";
 	$donateReq = $db->fetchQuery($query);
 		foreach($donateReq as $recdata)
 		{
@@ -611,7 +611,7 @@ if($actionName=='confirmdeliver')
 	?>
 	<h2>Delivered donations List</h2><hr>
 	<?php
-	$query = "select * from donatefood where foodStatus='delivered' and driverId = $driverId";
+	$query = "select * from Donation where foodStatus='delivered' and driverId = $driverId";
 	$fetchcat = $db->fetchQuery($query);
 	if($fetchcat[0]['id']!='')
 	{
@@ -633,7 +633,7 @@ if($actionName=='confirmdeliver')
 			<th>Receiver Email</th>            
 		</tr>
 	<?php
-	$query = "select * from donatefood where foodStatus='delivered' and driverId=$driverId";
+	$query = "select * from Donation where foodStatus='delivered' and driverId=$driverId";
 	$donateReq = $db->fetchQuery($query);
 		foreach($donateReq as $recdata)
 		{
@@ -683,7 +683,7 @@ if($actionName=='pickupconfirmdonor')
 		'pickupConf' => 'confirmed'
 	);
 	$condition = array('id' => $_REQUEST['donateid']);
-	$update = $db->update('donatefood',$userData,$condition);
+	$update = $db->update('Donation',$userData,$condition);
 	echo "confirmed";
 }
 if($actionName=='deliveryconfirmreceiver')
@@ -693,7 +693,7 @@ if($actionName=='deliveryconfirmreceiver')
 		'deliveryConf' => 'confirmed'
 	);
 	$condition = array('id' => $_REQUEST['donateid']);
-	$update = $db->update('donatefood',$userData,$condition);
+	$update = $db->update('Donation',$userData,$condition);
 	echo "confirmed";
 }
 ?>

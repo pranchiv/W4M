@@ -15,7 +15,7 @@ if(!isset($_SESSION['user_id']) || $_SESSION['userType']!='receiver')
 /* REQUEST FOR AMERICAN REDCROSS SHELTER */
 
 $curtstamp=time();
-$allopendonations=$db->getRows('donatefood',array('where'=>array('foodStatus'=>'open')));
+$allopendonations=$db->getRows('Donation',array('where'=>array('foodStatus'=>'open')));
 foreach($allopendonations as $donateData)
 {
 	$strconversion=strtotime($donateData['addDate']);
@@ -27,7 +27,7 @@ foreach($allopendonations as $donateData)
 			'receiverId' => 27
 		);
 		$updtID=array('id'=>$donateData['id']);
-		$update_id = $db->update('donatefood',$userData,$updtID);
+		$update_id = $db->update('Donation',$userData,$updtID);
 	}
 }
 
@@ -45,7 +45,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 			'receiverId' => $_SESSION['user_id']
 		);
 		$updtID=array('id'=>$_POST['reqID'][$i]);
-		$update_id = $db->update('donatefood',$userData,$updtID);
+		$update_id = $db->update('Donation',$userData,$updtID);
 		
 		
 		/*$reqData = array(
@@ -91,7 +91,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
     	<h2>Donation Request List</h2>
         <form method="post" action="">
         <?php
-		$query = "select * from donatefood where curDate>='$dateToday' and foodStatus='open'";
+		$query = "select * from Donation where curDate>='$dateToday' and foodStatus='open'";
 		$donateReq = $db->fetchQuery($query);//('userregister',array('where'=>array('email'=>$uname,'password'=>$passwd,'profileStatus'=>'Y'),'order_by'=>'id DESC'));
 		if($donateReq[0]['id']>0)
 		{

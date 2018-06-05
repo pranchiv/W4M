@@ -12,7 +12,7 @@ if(!isset($_SESSION['user_id']) || $_SESSION['userType']!='donor')
 /* REQUEST FOR AMERICAN REDCROSS SHELTER */
 
 $curtstamp=time();
-$allopendonations=$db->getRows('donatefood',array('where'=>array('foodStatus'=>'open')));
+$allopendonations=$db->getRows('Donation',array('where'=>array('foodStatus'=>'open')));
 foreach($allopendonations as $donateData)
 {
 	$strconversion=strtotime($donateData['addDate']);
@@ -24,7 +24,7 @@ foreach($allopendonations as $donateData)
 			'receiverId' => 27
 		);
 		$updtID=array('id'=>$donateData['id']);
-		$update_id = $db->update('donatefood',$userData,$updtID);
+		$update_id = $db->update('Donation',$userData,$updtID);
 	}
 }
 
@@ -60,38 +60,33 @@ foreach($allopendonations as $donateData)
 }
 </style>
 </head>
+
 <body id="top">
 <div id="popload" class="pop"><img src="images/loading-white-d.gif" /></div>
 <?php include('inc/header.php');?>
+
 <div class="wrapper row3">
   <main class="hoc container clear"> 
   <h2 class="headclass">Donate Food</h2>
   	<div class="form-data" id="contentDiv">
-    	<input type="hidden" name="hideID" id="hideID" value="<?=$_SESSION['user_id']?>" />
-    	<label>
-            <span>Date : </span>
-            <input type="text" name="crntDate" id="crntDate" readonly value="<?=date('m/d/Y');?>" />
-            <span>Time : </span>
-            <input type="text" name="crntTime" id="crntTime" readonly value="<?=date('H:iA');?>" />
+        <label>
+            <span>Donation Type:</span>
+            <div><input type="checkbox" name="type[]" value="Hot" />&nbsp;&nbsp; Hot</div>
+            <div><input type="checkbox" name="type[]" value="Cold" />&nbsp;&nbsp; Cold</div> 
+            <div><input type="checkbox" name="type[]" value="Canned" />&nbsp;&nbsp; Canned</div>
+            <div><input type="checkbox" name="type[]" value="Trays" />&nbsp;&nbsp; Trays</div>
+            <div><input type="checkbox" name="type[]" value="Soup/Juices" />&nbsp;&nbsp; Soup/Juices</div> 
         </label><br/>
         <label>
-            <span>Preferred Type of Donation : </span>
-            <div><input type="checkbox" name="pDon[]" id="pDon" value="Hot" />&nbsp;&nbsp; Hot</div>
-            <div><input type="checkbox" name="pDon[]" id="pDon1" value="Cold" />&nbsp;&nbsp; Cold</div> 
-            <div><input type="checkbox" name="pDon[]" id="pDon2" value="Canned" />&nbsp;&nbsp; Canned</div>
-            <div><input type="checkbox" name="pDon[]" id="pDon3" value="Trays" />&nbsp;&nbsp; Trays</div>
-            <div><input type="checkbox" name="pDon[]" id="pDon4" value="Soup/Juices" />&nbsp;&nbsp; Soup/Juices</div> 
-        </label><br/>
-        <label>
-            <span>No. of Boxes : </span>
+            <span>Number of Boxes: </span>
             <input type="number" required name="numBox" id="numBox" placeholder="Unit : boxes" />
         </label><br/>
         <label>
-            <span>Approximate Weight : </span>
+            <span>Approximate Weight: </span>
             <input type="number" required name="appWght" id="appWght" placeholder="Unit : lbs" />
         </label><br/>
         <label>
-            <span>Pick Up Before : </span>
+            <span>Pick Up Before: </span>
             <div class="pickupdate">
             <select name="hrData" id="hrData">
                 <option value="">- -</option>
@@ -134,8 +129,11 @@ foreach($allopendonations as $donateData)
     <div class="clear"></div>
   </main>
 </div>
+
 <?php include('inc/footer.php');?>
+
 <a id="backtotop" href="#top"><i class="fa fa-chevron-up"></i></a>
+
 <!-- JAVASCRIPTS -->
 <script src="layout/scripts/jquery.min.js"></script>
 <script src="layout/scripts/bootstrap.min.js"></script>
@@ -144,39 +142,33 @@ foreach($allopendonations as $donateData)
 <script>
 function sendDonate() 
 {
-	var checkedNum = $('input[name="pDon[]"]:checked').length;
-	if (checkedNum>0) {
-		// User didn't check any checkboxes
-		var val = [];
-		$(':checkbox:checked').each(function(i){
-		  val[i] = $(this).val();
-		});
-	}
+    var types = [];
+    $('input[name="type[]"]:checked').each(function(i) {
+        types[i] = $(this).val();
+    });
+
+	var hrData = document.getElementById("hrData").value;
+	var minData = document.getElementById("minData").value;
+	var dayNight = document.getElementById("dayNight").value;
+	var numBox = document.getElementById("numBox").value;
+	var appWght = document.getElementById("appWght").value;
 	
-	hideID=document.getElementById("hideID").value;
-	hrData=document.getElementById("hrData").value;
-	minData=document.getElementById("minData").value;
-	dayNight=document.getElementById("dayNight").value;
-	numBox=document.getElementById("numBox").value;
-	appWght=document.getElementById("appWght").value;
-	
-	
-	opttype='donateFood';
-	if(checkedNum>0 && numBox!='' && appWght!='' && hrData!='')
-	{
-		document.getElementById("popload").style.display="block";
+	if (types.length > 0 && numBox != '' && appWght != '' && hrData != '') {
+		$("#popload").show();
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			document.getElementById("contentDiv").innerHTML = this.responseText;
-			document.getElementById("popload").style.display="none";
 			document.location="restaurantorderlist.php";
 		}};
-		xhttp.open("GET", "ajaxSubhadip.php?hideID="+hideID+"&minutedata="+minData+"&timing="+dayNight+"&pdon="+val+"&nbox="+numBox+"&appwght="+appWght+"&pickbefore="+hrData+"&actiontype="+opttype, true);
+		xhttp.open("GET", "ajaxSubhadip.php?actiontype=donateFood"
+                            + "&timing=" + dayNight 
+                            + "&types=" + types 
+                            + "&numbox=" + numBox 
+                            + "&appwght=" + appWght 
+                            + "&hrdata=" + hrData
+                            + "&minutedata=" + minData, true);
 		xhttp.send();
-	}
-	else
-	{
+	} else {
 		alert("Please select all the form fields properly.");
 	}
 }

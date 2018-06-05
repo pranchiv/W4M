@@ -54,7 +54,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 	}
 	else
 	{
-		 $msg='Wrong Username or Password';;
+		 $msg='Wrong Email or Password';;
 	} 
 }
 ?>
@@ -101,7 +101,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 		<form action="" method="post">
 		  <label>
           	<span>Email : </span>
-			<input type="email" id="uname" name="uname" required />
+			<input type="text" id="uname" name="uname" required />
 		  </label>
 		  <label>
             <span>Password : </span>

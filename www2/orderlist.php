@@ -56,7 +56,7 @@ if(!isset($_SESSION['user_id']) || $_SESSION['userType']!='admin')
             <th>Date & Time</th>         
         </tr>
         <?php
-		  $fetchcat = $db->fetchQuery("select * from donatefood order by id desc");		  		
+		  $fetchcat = $db->fetchQuery("select * from Donation order by id desc");		  		
 		  foreach($fetchcat as $donateData)
 		  {
 			$DonorRec=$db->getRows('userregister',array('where'=>array('id'=>$donateData['donorId']),'return_type'=>'single'));

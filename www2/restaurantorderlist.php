@@ -47,7 +47,7 @@ $driverId = $_SESSION['user_id'];
 <div class="wrapper row3">
 	<div class="hoc container clear">
         <?php
-		$query = "select * from donatefood where donorId ='".$_SESSION['user_id']."' order by id desc";
+		$query = "select * from Donation where donorId ='".$_SESSION['user_id']."' order by id desc";
 		$fetchcat = $db->fetchQuery($query);
 		if($fetchcat[0]['id']>0)
 		{

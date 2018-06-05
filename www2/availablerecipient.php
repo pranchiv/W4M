@@ -14,7 +14,7 @@ if(!isset($_SESSION['user_id']) || $_SESSION['userType']!='driver')
 $dateToday=date('l');
 
 $reQid=$_REQUEST['reqrec'];
-$reqData=$db->getRows('donatefood',array('where'=>array('id'=>$reQid),'return_type'=>'single'));
+$reqData=$db->getRows('Donation',array('where'=>array('id'=>$reQid),'return_type'=>'single'));
 $pickupTime=date('Y-m-d').' '.$reqData['hrdata'].':'.$reqData['minuteData'].$reqData['amORpm'];
 $strpickup=strtotime($pickupTime);
 ?>
