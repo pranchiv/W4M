@@ -47,7 +47,7 @@ $driverId = $_SESSION['user_id'];
 <div class="wrapper row3">
 	<div class="hoc container clear">
         <?php
-		$query = "select * from Donation where donorId ='".$_SESSION['user_id']."' order by id desc";
+		$query = "select * from Donation where donorId = ".$_SESSION['user_id']." order by id desc";
 		$fetchcat = $db->fetchQuery($query);
 		if($fetchcat[0]['id']>0)
 		{
@@ -77,7 +77,7 @@ $driverId = $_SESSION['user_id'];
 		{
 			if($fetchcat[$i]['foodStatus']!='open')
 			{
-			  $fetchdri = $db->fetchQuery("select driverId from pickuporder where donorId = '".$fetchcat[$i]['donorId']."' ");	
+			  $fetchdri = $db->fetchQuery("select driverId from pickuporder where donorId = ".$fetchcat[$i]['donorId']);	
 			  $dridetails = $db->getRows('userregister',array("where"=>array('id'=>$fetchdri[0]['driverId']),'return_type'=>'single'));
 			  $receiverdetails = $db->getRows('userregister',array("where"=>array('id'=>$fetchcat[0]['receiverId']),'return_type'=>'single'));
 			  //print_r($receiverdetails);
@@ -103,8 +103,8 @@ $driverId = $_SESSION['user_id'];
                     <td><?=$fetchcat[$i]['preferredFood']?></td>
                     <td><?=$fetchcat[$i]['numbox']?></td>
                     <td><?=$fetchcat[$i]['appweight']?></td>
-                    <td><?=date('j F,Y',strtotime($fetchcat[$i]['curDate'])).' ,'.$fetchcat[$i]['curTiming'];?></td>
-                 </tr>   
+                    <td><?=date('n/j/y g:i a', strtotime($fetchcat[$i]['addDate']));?></td>
+                 </tr>
                 <?php
 		}
 		?>

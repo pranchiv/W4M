@@ -11,27 +11,6 @@ if(!isset($_SESSION['user_id']) || $_SESSION['userType']!='driver')
 	<?php
 }
 
-/* REQUEST FOR AMERICAN REDCROSS SHELTER */
-
-$curtstamp=time();
-$allopendonations=$db->getRows('Donation',array('where'=>array('foodStatus'=>'open')));
-foreach($allopendonations as $donateData)
-{
-	$strconversion=strtotime($donateData['addDate']);
-	$strconversionTot=$strconversion+(30*60);
-	if($curtstamp>$strconversionTot)
-	{
-		$userData = array(
-			'foodStatus' => 'hold',
-			'receiverId' => 27
-		);
-		$updtID=array('id'=>$donateData['id']);
-		$update_id = $db->update('Donation',$userData,$updtID);
-	}
-}
-
-/* REQUEST FOR AMERICAN REDCROSS SHELTER */
-
 $dateToday=date('Y-m-d');
 $currenttimestamp=time().'<br/>';
 if($_SERVER['REQUEST_METHOD']=='POST')
@@ -106,7 +85,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
                     <th>Receiver Email</th>            
                 </tr>
         <?php
-		$query = "select * from Donation where curDate>='$dateToday' and foodStatus='hold'";
+		$query = "select * from Donation where addDate >= '$dateToday' and foodStatus = 'hold'";
 		$donateReq = $db->fetchQuery($query);//('userregister',array('where'=>array('email'=>$uname,'password'=>$passwd,'profileStatus'=>'Y'),'order_by'=>'id DESC'));
 		if($donateReq[0]['id']>0)
 		{

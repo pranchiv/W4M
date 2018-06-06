@@ -70,7 +70,7 @@ $driverId = $_SESSION['user_id'];
             <th>Preffered Food</th>
             <th>Number of Boxes</th>
             <th>Weight (in lbs)</th>
-            <th>Order Date & Time</th>            
+            <th>Order Date &amp; Time</th>            
         </tr>
 		<?php
 		for($i=0;$i<count($fetchcat);$i++)
@@ -103,8 +103,8 @@ $driverId = $_SESSION['user_id'];
                     <td><?=$fetchcat[$i]['preferredFood']?></td>
                     <td><?=$fetchcat[$i]['numbox']?></td>
                     <td><?=$fetchcat[$i]['appweight']?></td>
-                    <td><?=date('j F,Y',strtotime($fetchcat[$i]['curDate'])).' ,'.$fetchcat[$i]['curTiming'];?></td>
-                 </tr>   
+                    <td><?=date('n/j/y g:i a', strtotime($fetchcat[$i]['addDate']));?></td>
+                 </tr>
                 <?php
 		}
 		?>

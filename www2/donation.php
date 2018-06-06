@@ -9,26 +9,6 @@ if(!isset($_SESSION['user_id']) || $_SESSION['userType']!='donor')
     </script>
 	<?php
 }
-/* REQUEST FOR AMERICAN REDCROSS SHELTER */
-
-$curtstamp=time();
-$allopendonations=$db->getRows('Donation',array('where'=>array('foodStatus'=>'open')));
-foreach($allopendonations as $donateData)
-{
-	$strconversion=strtotime($donateData['addDate']);
-	$strconversionTot=$strconversion+(30*60);
-	if($curtstamp>$strconversionTot)
-	{
-		$userData = array(
-			'foodStatus' => 'hold',
-			'receiverId' => 27
-		);
-		$updtID=array('id'=>$donateData['id']);
-		$update_id = $db->update('Donation',$userData,$updtID);
-	}
-}
-
-/* REQUEST FOR AMERICAN REDCROSS SHELTER */
 ?>
 <!DOCTYPE html>
 <html>
@@ -79,11 +59,11 @@ foreach($allopendonations as $donateData)
         </label><br/>
         <label>
             <span>Number of Boxes: </span>
-            <input type="number" required name="numBox" id="numBox" placeholder="Unit : boxes" />
+            <input type="number" required name="numBox" id="numBox" placeholder="Unit: boxes" />
         </label><br/>
         <label>
             <span>Approximate Weight: </span>
-            <input type="number" required name="appWght" id="appWght" placeholder="Unit : lbs" />
+            <input type="number" required name="appWght" id="appWght" placeholder="Unit: lbs" />
         </label><br/>
         <label>
             <span>Pick Up Before: </span>
@@ -147,11 +127,11 @@ function sendDonate()
         types[i] = $(this).val();
     });
 
-	var hrData = document.getElementById("hrData").value;
-	var minData = document.getElementById("minData").value;
-	var dayNight = document.getElementById("dayNight").value;
-	var numBox = document.getElementById("numBox").value;
-	var appWght = document.getElementById("appWght").value;
+	var hrData = $("#hrData").val();
+	var minData = $("#minData").val();
+	var dayNight = $("#dayNight").val();
+	var numBox = $("#numBox").val();
+	var appWght = $("#appWght").val();
 	
 	if (types.length > 0 && numBox != '' && appWght != '' && hrData != '') {
 		$("#popload").show();

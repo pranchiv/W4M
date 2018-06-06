@@ -217,13 +217,9 @@ if($actionName=='donateFood')
 	$preferredFood = $_REQUEST['types'];
 	$numbox = $_REQUEST['numbox'];
 	$appwght = $_REQUEST['appwght'];
-	$onlydate = date('Y-m-d');
-	$onlytime = date('H:iA');
 	
 	$userData = array(
 		'donorId' => $donorID,
-		'curDate' => $onlydate,
-		'curTiming' => $onlytime,
 		'amORpm' => $dayNight,
 		'preferredFood' => $preferredFood,
 		'numbox' => $numbox,
@@ -526,7 +522,7 @@ if($actionName=='confirmdeliver')
 	$dateToday=date('Y-m-d');
 	$currenttimestamp=time().'<br/>';
 	
-	$query = "select * from Donation where curDate>='$dateToday' and foodStatus='confirm' and driverId=$driverId";
+	$query = "select * from Donation where addDate >= '$dateToday' and foodStatus = 'confirm' and driverId = $driverId";
 	$fetchcat = $db->fetchQuery($query);
 	?>
 	<h2>Picked up donations List</h2><hr>
@@ -553,7 +549,7 @@ if($actionName=='confirmdeliver')
 		</tr>
 	<?php
 	$cnfcounter=1;
-	$query = "select * from Donation where curDate>='$dateToday' and foodStatus='confirm' and driverId=$driverId";
+	$query = "select * from Donation where addDate >= '$dateToday' and foodStatus = 'confirm' and driverId = $driverId";
 	$donateReq = $db->fetchQuery($query);
 		foreach($donateReq as $recdata)
 		{

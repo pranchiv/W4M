@@ -47,10 +47,10 @@ $driverId = $_SESSION['user_id'];
 <div class="wrapper row3">
 	<div class="container low-pad-top" id="newdata">
         <?php
-		$query = "select * from Donation where curDate>='$dateToday' and foodStatus='confirm' and driverId=$driverId";
+		$query = "select * from Donation where addDate >= '$dateToday' and foodStatus = 'confirm' and driverId = $driverId";
 		$fetchcat = $db->fetchQuery($query);
 		?>
-        <h2>Picked up donations List</h2><hr>
+        <h2>Picked up donations list</h2><hr>
 		<?php
 		if($fetchcat[0]['id']>0)
 		{
@@ -58,14 +58,13 @@ $driverId = $_SESSION['user_id'];
         <div class="table-responsive">
         <table class="table" border="1">
             <tr>
-                <th>&nbsp;</th>
                 <th>Donor</th>
                 <th>Donor Address</th>
                 <th>Donor Phone</th>
                 <th>Donor Email</th>
-                <th>Preffered Food</th>
-                <th>No.of Boxes</th>
-                <th>Weight(in lbs)</th>
+                <th>Preferred Food</th>
+                <th>Number of Boxes</th>
+                <th>Weight (in lbs)</th>
                 <th>Pickup Time</th>
                 <th>Receiver</th>
                 <th>Receiver Address</th>
@@ -74,7 +73,7 @@ $driverId = $_SESSION['user_id'];
             </tr>
         <?php
 		$cnfcounter=1;
-		$query = "select * from Donation where curDate>='$dateToday' and foodStatus='confirm' and driverId=$driverId order by id desc";
+		$query = "select * from Donation where addDate >= '$dateToday' and foodStatus = 'confirm' and driverId = $driverId order by id desc";
 		$donateReq = $db->fetchQuery($query);
 			foreach($donateReq as $recdata)
 			{

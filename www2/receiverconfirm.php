@@ -11,29 +11,6 @@ if(!isset($_SESSION['user_id']) || $_SESSION['userType']!='receiver')
 	<?php
 }
 
-
-/* REQUEST FOR AMERICAN REDCROSS SHELTER */
-
-$curtstamp=time();
-$allopendonations=$db->getRows('Donation',array('where'=>array('foodStatus'=>'open')));
-foreach($allopendonations as $donateData)
-{
-	$strconversion=strtotime($donateData['addDate']);
-	$strconversionTot=$strconversion+(30*60);
-	if($curtstamp>$strconversionTot)
-	{
-		$userData = array(
-			'foodStatus' => 'hold',
-			'receiverId' => 27
-		);
-		$updtID=array('id'=>$donateData['id']);
-		$update_id = $db->update('Donation',$userData,$updtID);
-	}
-}
-
-/* REQUEST FOR AMERICAN REDCROSS SHELTER */
-
-
 $dateToday=date('Y-m-d');
 $currenttimestamp=time().'<br/>';
 if($_SERVER['REQUEST_METHOD']=='POST')
@@ -91,17 +68,17 @@ if($_SERVER['REQUEST_METHOD']=='POST')
     	<h2>Donation Request List</h2>
         <form method="post" action="">
         <?php
-		$query = "select * from Donation where curDate>='$dateToday' and foodStatus='open'";
+		$query = "select * from Donation where foodStatus = 'open'"; // and addDate >= '$dateToday'
 		$donateReq = $db->fetchQuery($query);//('userregister',array('where'=>array('email'=>$uname,'password'=>$passwd,'profileStatus'=>'Y'),'order_by'=>'id DESC'));
 		if($donateReq[0]['id']>0)
 		{
 			$count = 1; //print_r($donateReq);
 			foreach($donateReq as $recdata)
 			{
-				$endtime=$dateToday.' '.$recdata['hrdata'].':'.$recdata['minuteData'].$recdata['amORpm'];
-				$endstr=strtotime($endtime);
-				if($endstr>$currenttimestamp)
-				{
+				$endtime = $dateToday.' '.$recdata['hrdata'].':'.$recdata['minuteData'].$recdata['amORpm'];
+				$endstr = strtotime($endtime);
+                
+                //if ($endstr > $currenttimestamp) {
 					$DonorRec=$db->getRows('userregister',array('where'=>array('id'=>$recdata['donorId']),'return_type'=>'single'));
 					?>
 						<div class="tabl-row">
@@ -111,13 +88,13 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 								<h3><?php echo $DonorRec['orgName'];?></h3>
 								<p><?php echo $DonorRec['streetAddress'].', '.$DonorRec['city'].'-'.$DonorRec['zipCode'];?></p>
 								<p><?php echo $recdata['preferredFood'].'/'.$recdata['numbox'].'boxes/'.$recdata['appweight'].'lbs';?></p>
-								<p>Pick Up Before <?php echo $recdata['hrdata'].':'.$recdata['minuteData'].''.$recdata['amORpm'];?></p>
+								<p>Pick up before <?php echo $recdata['hrdata'].':'.$recdata['minuteData'].''.$recdata['amORpm'];?></p>
 								<!--<p class="yes"><input type="checkbox" name="allchkID[]"></p>-->
 							</div>
 						</div>
 					<?php
 					$count++;
-				}
+				//}
 			}		
 		?>  
         	<button type="reset" name="cncl" class="btn_class">Cancel</button>
