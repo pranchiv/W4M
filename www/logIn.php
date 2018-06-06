@@ -3,12 +3,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?php include("../includes/head.php"); ?>
-    <script src="scripts/sample.js"></script>
+    <?php include("includes/head.php"); ?>
+    <script src="<?= $root ?>/scripts/sample.js"></script>
 </head>
 <body>
 
-<?php require_once('connection.php'); ?>
+<?php require_once("connection.php"); ?>
 
 <div data-role="page">
  

@@ -45,11 +45,7 @@ Licence URI: http://www.os-templates.com/template-terms
 			
 				<li><a href="#" scroll-to="#footer">Contact Us</a></li>
 				<li><a href="#">About Us</a></li>
-<<<<<<< HEAD
-				<li><a href="sample.php">Login</a></li>
-=======
-				<li><a href="#">Log In</a></li>
->>>>>>> 72ec4c55b7a76c44072449dd8d9e787470e0f9bf
+				<li><a href="logIn.php">Log In</a></li>
 				
 				<!-- <li><a class="drop" href="#">[Dropdown]</a>
 					<ul>
@@ -67,7 +63,7 @@ Licence URI: http://www.os-templates.com/template-terms
 		<article class="introtxt">
 			<h2 class="heading">Wheels 4 Meals</h2>
 			<p>Seamlessly shuttling savory surplus to shelters.</p>
-			<footer><a class="btn inverse" href="#">Get Started</a></footer>
+			<footer><a class="btn inverse" href="/pages/register.php">Get Started</a></footer>
 		</article>
 		<div class="clear"></div>
 	</div>
@@ -80,7 +76,7 @@ Licence URI: http://www.os-templates.com/template-terms
 			<article class="one_quarter first">
 				<a href="#"><i class="icon fa fa-archive"></i></a>
 				<h4 class="font-x1"><a href="#">Restaurants, Bakeries, Grocery Stores</a></h4>
-				<p>Donate excess Food  with the click of a button on W4M App at the end of your day. Our Volunteer Drivers will do the rest to deliver to Food Pantries/Charities that are in need of it!</p>
+				<p>Donate excess food with the click of a button on W4M App at the end of your day. Our Volunteer Drivers will do the rest to deliver to Food Pantries/Charities that are in need of it!</p>
 			</article>
 			<article class="one_quarter">
 				<a href="#"><i class="icon fa fa-glass"></i></a>
@@ -142,55 +138,55 @@ Licence URI: http://www.os-templates.com/template-terms
 </div>
 
 <div class="wrapper row_white">
-<section id="testimonials" class="hoc container clear">
-	<div class="center" style="margin-bottom: 50px;">
-		<h4 class="font-x3">Join</h4>
-		<p>See where you fit into our system!</p>
-	</div>
-	<ul class="nospace group">
-		<li class="one_third first">
-			<article>
-				<figure>
-					<img src="images/demo/320x210.png" alt="">
-					<figcaption><a class="btn medium" href="#">Details</a></figcaption>
-				</figure>
-				<div class="excerpt">
-					<time datetime="2045-04-06">April 6<sup>th</sup></time>
-					<h6 class="heading">Yardley Bakery</h6>
-					<p>We've been very pleased to be a part of this effort. We used to throw ...</p>
-				</div>
-			</article>
-		</li>
-		<li class="one_third">
-			<article>
-				<figure>
-					<img src="images/demo/320x210.png" alt="">
-					<figcaption><a class="btn medium" href="#">Details</a></figcaption>
-				</figure>
-				<div class="excerpt">
-					<time datetime="2045-04-05">May 5<sup>th</sup></time>
-					<h6 class="heading">John (driver)</h6>
-					<p>I'm happy to share my time and make sure this food isn't wasted.</p>
-				</div>
-			</article>
-		</li>
-		<li class="one_third">
-			<article>
-				<figure>
-					<img src="images/demo/320x210.png" alt="">
-					<figcaption><a class="btn medium" href="#">Details</a></figcaption>
-				</figure>
-				<div class="excerpt">
-					<time datetime="2045-04-04">May 12<sup>th</sup></time>
-					<h6 class="heading">Newtown Food</h6>
-					<p>We've gotten so much more food than usual for this time of year.</p>
-				</div>
-			</article>
-		</li>
-	</ul>
-</section>
+	<section id="testimonials" class="hoc container clear">
+		<div class="center" style="margin-bottom: 50px;">
+			<h4 class="font-x3">Join</h4>
+			<p>See where you fit into our system!</p>
+		</div>
+		<ul class="nospace group">
+			<li class="one_third first">
+				<article>
+					<figure>
+						<img src="images/demo/320x210.png" alt="">
+						<figcaption><a class="btn medium" href="#">Details</a></figcaption>
+					</figure>
+					<div class="excerpt">
+						<time datetime="2045-04-06">April 6<sup>th</sup></time>
+						<h6 class="heading">Yardley Bakery</h6>
+						<p>We've been very pleased to be a part of this effort. We used to throw ...</p>
+					</div>
+				</article>
+			</li>
+			<li class="one_third">
+				<article>
+					<figure>
+						<img src="images/demo/320x210.png" alt="">
+						<figcaption><a class="btn medium" href="#">Details</a></figcaption>
+					</figure>
+					<div class="excerpt">
+						<time datetime="2045-04-05">May 5<sup>th</sup></time>
+						<h6 class="heading">John (driver)</h6>
+						<p>I'm happy to share my time and make sure this food isn't wasted.</p>
+					</div>
+				</article>
+			</li>
+			<li class="one_third">
+				<article>
+					<figure>
+						<img src="images/demo/320x210.png" alt="">
+						<figcaption><a class="btn medium" href="#">Details</a></figcaption>
+					</figure>
+					<div class="excerpt">
+						<time datetime="2045-04-04">May 12<sup>th</sup></time>
+						<h6 class="heading">Newtown Food</h6>
+						<p>We've gotten so much more food than usual for this time of year.</p>
+					</div>
+				</article>
+			</li>
+		</ul>
+	</section>
 </div>
-<div class="wrapper bgded overlay coloured" style="background-image:url('images/demo/backgrounds/03.png');">	
+<div class="wrapper row_gray bgded overlay coloured" style="background-image:url('images/demo/backgrounds/03.png');">	
 	<section id="testimonials" class="hoc container clear">
 		<div class="center" style="margin-bottom: 50px;">
 			<!-- <p class="nospace"><a href="#">View More</a></p> -->
@@ -246,7 +242,7 @@ Licence URI: http://www.os-templates.com/template-terms
 		<article class="center">
 			<h2 class="heading font-x3">Sign up as a donor, driver, or receiver and help eliminate food wastage once and for all!</h2>
 			<p style="margin-bottom: 30px;">Click below to find out where you fit in.</p>
-			<footer><a class="btn medium" href="#">Sign Up Here</a></footer>
+			<footer><a class="btn medium" href="/pages/register.php">Sign Up Here</a></footer>
 		</article>
 	</div>
 </div>

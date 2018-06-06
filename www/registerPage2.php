@@ -67,16 +67,14 @@
         $sql = "SELECT CellCarrierID, Name FROM CellCarrier";
         $dataset = $db->query($sql);
 
-      if (!$dataset) {
+        if (!$dataset) {
             echo '<p style="color: red; font-style: italic;">Query failed: ' . $db->error . "</p>\n";
         }
         ?>
         <a href="#" class="ui-btn ui-btn-inline">Previous Page</a>
         <button class="ui-btn ui-btn-inline">Continue</button>
 
-        
-        }
-
+        <?php
         $dataset = null;
         $db->close();
         ?>

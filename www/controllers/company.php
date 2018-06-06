@@ -32,7 +32,7 @@ class CompanyController {
         $City           = $db->real_escape_string($_POST['City']);
         $State          = $db->real_escape_string($_POST['State']);
         $Zip            = $db->real_escape_string($_POST['Zip']);
-        $Exists         = $db->real_escape_string('1');
+        $Exists         = '1';
 
         // put single quotes around any text fields: '$CompanyName'
         // no quotes are necessary around numeric fields: $CompanyTypeID

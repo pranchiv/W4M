@@ -18,8 +18,8 @@ File: Layout CSS
 
 /* Page Intro
 --------------------------------------------------------------------------------------------------------------- */
-#pageintro { padding:250px 0 150px; }
-#pageintro .introtxt { display:block; max-width:50%; margin:0 auto; text-align:center; }
+#pageintro { padding: 250px 0 150px; }
+#pageintro .introtxt { color: white; display:block; max-width:50%; margin:0 auto; text-align:center; }
 #pageintro .introtxt * { margin:0; }
 #pageintro .introtxt .heading { margin-bottom:15px; font-size:36px; }
 #pageintro .introtxt p { font-size:16px; line-height:1.4; }
@@ -199,6 +199,7 @@ article:hover .icon { border-color:inherit; color:#FFFFFF; background-color:#56A
 
 /* Header */
 #header #logo a { color:inherit; }
+#pageintro .introtxt { color: white; }
 
 /* Full Width Split Box */
 .split { color:#FFFFFF; background-color:#2E3541; }/* Changes in mediaqueries */
@@ -217,7 +218,7 @@ article:hover .icon { border-color:inherit; color:#FFFFFF; background-color:#56A
 #footer .linklist li { border-color:#1B1F25; }
 
 /* Navigation */
-#mainav li a { color:inherit; }
+#mainav li a { color: white; }
 #mainav .active a, #mainav a:hover, #mainav li:hover > a { color:#56AED4; background-color:inherit; }
 #mainav li li a, #mainav .active li a { color: #FFFFFF; background-color: rgba(255,255,255,.3); border-color: rgba(0,0,0,.3); }
 #mainav li li:hover > a, #mainav .active .active > a { color: #FFFFFF; background-color: #56AED4; }
