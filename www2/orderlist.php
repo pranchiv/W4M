@@ -53,7 +53,7 @@ if(!isset($_SESSION['user_id']) || $_SESSION['userType']!='admin')
             <th>Driver Phone</th>
             <th>Driver Email</th>
             <th>Status</th>  
-            <th>Date & Time</th>         
+            <th>Date &amp; Time</th>         
         </tr>
         <?php
 		  $fetchcat = $db->fetchQuery("select * from Donation order by id desc");		  		

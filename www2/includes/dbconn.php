@@ -26,35 +26,48 @@ class dbconn {
      * @param string name of the table
      * @param array select, where, order_by, limit and return_type conditions
      */
-    public function getRows($table,$conditions = array()){
+    public function getRows($table, $conditions = array()) {
+        $where = false;
         $sql = 'SELECT ';
-        $sql .= array_key_exists("select",$conditions)?$conditions['select']:'*';
+        $sql .= array_key_exists("select", $conditions) ? $conditions['select'] : '*';
         $sql .= ' FROM '.$table;
-        if(array_key_exists("where",$conditions)){
+
+        if (array_key_exists("where", $conditions)) {
+            $where = true;
             $sql .= ' WHERE ';
             $i = 0;
-            foreach($conditions['where'] as $key => $value){
-                $pre = ($i > 0)?' AND ':'';
-                $sql .= $pre.$key." = '".$value."'";
+            foreach ($conditions['where'] as $key => $value) {
+                $pre = ($i > 0) ? ' AND ' : '';
+                $sql .= $pre.$key." = '$value'";
                 $i++;
             }
         }
         
-        if(array_key_exists("order_by",$conditions)){
+        if (array_key_exists("where-custom", $conditions)) {
+            $sql .= ($where) ? ' AND ' : ' WHERE ';
+            $i = 0;
+            foreach ($conditions['where-custom'] as $condition) {
+                $pre = ($i > 0) ? ' AND ' : '';
+                $sql .= $pre.$condition;
+                $i++;
+            }
+        }
+
+        if (array_key_exists("order_by", $conditions)) {
             $sql .= ' ORDER BY '.$conditions['order_by']; 
         }
         
-        if(array_key_exists("start",$conditions) && array_key_exists("limit",$conditions)){
+        if (array_key_exists("start", $conditions) && array_key_exists("limit", $conditions)) {
             $sql .= ' LIMIT '.$conditions['start'].','.$conditions['limit']; 
-        }elseif(!array_key_exists("start",$conditions) && array_key_exists("limit",$conditions)){
+        } elseif (!array_key_exists("start", $conditions) && array_key_exists("limit", $conditions)) {
             $sql .= ' LIMIT '.$conditions['limit']; 
         }
         //echo $sql;
         $query = $this->db->prepare($sql);
         $query->execute();
         
-        if(array_key_exists("return_type",$conditions) && $conditions['return_type'] != 'all'){
-            switch($conditions['return_type']){
+        if (array_key_exists("return_type", $conditions) && $conditions['return_type'] != 'all') {
+            switch ($conditions['return_type']) {
                 case 'count':
                     $data = $query->rowCount();
                     break;
@@ -64,8 +77,8 @@ class dbconn {
                 default:
                     $data = '';
             }
-        }else{
-            if($query->rowCount() > 0){
+        } else {
+            if ($query->rowCount() > 0) {
                 $data = $query->fetchAll();
             }
         }

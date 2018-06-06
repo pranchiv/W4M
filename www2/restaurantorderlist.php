@@ -91,7 +91,19 @@ $driverId = $_SESSION['user_id'];
 			}
 				?>
                  <tr>
-                 	<td id="btnID<?=$i?>"><?php if($fetchcat[$i]['pickupConf']==''){if($fetchcat[$i]['foodStatus']=='hold' || $fetchcat[$i]['foodStatus']=='confirm' || $fetchcat[$i]['foodStatus']=='delivered'){?><button class="btn_class" onClick="pickConfirm(<?=$fetchcat[$i]['id']?>,<?=$i?>)">Confirm</button></a><?php }}else{echo $fetchcat[$i]['pickupConf'];}?></td>
+                     <td id="btnID<?=$i?>">
+                        <?php
+                            if ($fetchcat[$i]['pickupConf'] == '') {
+                                if ($fetchcat[$i]['foodStatus'] == 'hold' || $fetchcat[$i]['foodStatus'] == 'confirm' || $fetchcat[$i]['foodStatus'] == 'delivered') {
+                                    ?>
+                                    <button class="btn_class" onClick="pickConfirm(<?=$fetchcat[$i]['id']?>,<?=$i?>)">Confirm</button>
+                                    <?php 
+                                }
+                            } else {
+                                echo $fetchcat[$i]['pickupConf'];
+                            }
+                        ?>
+                    </td>
                  	<td><?=$receiverdetails['orgName'];?></td>
                  	<td><?php echo $receiverdetails['streetAddress'].', '.$receiverdetails['city'].','.$receiverdetails['state'].'-'.$receiverdetails['zipCode']?></td>
                     <td><?=$receiverdetails['mobile'];?></td>
