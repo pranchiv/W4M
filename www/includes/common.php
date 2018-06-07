@@ -2,6 +2,7 @@
     session_start();
     $root = 'http://' . $_SERVER["SERVER_NAME"];
     $top = Utilities::DeterminePathToTop();
+    $showBanner = true; // this is the default value. Override on any page if necessary.
 
     class Utilities {
         public static function DeterminePathToTop() {
@@ -12,8 +13,11 @@
             return $result;
         }
 
+        // check $_SERVER['REQUEST_URI'] to see if page was called directly vs as include
         public static function PageWasCalledDirectly($pagename) {
-            // check $_SERVER['REQUEST_URI'] to see if page was called directly vs as include
+            // assume ".php" ending if none given
+            if (!preg_match('/\./', $pagename)) { $pagename .= '.php'; }
+
             $path = preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI']);
             $result = self::EndsWith($path, $pagename);
 

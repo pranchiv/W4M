@@ -16,7 +16,7 @@ abstract class NotificationType {
     const DonationExpired   = 10;
 }
 
-if (Utilities::PageWasCalledDirectly('notification.php')) {
+if (Utilities::PageWasCalledDirectly('notification')) {
     $notificationController = new NotificationController();
     header('content-type:application/json');
 
@@ -63,7 +63,7 @@ class NotificationController {
             }
         }
 
-        return Utilities::ReturnAppropriateResult('notification.php', $result);
+        return Utilities::ReturnAppropriateResult('notification', $result);
     }
 
     public static function sendEmail($to, $subject, $body) {
@@ -90,7 +90,7 @@ class NotificationController {
         
         $result = array('error' => $isError, 'errorMessage' => $errorMessage);
 
-        return Utilities::ReturnAppropriateResult('notification.php', $result);
+        return Utilities::ReturnAppropriateResult('notification', $result);
     }
 }
 ?>

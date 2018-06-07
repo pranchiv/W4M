@@ -3,19 +3,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?php include("../includes/head.php"); ?>
-    <script src="<?php echo $root ?>/scripts/register.js"></script>
+    <?php include($top."includes/head.php"); ?>
+    <script src="<?= $top ?>scripts/register.js"></script>
 </head>
 <body>
 
 <div data-role="page">
  
     <div data-role="header" data-position="fixed">
-        <?php include("../includes/header.php"); ?>
+        <?php include($top."includes/header.php"); ?>
     </div>
 
     <div role="main" class="ui-content">
-        <?php include("../includes/banner.php"); ?>
+        <?php include($top."includes/banner.php"); ?>
 
         <h3>START COMPANY REGISTRATION</h3>
 
@@ -90,7 +90,7 @@
     </div><!-- /content -->
 
     <div data-role="footer" data-position="fixed">
-        <?php include("../includes/footer.php"); ?>
+        <?php include($top."includes/footer.php"); ?>
     </div>
 </div><!-- /page -->
 

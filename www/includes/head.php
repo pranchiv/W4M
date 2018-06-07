@@ -7,3 +7,8 @@
 <link href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
 <link href="<?php echo $root ?>/styles/jquery.toast.min.css" rel="stylesheet" type="text/css">
 <link href="<?php echo $root ?>/styles/main.css?1" rel="stylesheet" type="text/css" media="all">
+
+<?php if ($showBanner) { ?>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/js/swiper.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/css/swiper.min.css">
+<?php } ?>

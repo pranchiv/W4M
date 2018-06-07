@@ -3,21 +3,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?php include("includes/head.php"); ?>
-    <script src="<?= $root ?>/scripts/sample.js"></script>
+    <?php include($top."includes/head.php"); ?>
+    <script src="<?= $top ?>scripts/sample.js"></script>
 </head>
 <body>
 
-<?php require_once("connection.php"); ?>
+<?php require_once($top."connection.php"); ?>
 
 <div data-role="page">
  
     <div data-role="header" data-position="fixed">
-        <?php include("includes/header.php"); ?>
+        <?php include($top.'includes/header.php'); ?>
     </div>
 
     <div role="main" class="ui-content">
-        <form id="sample_formLogin">
+        <?php include($top."includes/banner.php"); ?>
+
+        <form id="sample_formLogin" style="width: 300px; margin: 30px auto 0;">
             <input type="text" id="sample_username" name="Username" placeholder="username">
             <input type="password" id="sample_password" name="Password" placeholder="password">
 
@@ -28,7 +30,7 @@
     </div><!-- /content -->
 
     <div data-role="footer" data-position="fixed">
-        <?php include("includes/footer.php"); ?>
+        <?php include($top."includes/footer.php"); ?>
     </div>
 
 </div><!-- /page -->

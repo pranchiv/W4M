@@ -3,23 +3,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Wheels4Meals</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <link href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
-    <link href="../styles/main.css?1" rel="stylesheet" type="text/css" media="all">
+    <?php include($top.'includes/head.php'); ?>
 </head>
 <body>
 
 <div data-role="page">
  
     <div data-role="header" data-position="fixed">
-        <?php include("../includes/header.php"); ?>
+        <?php include($top.'includes/header.php'); ?>
     </div>
 
     <div role="main" class="ui-content">
-        <?php include("../includes/banner.php"); ?>
+        <?php include($top."includes/banner.php"); ?>
 
         <form id="register_form">
             <div class="ui-grid-a responsive-grid padded">
@@ -51,10 +46,10 @@
     </div><!-- /content -->
 
     <div data-role="footer" data-position="fixed">
-        <?php include("../includes/footer.php"); ?>
+        <?php include($top."includes/footer.php"); ?>
     </div>
 
-    <script src="../scripts/register.js"></script>
+    <script src="<?= $top ?>scripts/register.js"></script>
 </div><!-- /page -->
 
 
