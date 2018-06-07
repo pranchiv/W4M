@@ -69,7 +69,7 @@
                 <input type="text" id="register_companyName" name="CompanyName" placeholder="Company Name">
             </div>
 
-            <button id="sample_notificationButton" class="ui-btn ui-btn-b ui-corner-all" data-env="<?php echo ENV; ?>" disabled="disabled">Generate Notification(s)</button>
+            <button id="sample_notificationButton" class="ui-btn ui-btn-b ui-corner-all" data-env="<?php echo ENV; ?>">Generate Notification(s)</button>
 
             <div id="register_registerError" class="error" style="margin: 6px 4px;"></div>
 

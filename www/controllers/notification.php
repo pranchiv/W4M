@@ -1,6 +1,7 @@
 <?php
-require_once('../includes/common.php');
-require_once('../connection.php');
+// if $top is already set, then common is already loaded
+if (!isset($top)) { require_once('../includes/common.php'); }
+require_once($top.'connection.php');
 
 abstract class NotificationType {
     const NewCompany        = 1;
@@ -15,17 +16,19 @@ abstract class NotificationType {
     const DonationExpired   = 10;
 }
 
-//$notificationController = new NotificationController();
+if (Utilities::PageWasCalledDirectly('notification.php')) {
+    $notificationController = new NotificationController();
+    header('content-type:application/json');
 
-// if ($_REQUEST['action'] != null) {
-//     $notificationController->{ $_REQUEST['action'] }();
-// }
+    if (isset($_REQUEST['action'])) {
+        $notificationController->{ $_REQUEST['action'] }();
+    }
+}
 
 class NotificationController {
     public static function send($type = null, $description = null) {
         $result = null;
         $db = DB::getInstance();
-        header('content-type:application/json');
 
         if ($type == null) { $type = NotificationType::NewCompany; }
         if ($description == null) { $description = $_POST['CompanyName']; }
@@ -60,15 +63,13 @@ class NotificationController {
             }
         }
 
-        return $result;
-        //echo json_encode($result);
+        return Utilities::ReturnAppropriateResult('notification.php', $result);
     }
 
     public static function sendEmail($to, $subject, $body) {
         $result = null;
         $isError = false;
         $errorMessage = '';
-        header('content-type:application/json');
 
         //$to = 'brimer@gmail.com';
         //$subject = 'Notification from W4M';
@@ -89,7 +90,7 @@ class NotificationController {
         
         $result = array('error' => $isError, 'errorMessage' => $errorMessage);
 
-        echo json_encode($result);
+        return Utilities::ReturnAppropriateResult('notification.php', $result);
     }
 }
 ?>
