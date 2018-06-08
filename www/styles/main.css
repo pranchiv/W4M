@@ -49,6 +49,18 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
     font-size: 12px;
 }
 
+/* forms */
+.form_headers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: flex-start;
+}
+
+.form_headers > * {
+    margin: 8px;
+}
+
 /* responsive grids */
 .responsive-grid.padded .ui-block-b,
 .responsive-grid.padded .ui-block-c,
@@ -66,6 +78,14 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
 }
 
 .reasonable-width-2 .ui-input-text {
+    max-width: 200px;
+}
+
+.reasonable-width-3 .ui-input-text {
+    max-width: 200px;
+}
+
+.reasonable-width-4 .ui-input-text {
     max-width: 200px;
 }
 
@@ -103,6 +123,7 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
 .swiper-container {
     width: 90%;
     height: 260px;
+    text-shadow: none;
 }
 
 .swiper-slide {
