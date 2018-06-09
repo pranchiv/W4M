@@ -95,9 +95,10 @@ class CompanyController {
         $db = DB::getInstance();
 
         try {
+            $username = $db->real_escape_string($_POST['Username']);
             $raw = $db->real_escape_string($_POST['Password']);
             $hash = password_hash($raw, PASSWORD_DEFAULT);
-            $sql = "UPDATE Member SET Password = '" . $hash . "' WHERE MemberID = 1";
+            $sql = "UPDATE Member SET Password = '$hash' WHERE username = '$username'";
 
             if ($db->query($sql) === TRUE) {
                 $isError = false;

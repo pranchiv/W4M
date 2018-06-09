@@ -21,7 +21,7 @@ if (Utilities::PageWasCalledDirectly('member')) {
 }
 
 class MemberController {
-    public function register() {
+    public static function register() {
         $result = null;
         $db = DB::getInstance();
 
@@ -69,31 +69,37 @@ class MemberController {
         return Utilities::ReturnAppropriateResult('member', $result);
     }
 
-    public function logIn() {
+    public static function logIn($username = null, $password = null) {
         $result = null;
         $isError = false;
         $errorMessage = '';
+        $nextPage = 'logIn';
 
         $db = DB::getInstance();
 
         try {
-            $username = $db->real_escape_string($_POST['Username']);
-            $password = $db->real_escape_string($_POST['Password']);
+            if (!isset($username)) { $username = $_POST['Username']; }
+            if (!isset($password)) { $password = $_POST['Password']; }
 
-            $sql = "SELECT * FROM Member WHERE Username = '$username'";
+            $username = $db->real_escape_string($username);
+            $password = $db->real_escape_string($password);
+
+            $sql = "SELECT c.Name `CompanyName`, m.* 
+                    FROM Member m 
+                    LEFT JOIN Company c ON c.CompanyID = m.CompanyID 
+                    WHERE m.Username = '$username' 
+                    AND m.DeleteDate IS NULL";
             $dataset = $db->query($sql);
 
             if ($dataset) {
                 if ($dataset->num_rows > 0) {
-                    while ($row = $dataset->fetch_assoc()):
-                        $MemberID = $row["MemberID"];
-                        $hashPswd = $row["Password"];
-                    endwhile;
-                    
-                    if (password_verify($password, $hashPswd)) {
-                        //self::setSessionVariables($row);
+                    $row = $dataset->fetch_assoc();
+
+                    if (password_verify($password, $row["Password"])) {
                         $isError = false;
-                        $errorMessage = "login successful (MemberID $MemberID)";
+                        $errorMessage = "login successful (MemberID ".$row["MemberID"].")";
+                        self::setSessionVariables($row);
+                        $nextPage = self::determineStartPage();
                     } else {
                         $isError = true;
                         $errorMessage = "passwords do not match";
@@ -114,25 +120,46 @@ class MemberController {
             $errorMessage = 'ERROR: dunno';
         }
 
-        $result = array('error' => $isError, 'errorMessage' => $errorMessage);
-        echo json_encode($result);        
+        $result = array('error' => $isError, 'errorMessage' => $errorMessage, 'nextPage' => $nextPage);
+        //echo json_encode($result);
+        return Utilities::ReturnAppropriateResult('member', $result);
     }
 
-    public function logOut() {
+    public static function logOut() {
         self::setSessionVariables(null);
+        return Utilities::ReturnAppropriateResult('member', true);
     }
 
-    private function setSessionVariables($member) {
+    private static function setSessionVariables($member) {
         if ($member == null) {
             // clear them all
+            $_SESSION['MemberID'] = null;
+            $_SESSION['MemberName'] = null;
+            $_SESSION['MemberType'] = null;
+            $_SESSION['MemberStatus'] = null;
+            $_SESSION['CompanyID'] = null;
+            $_SESSION['Company'] = null;
         } else {
-            //$_SESSION['CompanyID'] = $company['CompanyID'];
-            //$_SESSION['Company'] = $company['Name'];
-            $_SESSION['MemberID'] = $member['MemberID'];
+            $_SESSION['MemberID'] = Utilities::NullableInt($member['MemberID']);
             $_SESSION['MemberName'] = $member['FirstName'].' '.$member['LastName'];
-            $_SESSION['MemberType'] = '';
-            $_SESSION['MemberStatus'] = '';
+            $_SESSION['MemberType'] = Utilities::NullableInt($member['MemberTypeID']);
+            $_SESSION['MemberStatus'] = Utilities::NullableInt($member['MemberStatusID']);
+            $_SESSION['CompanyID'] = Utilities::NullableInt($member['CompanyID']);
+            $_SESSION['Company'] = $member['CompanyName'];
         }
+    }
+
+    public static function determineStartPage() {
+        switch ($_SESSION['MemberType']) {
+            case MemberType::Admin          : $result = 'pages/admin';  break;
+            case MemberType::Driver         : $result = 'pages/driver';  break;
+            case MemberType::Donor          : $result = 'pages/donor';  break;
+            case MemberType::Beneficiary    : $result = 'pages/beneficiary';  break;            
+            default: 'index'; break;
+        }
+
+        $result .= '.php';
+        return $result;
     }
 }
 ?>

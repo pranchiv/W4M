@@ -4,7 +4,20 @@ $(document).on('pagecreate', function() {
         e.preventDefault();
 
         $.post('../controllers/member.php?action=logIn', $('#login_form').serialize(), function(data) {
-            $('#login_error').html(data.errorMessage);
+            if (data.error) {
+                $('#login_error').html(data.errorMessage);
+            } else {
+                $('#login_error').html(data.errorMessage);
+                $.mobile.changePage('/' + data.nextPage, { transition: 'flip' } );
+            }
+        }, 'json');
+    });
+
+    $('.logout').on('click', function(e) {
+        e.preventDefault();
+
+        $.post('../controllers/member.php?action=logOut', null, function(data) {
+            window.location = '/';
         }, 'json');
     });
 });

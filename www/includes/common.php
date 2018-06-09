@@ -44,5 +44,9 @@
             $length = strlen($text);
             return $length === 0 || (substr($container, -$length) === $text);
         }
+
+        public static function NullableInt($value) {
+            return ($value == null ? null : (int)$value);
+        }
     }
 ?>
