@@ -1,10 +1,17 @@
 <?php
-require_once('../includes/common.php');
-require_once('../connection.php');
-require_once('notification.php');
+// if $top is already set, then common is already loaded
+if (!isset($top)) { require_once('../includes/common.php'); }
+require_once($top.'connection.php');
+require_once($top.'controllers/notification.php');
 
-$controller = new CompanyController();
-$controller->{ $_REQUEST['action'] }();
+if (Utilities::PageWasCalledDirectly('company')) {
+    $companyController = new CompanyController();
+    header('content-type:application/json');
+
+    if (isset($_REQUEST['action'])) {
+        $companyController->{ $_REQUEST['action'] }();
+    }
+}
 
 class CompanyController {
     public function startRegistration() {
@@ -17,7 +24,6 @@ class CompanyController {
     public function register() {
         $result = null;
         $db = DB::getInstance();
-        header('content-type:application/json');
 
         switch ($_SESSION['RegistrationType']) {
             case 'Donor':       $CompanyTypeID = 1; break;
@@ -53,13 +59,29 @@ class CompanyController {
             }
         }
 
-        echo json_encode($result);
+        return Utilities::ReturnAppropriateResult('member', $result);
     }
 
-    public function getAvailableCompanies() {
-        
-    }
+    public static function getCompanies($status = null) {
+        $result = null;
+        $isError = false;
+        $errorMessage = '';
 
+        $db = DB::getInstance();
+
+        if (!isset($status)) { $status = $_GET['status']; }
+        $status = $db->real_escape_string($status);
+        $DBResult = DB::callProcWithRecordset("CALL GetCompanies($status)");
+
+        if (is_null($DBResult)) {
+            $isError = true;
+            $errorMessage = $db->error;
+        }
+
+        $result = array('error' => $isError, 'errorMessage' => $errorMessage, 'data' => $DBResult);
+        return Utilities::ReturnAppropriateResult('company', $result);        
+    }
+    
     public function testEmail() {
         // test sending emails (texts)
         $result = null;
@@ -83,8 +105,7 @@ class CompanyController {
         }
         
         $result = array('error' => $isError, 'errorMessage' => $errorMessage);
-
-        echo json_encode($result);
+        return Utilities::ReturnAppropriateResult('member', $result);
     }
 
     public function testStorePassword() {
@@ -116,7 +137,7 @@ class CompanyController {
         }
 
         $result = array('error' => $isError, 'errorMessage' => $errorMessage);
-        echo json_encode($result);
+        return Utilities::ReturnAppropriateResult('member', $result);
     }
 }
 ?>

@@ -6,6 +6,7 @@
 <head>
     <?php include($top."includes/head.php"); ?>
     <script src="<?= $top ?>scripts/common.js"></script>
+    <script src="<?= $top ?>scripts/admin.js"></script>
 </head>
 <body>
 
@@ -17,7 +18,13 @@
     <div role="main" class="ui-content">
         <?php include($top."includes/banner.php"); ?>
 
-        <h1>Admin Stuff</h1>
+        <h2>Admin Stuff</h2>
+
+        <h3>Prospective Companies</h3>
+        <?php include($top."includes/companyList.php"); ?>
+
+        <h3>Prospective Members</h3>
+        <?php include($top."includes/memberList.php"); ?>
 
         <?php include($top."includes/debug.php"); ?>
     </div><!-- /content -->

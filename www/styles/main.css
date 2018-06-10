@@ -24,6 +24,9 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
     padding: 0 8px;
     color: white;
     text-shadow: none;
+    font-size: 14px;
+    font-family: Verdana, Geneva, sans-serif;
+    text-transform: uppercase;
 }
 
 .logout {
@@ -73,6 +76,22 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
 
 .form_headers > * {
     margin: 8px;
+}
+
+.adminGrid {
+    border: 2px solid;
+    border-collapse: collapse;
+    font-size: 12px;
+    width: 100%;
+}
+.adminGrid th {
+    color: white;
+    background: #926731;
+    text-shadow: none;
+}
+.adminGrid th, td {
+    border: 1px solid;
+    padding: 2px 6px;
 }
 
 /* responsive grids */

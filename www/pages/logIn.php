@@ -1,4 +1,5 @@
 <?php require_once('../includes/common.php'); ?>
+<?php /* require_once('../controllers/member.php'); */ ?>
 
 <!DOCTYPE html>
 <html>
@@ -25,6 +26,8 @@
             <label><input type="checkbox" id="login_persist" name="Persist">Keep me signed in</label>
             <a href="#">Forgot password?</a>
         </form>
+
+        <?php /* MemberController::logIn('', '') */ ?>
     </div><!-- /content -->
 
     <div data-role="footer" data-position="fixed">

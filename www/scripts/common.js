@@ -22,6 +22,33 @@ $(document).on('pagecreate', function() {
     });
 });
 
+function BuildHtmlTableFromJson(data, columns) {
+    var result = '';
+
+    $.each(data, function(i, row) {
+        result += '<tr>';
+
+        $.each(columns, function(j, col) {
+            var value = row[col];
+
+            if (value == null) {
+                value = '--';
+            } else if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(value)) {
+                value = FormatDate(value);
+            }
+
+            switch (col) {
+                case '[checkbox]': result += '<td><input type="checkbox" name="selected"></td>'; break;
+                default: result += '<td>' + value + '</td>'; break;
+            }
+        });
+
+        result += '</tr>\r\n';
+    });
+
+    return result;
+}
+
 // the "data" parameter is the JSON data returned from Notification.send()
 // it's expected to have a "recipients" array with specific properties
 function ShowToastFromNotificationSend(data) {
@@ -35,4 +62,27 @@ function ShowToastFromNotificationSend(data) {
             hideAfter: false
         });    
     }
+}
+
+function FormatDate(dateString) {
+    var d = new Date(dateString);
+    var month = d.getMonth(); month++;
+    var day = d.getDate();
+    var year = d.getFullYear() - 2000;
+    var hr = d.getHours();
+    var min = d.getMinutes();
+    var ampm = '';
+
+    if (hr < 12) {
+        if (hr == 0) { hr = 12; }
+        ampm = 'am';
+    } else {
+        if (hr > 12) { hr -= 12; }
+        ampm = 'pm';
+    }
+
+    min += '';
+    if (min.length == 1) { min = '0' + min; }
+
+    return month + '/' + day + '/' + year + ' ' + hr + ':' + min + ' ' + ampm;
 }

@@ -63,6 +63,7 @@ $(document).on('pagecreate', function() {
             } else {
                 $('#registerMember_registerError').html('Member created (ID ' + data.member.MemberID + ')');
                 if (data.notifications) { ShowToastFromNotificationSend(data.notifications); }
+                $.mobile.changePage('/' + data.nextPage, { transition: 'flip' } );
             }
 
         }, 'json');

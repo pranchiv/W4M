@@ -11,6 +11,13 @@ abstract class MemberType {
     const Beneficiary   = 4;
 }
 
+abstract class MemberStatus {
+    const Prospective   = 1;
+    const Active        = 2;
+    const Inactive      = 3;
+    const Denied        = 4;
+}
+
 if (Utilities::PageWasCalledDirectly('member')) {
     $memberController = new MemberController();
     header('content-type:application/json');
@@ -57,10 +64,10 @@ class MemberController {
             $member = $DBResult[0];
 
             if ($member['Exists'] == 0) {
-                $_SESSION['MemberID'] = $member['MemberID'];
-                $_SESSION['MemberName'] = $member['FirstName'].' '.$member['LastName'];
+                self::setSessionVariables($member);
+                $nextPage = self::determineStartPage();        
                 $notifications = NotificationController::send(NotificationType::NewMember, $_SESSION['MemberName']);
-                $result = array('error' => false, 'exists' => false, 'member' => $member, 'notifications' => $notifications);
+                $result = array('error' => false, 'exists' => false, 'member' => $member, 'notifications' => $notifications, 'nextPage' => $nextPage);
             } else {
                 $result = array('error' => false, 'exists' => true, 'existsType' => $member['Exists']);
             }
@@ -83,17 +90,14 @@ class MemberController {
 
             $username = $db->real_escape_string($username);
             $password = $db->real_escape_string($password);
+            $DBResult = DB::callProcWithRecordset("CALL GetMember(null, '$username')");
 
-            $sql = "SELECT c.Name `CompanyName`, m.* 
-                    FROM Member m 
-                    LEFT JOIN Company c ON c.CompanyID = m.CompanyID 
-                    WHERE m.Username = '$username' 
-                    AND m.DeleteDate IS NULL";
-            $dataset = $db->query($sql);
-
-            if ($dataset) {
-                if ($dataset->num_rows > 0) {
-                    $row = $dataset->fetch_assoc();
+            if (is_null($DBResult)) {
+                $isError = true;
+                $errorMessage = $db->error;
+            } else {
+                if (count($DBResult) > 0) {
+                    $row = $DBResult[0];
 
                     if (password_verify($password, $row["Password"])) {
                         $isError = false;
@@ -108,9 +112,6 @@ class MemberController {
                     $isError = true;
                     $errorMessage = "no account matches those credentials";
                 }
-            } else {
-                $isError = true;
-                $errorMessage = $db->error;
             }
         } catch (Exception $ex) {
             $isError = true;
@@ -135,22 +136,26 @@ class MemberController {
             // clear them all
             $_SESSION['MemberID'] = null;
             $_SESSION['MemberName'] = null;
+            $_SESSION['MemberTypeID'] = null;
             $_SESSION['MemberType'] = null;
+            $_SESSION['MemberStatusID'] = null;
             $_SESSION['MemberStatus'] = null;
             $_SESSION['CompanyID'] = null;
             $_SESSION['Company'] = null;
         } else {
-            $_SESSION['MemberID'] = Utilities::NullableInt($member['MemberID']);
+            $_SESSION['MemberID'] = (int)$member['MemberID'];
             $_SESSION['MemberName'] = $member['FirstName'].' '.$member['LastName'];
-            $_SESSION['MemberType'] = Utilities::NullableInt($member['MemberTypeID']);
-            $_SESSION['MemberStatus'] = Utilities::NullableInt($member['MemberStatusID']);
+            $_SESSION['MemberTypeID'] = (int)$member['MemberTypeID'];
+            $_SESSION['MemberType'] = $member['MemberType'];
+            $_SESSION['MemberStatusID'] = (int)$member['MemberStatusID'];
+            $_SESSION['MemberStatus'] = $member['MemberStatus'];
             $_SESSION['CompanyID'] = Utilities::NullableInt($member['CompanyID']);
             $_SESSION['Company'] = $member['CompanyName'];
         }
     }
 
     public static function determineStartPage() {
-        switch ($_SESSION['MemberType']) {
+        switch ($_SESSION['MemberTypeID']) {
             case MemberType::Admin          : $result = 'pages/admin';  break;
             case MemberType::Driver         : $result = 'pages/driver';  break;
             case MemberType::Donor          : $result = 'pages/donor';  break;
@@ -160,6 +165,26 @@ class MemberController {
 
         $result .= '.php';
         return $result;
+    }
+
+    public static function getMembers($status = null) {
+        $result = null;
+        $isError = false;
+        $errorMessage = '';
+
+        $db = DB::getInstance();
+
+        if (!isset($status)) { $status = $_GET['status']; }
+        $status = $db->real_escape_string($status);
+        $DBResult = DB::callProcWithRecordset("CALL GetMembers($status)");
+
+        if (is_null($DBResult)) {
+            $isError = true;
+            $errorMessage = $db->error;
+        }
+
+        $result = array('error' => $isError, 'errorMessage' => $errorMessage, 'data' => $DBResult);
+        return Utilities::ReturnAppropriateResult('member', $result);        
     }
 }
 ?>
