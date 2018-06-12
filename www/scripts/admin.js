@@ -1,24 +1,45 @@
 $(document).on('pagecreate', function() {
-    var companyColumns = ['[checkbox]', 'CreateDate', 'CompanyID', 'Type', 'Name', 'Address', 'City', 'ZIP', 'Phone', 'MemberCount'];
+    LoadCompanyList();
+    LoadMemberList();
+
+    $('#admin_companyList_approveButton').on('click', function() {
+        UpdateSelectedCompanyStatuses(2);
+    });
+
+    $('#admin_companyList_denyButton').on('click', function() {
+        UpdateSelectedCompanyStatuses(5);
+    });    
+});
+
+function LoadCompanyList(message) {
+    var companyColumns = ['[checkbox=CompanyID]', 'CreateDate', 'CompanyID', 'Type', 'Name', 'Address', 'City', 'ZIP', 'Phone', 'MemberCount'];
     var $companyTablebody = $('#companyList_table tbody');
     var $companyTablefoot = $('#companyList_table tfoot');
     var companyLoadingRow = '<tr class="loading"><td colspan="' + companyColumns.length + '">Loading ...</td></tr>';
+    var companyMessageRow = '<tr class="message"><td colspan="' + companyColumns.length + '"></td></tr>';
     $companyTablefoot.html(companyLoadingRow);
+    $companyTablefoot.append(companyMessageRow);
 
     $.get('/controllers/company.php?action=getCompanies', { status: 1 }, function(data) {
+        $companyTablefoot.find('.loading').hide();
+
         if (data.error) {
-            $companyTablefoot.find('td').html(data.errorMessage);
+            message = (message ? message + '<br/>': '') + data.message;
         } else if (data.data.length == 0) {
-            $companyTablefoot.find('td').html('no companies found');
+            if (!message) { message = 'no matching companies found'; }
         } else {
+            message = (message ? message + '<br/>': '') + data.data.length + ' matching companies found';
             var dataRows = BuildHtmlTableFromJson(data.data, companyColumns);
-
-            $companyTablefoot.hide();
             $companyTablebody.html(dataRows);
+            $('#companyList_table').table('refresh');
         }
-    }, 'json');
 
-    var memberColumns = ['[checkbox]', 'CreateDate', 'MemberID', 'MemberType', 'Name', 'Email', 'CellNumber', 'CompanyName', 'CompanyStatus'];
+        $companyTablefoot.find('.message td').html(message);
+    }, 'json');
+}
+
+function LoadMemberList() {
+    var memberColumns = ['[checkbox=MemberID]', 'CreateDate', 'MemberID', 'MemberType', 'Name', 'Email', 'CellNumber', 'CompanyName', 'CompanyStatus'];
     var $memberTablebody = $('#memberList_table tbody');
     var $memberTablefoot = $('#memberList_table tfoot');
     var memberLoadingRow = '<tr class="loading"><td colspan="' + memberColumns.length + '">Loading ...</td></tr>';
@@ -28,12 +49,32 @@ $(document).on('pagecreate', function() {
         if (data.error) {
             $memberTablefoot.find('td').html(data.errorMessage);
         } else if (data.data.length == 0) {
-            $memberTablefoot.find('td').html('no members found');
+            $memberTablefoot.find('td').html('no matching members found');
         } else {
             var dataRows = BuildHtmlTableFromJson(data.data, memberColumns);
 
             $memberTablefoot.hide();
             $memberTablebody.html(dataRows);
+            $('#memberList_table').table('refresh');
         }
     }, 'json');
-});
+}
+
+function UpdateSelectedCompanyStatuses(status) {
+    var selectedArray = [];
+    $('#admin_companyList_form input[type=checkbox]').each( function() {
+        if( $(this).is(':checked') ) {
+            selectedArray.push( $(this).val() );
+        }
+    });
+    var selected = selectedArray.join(',');
+
+    $.post('/controllers/company.php?action=updateStatus', { status: status, selected: selected }, function(data) {
+        if (data.error) {
+            $('#companyList_table .message td').html('<span class="error">' + data.message + '</span>');
+        } else {
+            LoadCompanyList(data.data[0]['count'] + ' companies updated');
+            LoadMemberList();
+        }
+    }, 'json');    
+}

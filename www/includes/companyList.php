@@ -1,6 +1,6 @@
 <?php require_once($top.'controllers/company.php'); ?>
 
-<table id="companyList_table" class="adminGrid">
+<table id="companyList_table" class="adminGrid ui-responsive" data-role="table">
     <thead>
         <tr>
             <th></th>

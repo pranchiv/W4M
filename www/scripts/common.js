@@ -37,9 +37,13 @@ function BuildHtmlTableFromJson(data, columns) {
                 value = FormatDate(value);
             }
 
-            switch (col) {
-                case '[checkbox]': result += '<td><input type="checkbox" name="selected"></td>'; break;
-                default: result += '<td>' + value + '</td>'; break;
+            var isCheckbox = col.match(/^\[checkbox=(.*)\]$/);
+
+            if (isCheckbox) {
+                var checkboxName = isCheckbox[1];
+                result += '<td><input type="checkbox" name="selected" value="' + row[checkboxName] + '"></td>';
+            } else {
+                result += '<td>' + value + '</td>';
             }
         });
 

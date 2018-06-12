@@ -1,6 +1,6 @@
 <?php require_once($top.'controllers/member.php'); ?>
 
-<table id="memberList_table" class="adminGrid">
+<table id="memberList_table" class="adminGrid ui-responsive" data-role="table">
     <thead>
         <tr>
             <th></th>

@@ -21,10 +21,17 @@
         <h2>Admin Stuff</h2>
 
         <h3>Prospective Companies</h3>
-        <?php include($top."includes/companyList.php"); ?>
+
+        <form id="admin_companyList_form">
+            <?php include($top."includes/companyList.php"); ?>
+            <input type="button" id="admin_companyList_approveButton" data-inline="true" data-theme="b" data-icon="check" value="Approve">
+            <input type="button" id="admin_companyList_denyButton" data-inline="true" data-icon="delete" value="Deny">
+        </form>
 
         <h3>Prospective Members</h3>
-        <?php include($top."includes/memberList.php"); ?>
+        <form id="admin_memberList_form">
+            <?php include($top."includes/memberList.php"); ?>
+        </form>
 
         <?php include($top."includes/debug.php"); ?>
     </div><!-- /content -->
