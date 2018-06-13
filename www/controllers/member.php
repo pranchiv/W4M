@@ -170,20 +170,42 @@ class MemberController {
     public static function getMembers($status = null) {
         $result = null;
         $isError = false;
-        $errorMessage = '';
+        $message = '';
 
         $db = DB::getInstance();
 
-        if (!isset($status)) { $status = $_GET['status']; }
+        if (!isset($status)) { $status = $_REQUEST['status']; }
         $status = $db->real_escape_string($status);
         $DBResult = DB::callProcWithRecordset("CALL GetMembers($status)");
 
         if (is_null($DBResult)) {
             $isError = true;
-            $errorMessage = $db->error;
+            $message = $db->error;
         }
 
-        $result = array('error' => $isError, 'errorMessage' => $errorMessage, 'data' => $DBResult);
+        $result = array('error' => $isError, 'message' => $message, 'data' => $DBResult);
+        return Utilities::ReturnAppropriateResult('member', $result);        
+    }
+
+    public static function updateStatus($selected = null, $status = null) {
+        $result = null;
+        $isError = false;
+        $message = '';
+
+        $db = DB::getInstance();
+
+        if (!isset($selected)) { $selected = $_REQUEST['selected']; }
+        if (!isset($status)) { $status = $_REQUEST['status']; }
+        $selected = $db->real_escape_string($selected);
+        $status = $db->real_escape_string($status);
+        $DBResult = DB::callProcWithRecordset("CALL UpdateMemberStatus('$selected', $status)");
+
+        if (is_null($DBResult)) {
+            $isError = true;
+            $message = $db->error;
+        }
+
+        $result = array('error' => $isError, 'message' => $message, 'data' => $DBResult);
         return Utilities::ReturnAppropriateResult('member', $result);        
     }
 }

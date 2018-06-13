@@ -88,7 +88,7 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
 .adminGrid tbody tr:nth-child(even) { background: #cccccc; }
 .adminGrid th, .adminGrid .ui-table-cell-label {
     color: white;
-    background: #926731;
+    background: #1a926c;
     text-shadow: none;
 }
 .adminGrid th, .adminGrid td {
@@ -97,7 +97,67 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
 }
 .adminGrid .ui-table-cell-label {
     color: white;
-    background: #926731;
+    background: #1a926c;
+}
+
+#admin_activeCompanies {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-content: flex-start;
+}
+
+#admin_activeCompanies > * {
+    margin: 0 16px;
+    flex: auto;
+}
+
+.companyCard {
+    width: 250px;
+    min-height: 90px;
+    border: 1px solid gray;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    padding: 4px;
+    box-shadow: black 6px 6px 12px;
+    background: #f5e1c9;
+}
+
+.companyCard.Active {
+    background: lightgreen;
+}
+
+.companyCard .name {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.companyCard .memberCountContainer {
+    float: left;
+    margin-left: 12px;
+}
+
+.companyCard .donationCountContainer {
+    float: right;
+    margin-right: 12px;
+}
+
+.companyCard .memberCountContainer, .companyCard .donationCountContainer {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 10px;
+}
+
+.companyCard .memberCount, .companyCard .donationCount {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.cardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 
 /* responsive grids */

@@ -62,16 +62,22 @@ class CompanyController {
         return Utilities::ReturnAppropriateResult('member', $result);
     }
 
-    public static function getCompanies($status = null) {
+    public static function getCompanies($status = null, $active = null) {
         $result = null;
         $isError = false;
         $message = '';
 
         $db = DB::getInstance();
 
-        if (!isset($status)) { $status = $_REQUEST['status']; }
-        $status = $db->real_escape_string($status);
-        $DBResult = DB::callProcWithRecordset("CALL GetCompanies($status)");
+        if (!isset($status)) {
+            if (isset($_REQUEST['status'])) { $status = $_REQUEST['status']; } else { $status = null; }
+        }
+        if (!isset($active)) {
+            if (isset($_REQUEST['active'])) { $active = $_REQUEST['active']; } else { $active = null; }
+        }
+        $status = ($status == null ? 'null' : $db->real_escape_string($status));
+        $active = ($active == null ? 'null' : $db->real_escape_string($active));
+        $DBResult = DB::callProcWithRecordset("CALL GetCompanies($status, $active)");
 
         if (is_null($DBResult)) {
             $isError = true;
