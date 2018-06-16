@@ -34,7 +34,7 @@ function BuildHtmlTableFromJson(data, columns) {
             if (value == null) {
                 value = '--';
             } else if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(value)) {
-                value = FormatDate(value);
+                value = FormatDate(value, true, true);
             }
 
             var isCheckbox = col.match(/^\[checkbox=(.*)\]$/);
@@ -68,25 +68,40 @@ function ShowToastFromNotificationSend(data) {
     }
 }
 
-function FormatDate(dateString) {
-    var d = new Date(dateString);
-    var month = d.getMonth(); month++;
-    var day = d.getDate();
-    var year = d.getFullYear() - 2000;
-    var hr = d.getHours();
-    var min = d.getMinutes();
-    var ampm = '';
+function FormatDate(dateString, includeDate, includeTime) {
+    var result = '';
+    var d, month, day, year, hr, min, ampm;
+    
+    if (! dateString.includes(' ')) { dateString = '01-01-01 ' + dateString; }
+    d = new Date(dateString);
 
-    if (hr < 12) {
-        if (hr == 0) { hr = 12; }
-        ampm = 'am';
-    } else {
-        if (hr > 12) { hr -= 12; }
-        ampm = 'pm';
+    if (includeDate) {
+        month = d.getMonth(); month++;
+        day = d.getDate();
+        year = d.getFullYear() - 2000;    
     }
 
-    min += '';
-    if (min.length == 1) { min = '0' + min; }
+    if (includeTime) {
+        hr = d.getHours();
+        min = d.getMinutes() + '';
+        ampm = '';
 
-    return month + '/' + day + '/' + year + ' ' + hr + ':' + min + ' ' + ampm;
+        if (hr < 12) {
+            if (hr == 0) { hr = 12; }
+            ampm = 'am';
+        } else {
+            if (hr > 12) { hr -= 12; }
+            ampm = 'pm';
+        }
+
+        if (min.length == 1) { min = '0' + min; }
+    }
+
+    if (includeDate) { result = month + '/' + day + '/' + year; }
+    if (includeTime) {
+        if (includeDate) { result += ' '; }
+        result += hr + ':' + min + ' ' + ampm;
+    }
+
+    return result;
 }

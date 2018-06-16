@@ -10,10 +10,6 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
     border-radius: 6px;
 }
 
-.location_id.error {
-    color: red;
-}
-
 .header {
     background-color: #BB7722;
     box-shadow: 0px 4px 16px 0px #554411;
@@ -78,6 +74,42 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
     margin: 8px;
 }
 
+.inline-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+}
+
+.inline-form > * {
+    margin: 16px;
+}
+
+[id^=companySettingsSchedule_Day] {
+    color: gray;
+}
+
+.timeslot .times {
+    float: left;
+    color: black;
+    font-weight: bold;
+}
+
+.timeslot .remove {
+    float: left;
+    margin-left: 4px;
+    color: white;
+    background: gray;
+    width: 16px;
+    height: 16px;
+    padding: 0 2px 2px 0px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 .adminGrid {
     border: 2px solid;
     border-collapse: collapse;
@@ -88,7 +120,7 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
 .adminGrid tbody tr:nth-child(even) { background: #cccccc; }
 .adminGrid th, .adminGrid .ui-table-cell-label {
     color: white;
-    background: #1a926c;
+    background: #13523e;
     text-shadow: none;
 }
 .adminGrid th, .adminGrid td {
@@ -97,7 +129,7 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
 }
 .adminGrid .ui-table-cell-label {
     color: white;
-    background: #1a926c;
+    background: #13523e;
 }
 
 #admin_activeCompanies {

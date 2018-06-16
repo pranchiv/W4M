@@ -48,5 +48,18 @@
         public static function NullableInt($value) {
             return ($value == null ? null : (int)$value);
         }
+
+        public static function BuildCsvFromArray($array, $isInt) {
+            $result = '';
+            $delim = '';
+            $quote = ($isInt ? "" : "'");
+
+            for ($i=0; $i < count($array); $i++) {
+                $result .= $delim.$quote.$array[$i].$quote;
+                $delim = ',';
+            }
+
+            return $result;
+        }
     }
 ?>

@@ -16,7 +16,15 @@
     <div role="main" class="ui-content">
         <?php include($top."includes/banner.php"); ?>
 
-        <h1>Beneficiary Stuff</h1>
+        <div class="form_headers">
+            <h3>Beneficiary Stuff</h3>
+
+            <div style="display: flex; justify-content: flex-end; font-weight: bold;">
+                <?= $_SESSION['Company'] ?>
+            </div>
+        </div>
+
+        <a href="<?= $top ?>pages/companySettings.php" data-transition="flip">Settings</a>
 
         <?php include($top."includes/debug.php"); ?>
     </div><!-- /content -->

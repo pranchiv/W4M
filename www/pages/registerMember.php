@@ -83,7 +83,7 @@
                                         <option value="0" data-placeholder="true"></option>
 
                                         <?php foreach ($cellCarriers as $row) { ?>
-                                            <option value="<?php echo $row["CellCarrierID"]; ?>"><?= $row["Name"]; ?></option>
+                                            <option value="<?= $row["CellCarrierID"]; ?>"><?= $row["Name"]; ?></option>
                                         <?php } ?>
                                     </select>
                                 </div>

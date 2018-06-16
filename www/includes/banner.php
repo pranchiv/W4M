@@ -6,7 +6,7 @@
     <div class="swiper-wrapper">
         <!-- Slides -->
         <div class="swiper-slide">
-            <img src="<?php echo $root ?>/images/slider/slider1.jpg" alt="">
+            <img src="<?= $root ?>/images/slider/slider1.jpg" alt="">
             <div class="swiper-slide-caption">
                 <h3>$13.4 Billion</h3>
                 <h4>Food Wasted in US alone</h4>
@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="swiper-slide">
-            <img src="<?php echo $root ?>/images/slider/slider2.jpg" alt="">
+            <img src="<?= $root ?>/images/slider/slider2.jpg" alt="">
             <div class="swiper-slide-caption">
                 <h3>12,306,250</h3>
                 <h4>Number of People that Go Hungry!!</h4>
@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="swiper-slide">
-            <img src="<?php echo $root ?>/images/slider/slider3.jpg" alt="">
+            <img src="<?= $root ?>/images/slider/slider3.jpg" alt="">
             <div class="swiper-slide-caption">
                 <h3>Bring Your ‘Wheels-4-Meals’!!</h3>
                 <h4>Pick Up Donated Food.</h4>

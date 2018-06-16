@@ -110,6 +110,114 @@ class CompanyController {
         return Utilities::ReturnAppropriateResult('company', $result);        
     }
 
+    public static function loadSchedule($companyId = null) {
+        $result = null;
+        $isError = false;
+        $message = '';
+
+        $db = DB::getInstance();
+
+        if (!isset($companyId)) {
+            if (isset($_REQUEST['companyId'])) { $companyId = $_REQUEST['companyId']; } else { $companyId = $_SESSION['CompanyID']; }
+        }
+        $companyId = $db->real_escape_string($companyId);
+        $DBResult = DB::callProcWithRecordset("CALL GetCompanySchedule($companyId)");
+
+        if (is_null($DBResult)) {
+            $isError = true;
+            $message = $db->error;
+        }
+
+        $result = array('error' => $isError, 'message' => $message, 'data' => $DBResult);
+        return Utilities::ReturnAppropriateResult('company', $result);        
+    }
+
+    public static function addSchedule($companyId = null, $day = null, $start = null, $end = null) {
+        $result = null;
+        $isError = false;
+        $message = '';
+
+        $db = DB::getInstance();
+
+        if (!isset($companyId)) {
+            if (isset($_REQUEST['companyId'])) { $companyId = $_REQUEST['companyId']; } else { $companyId = $_SESSION['CompanyID']; }
+        }
+        if (!isset($day)) { $day = $_REQUEST['Day']; }
+        if (!isset($start)) { $start = $_REQUEST['Start']; }
+        if (!isset($end)) { $end = $_REQUEST['End']; }
+
+        $companyId = $db->real_escape_string($companyId);
+        $day = $db->real_escape_string($day);
+        $start = $db->real_escape_string($start);
+        $end = $db->real_escape_string($end);
+        $DBResult = DB::callProcWithRecordset("CALL AddCompanySchedule($companyId, $day, '$start', '$end')");
+
+        if (is_null($DBResult)) {
+            $isError = true;
+            $message = $db->error;
+        }
+
+        $result = array('error' => $isError, 'message' => $message, 'data' => $DBResult);
+        return Utilities::ReturnAppropriateResult('company', $result);
+    }
+
+    public static function removeSchedule($companyId = null, $companyScheduleId = null) {
+        $result = null;
+        $isError = false;
+        $message = '';
+
+        $db = DB::getInstance();
+
+        if (!isset($companyId)) {
+            if (isset($_REQUEST['companyId'])) { $companyId = $_REQUEST['companyId']; } else { $companyId = $_SESSION['CompanyID']; }
+        }
+        if (!isset($companyScheduleId)) { $companyScheduleId = $_REQUEST['companyScheduleId']; }
+
+        $companyId = $db->real_escape_string($companyId);
+        $companyScheduleId = $db->real_escape_string($companyScheduleId);
+        $DBResult = DB::callProcWithRecordset("CALL DeleteCompanySchedule($companyId, $companyScheduleId)");
+
+        if (is_null($DBResult)) {
+            $isError = true;
+            $message = $db->error;
+        }
+
+        $result = array('error' => $isError, 'message' => $message, 'data' => $DBResult);
+        return Utilities::ReturnAppropriateResult('company', $result);
+    }
+
+    public static function updateDonationTypes($companyId = null, $donationTypes = null) {
+        $result = null;
+        $isError = false;
+        $message = '';
+
+        $db = DB::getInstance();
+
+        if (!isset($companyId)) {
+            if (isset($_REQUEST['companyId'])) { $companyId = $_REQUEST['companyId']; } else { $companyId = $_SESSION['CompanyID']; }
+        }
+        if (!isset($donationTypes)) {
+            if (isset($_REQUEST['donationTypes'])) {
+                $donationTypes = Utilities::BuildCsvFromArray($_REQUEST['donationTypes'], true);
+            } else {
+                $donationTypes = '';
+            }
+        }
+
+        $companyId = $db->real_escape_string($companyId);
+        $donationTypes = $db->real_escape_string($donationTypes);
+
+        $DBResult = DB::callProcWithRecordset("CALL UpdateCompanyDonationTypes($companyId, '$donationTypes')");
+
+        if (is_null($DBResult)) {
+            $isError = true;
+            $message = $db->error;
+        }
+
+        $result = array('error' => $isError, 'message' => $message, 'data' => $DBResult);
+        return Utilities::ReturnAppropriateResult('company', $result);
+    }
+
     public function testEmail() {
         // test sending emails (texts)
         $result = null;
