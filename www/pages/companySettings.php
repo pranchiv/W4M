@@ -4,20 +4,19 @@
 <html>
 <head>
     <?php include($top."includes/head.php"); ?>
-    <script src="<?= $top ?>scripts/company.js"></script>
 </head>
 <body>
 
 <?php require_once($top."connection.php"); ?>
 
-<div data-role="page">
+<div id="companySettings_page" data-role="page">
  
     <div data-role="header" data-position="fixed">
         <?php require_once($top."includes/header.php"); ?>
     </div>
 
     <div role="main" class="ui-content">
-        <?php require_once($top."includes/banner.php"); ?>
+        <?php include($top."includes/banner.php"); ?>
 
         <div class="form" style="max-width: 1080px; margin: 0 auto;">
             <div class="form_headers">
@@ -59,7 +58,7 @@
             </table>
             <div id="companySettingsSchedule_Error" class="error" style="margin: 6px 4px;"></div>
 
-            <button id="companySettingsSchedule_AddModeButton" class="ui-btn ui-btn-b ui-corner-all ui-btn-inline">Add a time period</button>
+            <button id="companySettingsSchedule_AddModeButton" class="ui-btn ui-btn-b ui-corner-all ui-btn-inline">Add a Time Period</button>
 
             <form id="companySettingsSchedule_form" style="display: none">
                 <h5>Add a time period:</h5>
@@ -144,11 +143,7 @@
     </div>
 </div><!-- /page -->
 
-<script>
-    $(document).on('pagecreate', function() {
-        LoadCompanySettings();
-    });
-</script>
+<!-- <script src="<?= $top ?>scripts/company.js"></script> -->
 
 </body>
 </html>

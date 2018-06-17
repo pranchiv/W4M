@@ -59,7 +59,7 @@ class CompanyController {
             }
         }
 
-        return Utilities::ReturnAppropriateResult('member', $result);
+        return Utilities::ReturnAppropriateResult('company', $result);
     }
 
     public static function getCompanies($status = null, $active = null) {
@@ -212,6 +212,8 @@ class CompanyController {
         if (is_null($DBResult)) {
             $isError = true;
             $message = $db->error;
+        } else {
+            $message = 'donation types updated';
         }
 
         $result = array('error' => $isError, 'message' => $message, 'data' => $DBResult);
@@ -241,7 +243,7 @@ class CompanyController {
         }
         
         $result = array('error' => $isError, 'errorMessage' => $errorMessage);
-        return Utilities::ReturnAppropriateResult('member', $result);
+        return Utilities::ReturnAppropriateResult('company', $result);
     }
 
     public function testStorePassword() {
@@ -273,7 +275,7 @@ class CompanyController {
         }
 
         $result = array('error' => $isError, 'errorMessage' => $errorMessage);
-        return Utilities::ReturnAppropriateResult('member', $result);
+        return Utilities::ReturnAppropriateResult('company', $result);
     }
 }
 ?>

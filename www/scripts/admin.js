@@ -1,23 +1,23 @@
-$(document).on('pagecreate', function() {
+$(document).on('pagecreate', '#admin_page', function() {
     LoadProspectiveCompanyList();
     LoadProspectiveMemberList();
     LoadActiveCompanyList();
+});
 
-    $('#admin_companyList_approveButton').on('click', function() {
-        UpdateSelectedCompanyStatuses(2);
-    });
+$(document).on('click', '#admin_companyList_approveButton', function() {
+    UpdateSelectedCompanyStatuses(2);
+});
 
-    $('#admin_companyList_denyButton').on('click', function() {
-        UpdateSelectedCompanyStatuses(5);
-    });
+$(document).on('click', '#admin_companyList_denyButton', function() {
+    UpdateSelectedCompanyStatuses(5);
+});
 
-    $('#admin_memberList_approveButton').on('click', function() {
-        UpdateSelectedMemberStatuses(2);
-    });
+$(document).on('click', '#admin_memberList_approveButton', function() {
+    UpdateSelectedMemberStatuses(2);
+});
 
-    $('#admin_memberList_denyButton').on('click', function() {
-        UpdateSelectedMemberStatuses(4);
-    });    
+$(document).on('click', '#admin_memberList_denyButton', function() {
+    UpdateSelectedMemberStatuses(4);
 });
 
 function LoadProspectiveCompanyList(message) {

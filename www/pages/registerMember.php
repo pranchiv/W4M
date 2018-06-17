@@ -4,13 +4,13 @@
 <html>
 <head>
     <?php include($top."includes/head.php"); ?>
-    <script src="<?= $top ?>scripts/register.js"></script>
+    <!-- <script src="<?= $top ?>scripts/register.js"></script> -->
 </head>
 <body>
 
 <?php require_once($top.'connection.php'); ?>
 
-<div data-role="page">
+<div id="registerMember_page" data-role="page">
  
     <div data-role="header" data-position="fixed">
         <?php require_once($top."includes/header.php"); ?>

@@ -1,25 +1,54 @@
-$(document).on('pagecreate', function() {
-    // from login page
-    $('#login_button').on('click', function(e) {
-        e.preventDefault();
+$(document).on('pagecreate', '#login_page', function() {
 
-        $.post('../controllers/member.php?action=logIn', $('#login_form').serialize(), function(data) {
-            if (data.error) {
-                $('#login_error').html(data.errorMessage);
-            } else {
-                $('#login_error').html(data.errorMessage);
-                $.mobile.changePage('/' + data.nextPage, { transition: 'flip' } );
-            }
-        }, 'json');
-    });
+});
 
-    $('.logout').on('click', function(e) {
-        e.preventDefault();
+$(document).on('pagecreate', '[data-role=page]', function() {
+    var page = $(this).attr('id');
+});
 
-        $.post('../controllers/member.php?action=logOut', null, function(data) {
-            window.location = '/';
-        }, 'json');
-    });
+$(document).on('pageshow', '[data-role=page]', function() {
+    var page = $(this).attr('id');
+
+    var mySwiper = new Swiper('#' + page + ' .swiper-container', {
+        loop: true,
+        spaceBetween: 0,
+        speed: 1000,
+        centeredSlides: true,
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: true,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    })
+});
+
+$(document).on('click', '#login_button', function(e) {
+    e.preventDefault();
+
+    $.post('../controllers/member.php?action=logIn', $('#login_form').serialize(), function(data) {
+        if (data.error) {
+            $('#login_error').html(data.errorMessage);
+        } else {
+            $('#login_error').html(data.errorMessage);
+
+            $(':mobile-pagecontainer').pagecontainer('change', '/' + data.nextPage, { transition: 'flip' } );
+        }
+    }, 'json');
+});
+
+$(document).on('click', '.logout', function(e) {
+    e.preventDefault();
+
+    $.post('../controllers/member.php?action=logOut', null, function(data) {
+        window.location = '/';
+    }, 'json');
 });
 
 function BuildHtmlTableFromJson(data, columns) {

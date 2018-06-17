@@ -1,46 +1,57 @@
-$(document).on('pagecreate', function() {
-    $('#companySettingsSchedule_AddModeButton').on('click', function(e) {
-        $('#companySettingsSchedule_form').show();
-        $(this).hide();
-    });
+$(document).on('pagecreate', '#companySettings_page', function() {
+    LoadCompanySettings();
+});
 
-    $('#companySettingsSchedule_AddButton').on('click', function(e) {
-        e.preventDefault();
+$(document).on('pagecreate', '#beneficiary_page', function() {
+    
+});
 
-        $.post('../controllers/company.php?action=addSchedule', $('#companySettingsSchedule_form').serialize(), function(data) {
-            if (data.error) {
-                $('#companySettingsSchedule_Error').html(data.message);
-            } else {
-                $('#companySettingsSchedule_Error').html(data.message);
-                LoadCompanyScheduleFromData(data.data);
-            }
-        }, 'json');
-    });
+$(document).on('pagecreate', '#donor_page', function() {
+    
+});
 
-    $('#companySettingsSchedule_schedule').on('click', '.timeslot .remove', function(e) {
-        var schedId = $(this).parent().data('id');
+$(document).on('click', '#companySettingsSchedule_AddModeButton', function(e) {
+    $('#companySettingsSchedule_form').show();
+    $(this).hide();
+});
 
-        $.post('../controllers/company.php?action=removeSchedule', { companyScheduleId: schedId }, function(data) {
-            if (data.error) {
-                $('#companySettingsSchedule_Error').html(data.message);
-            } else {
-                $('#companySettingsSchedule_Error').html(data.message);
-                LoadCompanyScheduleFromData(data.data);
-            }
-        }, 'json');
-    });
+$(document).on('click', '#companySettingsSchedule_AddButton', function(e) {
+    e.preventDefault();
 
-    $('#companySettingsDonationTypes_button').on('click', function(e) {
-        e.preventDefault();
+    $.post('../controllers/company.php?action=addSchedule', $('#companySettingsSchedule_form').serialize(), function(data) {
+        if (data.error) {
+            $('#companySettingsSchedule_Error').html(data.message);
+        } else {
+            $('#companySettingsSchedule_Error').html(data.message);
+            LoadCompanyScheduleFromData(data.data);
+        }
+    }, 'json');
+});
 
-        $.post('../controllers/company.php?action=updateDonationTypes', $('#companySettingsDonationTypes_form').serialize(), function(data) {
-            if (data.error) {
-                $('#companySettingsDonationTypes_Error').html(data.message);
-            } else {
-                $('#companySettingsDonationTypes_Error').html(data.message);
-            }
-        }, 'json');
-    });
+$(document).on('click', '#companySettingsSchedule_schedule .timeslot .remove', function(e) {
+    var schedId = $(this).parent().data('id');
+
+    $.post('../controllers/company.php?action=removeSchedule', { companyScheduleId: schedId }, function(data) {
+        if (data.error) {
+            $('#companySettingsSchedule_Error').html(data.message);
+        } else {
+            $('#companySettingsSchedule_Error').html(data.message);
+            LoadCompanyScheduleFromData(data.data);
+        }
+    }, 'json');
+});
+
+$(document).on('click', '#companySettingsDonationTypes_button', function(e) {
+    e.preventDefault();
+    $('#companySettingsDonationTypes_Error').html('');
+
+    $.post('../controllers/company.php?action=updateDonationTypes', $('#companySettingsDonationTypes_form').serialize(), function(data) {
+        if (data.error) {
+            $('#companySettingsDonationTypes_Error').html(data.message);
+        } else {
+            $('#companySettingsDonationTypes_Error').html(data.message);
+        }
+    }, 'json');
 });
 
 function LoadCompanySettings() {

@@ -4,11 +4,10 @@
 <html>
 <head>
     <?php include($top."includes/head.php"); ?>
-    <script src="<?= $top ?>scripts/common.js"></script>
 </head>
 <body>
 
-<div data-role="page">
+<div id="driver_page" data-role="page">
     <div data-role="header" data-position="fixed">
         <?php include($top.'includes/header.php'); ?>
     </div>
@@ -16,7 +15,7 @@
     <div role="main" class="ui-content">
         <?php include($top."includes/banner.php"); ?>
 
-        <h1>Driver Stuff</h1>
+        <h3>Driver Stuff</h3>
 
         <?php include($top."includes/debug.php"); ?>        
     </div><!-- /content -->

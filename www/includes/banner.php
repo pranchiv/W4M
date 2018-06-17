@@ -41,27 +41,4 @@
     <div class="swiper-button-next"></div>
 </div>
 
-<script>
-    $(document).on('pagecreate', function() {
-        var mySwiper = new Swiper ('.swiper-container', {
-            loop: true,
-            spaceBetween: 0,
-            speed: 1000,
-            centeredSlides: true,
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: true,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-        })
-    });
-</script>
-
 <?php } ?>

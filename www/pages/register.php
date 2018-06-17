@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<div data-role="page">
+<div id="register_page" data-role="page">
  
     <div data-role="header" data-position="fixed">
         <?php include($top.'includes/header.php'); ?>
@@ -49,7 +49,7 @@
         <?php include($top."includes/footer.php"); ?>
     </div>
 
-    <script src="<?= $top ?>scripts/register.js"></script>
+    <!-- <script src="<?= $top ?>scripts/register.js"></script> -->
 </div><!-- /page -->
 
 

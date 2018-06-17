@@ -4,11 +4,10 @@
 <html>
 <head>
     <?php include($top."includes/head.php"); ?>
-    <script src="<?= $top ?>scripts/common.js"></script>
 </head>
 <body>
 
-<div data-role="page">
+<div id="beneficiary_page" data-role="page">
     <div data-role="header" data-position="fixed">
         <?php include($top.'includes/header.php'); ?>
     </div>
@@ -17,14 +16,22 @@
         <?php include($top."includes/banner.php"); ?>
 
         <div class="form_headers">
-            <h3>Beneficiary Stuff</h3>
+            <h3 style="flex-grow: 4;">Scheduled Donations</h3>
 
-            <div style="display: flex; justify-content: flex-end; font-weight: bold;">
+            <a href="<?= $top ?>pages/companySettings.php" data-transition="flip" style="flex-grow: 1;">Settings</a>
+
+            <a href="" data-transition="flip" style="flex-grow: 1;">Donation History</a>
+
+            <div style="flex-grow: 1; display: flex; justify-content: flex-end; font-weight: bold;">
                 <?= $_SESSION['Company'] ?>
             </div>
         </div>
 
-        <a href="<?= $top ?>pages/companySettings.php" data-transition="flip">Settings</a>
+        <div style="margin-bottom: 32px;">
+            No donations are currently scheduled for delivery.
+        </div>
+
+        <h3>Available Donations</h3>
 
         <?php include($top."includes/debug.php"); ?>
     </div><!-- /content -->
