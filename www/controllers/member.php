@@ -122,7 +122,6 @@ class MemberController {
         }
 
         $result = array('error' => $isError, 'errorMessage' => $errorMessage, 'nextPage' => $nextPage);
-        //echo json_encode($result);
         return Utilities::ReturnAppropriateResult('member', $result);
     }
 

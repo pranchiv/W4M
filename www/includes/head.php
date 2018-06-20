@@ -9,6 +9,7 @@
 <script src="<?= $root ?>/scripts/admin.js"></script>
 <script src="<?= $root ?>/scripts/register.js"></script>
 <script src="<?= $root ?>/scripts/company.js"></script>
+<script src="<?= $root ?>/scripts/donation.js"></script>
 
 <link href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
 <link href="<?= $root ?>/styles/jquery.toast.min.css" rel="stylesheet" type="text/css">

@@ -101,8 +101,12 @@ function FormatDate(dateString, includeDate, includeTime) {
     var result = '';
     var d, month, day, year, hr, min, ampm;
     
-    if (! dateString.includes(' ')) { dateString = '01-01-01 ' + dateString; }
-    d = new Date(dateString);
+    if (dateString) {
+        if (!dateString.includes(' ')) { dateString = '01-01-01 ' + dateString; }
+        d = new Date(dateString);
+    } else {
+        d = new Date();
+    }
 
     if (includeDate) {
         month = d.getMonth(); month++;

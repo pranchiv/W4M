@@ -69,13 +69,13 @@
 
                         <select id="companySettings_Day" name="Day" style="min-width: 200px;" data-native-menu="false" data-inline="false">
                             <option value="0" data-placeholder="true"></option>
-                            <option value="1">Sundays</option>
                             <option value="2">Mondays</option>
                             <option value="3">Tuesdays</option>
                             <option value="4">Wednesdays</option>
                             <option value="5">Thursdays</option>
                             <option value="6">Fridays</option>
                             <option value="7">Saturdays</option>
+                            <option value="1">Sundays</option>
                         </select>
                     </div>
 
