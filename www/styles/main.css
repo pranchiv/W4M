@@ -192,6 +192,41 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
     justify-content: space-evenly;
 }
 
+#donation_Pending {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+}
+
+#donation_Pending > * {
+    margin: 0 16px 16px 0;
+    flex: 0 0 250px;
+}
+
+.donationCard {
+    min-height: 90px;
+    border: 1px solid gray;
+    border-radius: 8px;
+    padding: 4px;
+    box-shadow: black 6px 6px 12px;
+    background: #f5e1c9;
+}
+
+.donationCard .status {
+    background: #BB7722;
+    text-transform: capitalize;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: none;
+}
+
+.donationCard .name {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
 /* responsive grids */
 .responsive-grid.padded .ui-block-b,
 .responsive-grid.padded .ui-block-c,

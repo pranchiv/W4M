@@ -14,30 +14,67 @@ if (Utilities::PageWasCalledDirectly('donation')) {
 }
 
 class DonationController {
-    public static function getDonations($status = null, $active = null) {
+    public static function getDonations($donationId = null, $status = null, $active = null, $donationTypes = null,
+                                        $donorId = null, $beneficiaryId = null, $driverId = null) {
         $result = null;
         $isError = false;
         $message = '';
 
         $db = DB::getInstance();
 
+        if (!isset($donationId)) {
+            if (isset($_REQUEST['DonationId'])) { $donationId = $_REQUEST['DonationId']; } else { $donationId = null; }
+        }
         if (!isset($status)) {
-            if (isset($_REQUEST['status'])) { $status = $_REQUEST['status']; } else { $status = null; }
+            if (isset($_REQUEST['Status'])) { $status = $_REQUEST['Status']; } else { $status = null; }
         }
         if (!isset($active)) {
-            if (isset($_REQUEST['active'])) { $active = $_REQUEST['active']; } else { $active = null; }
+            if (isset($_REQUEST['Active'])) { $active = $_REQUEST['Active']; } else { $active = null; }
         }
+        if (!isset($donationTypes)) {
+            if (isset($_REQUEST['DonationTypes'])) {
+                $donationTypes = Utilities::BuildCsvFromArray($_REQUEST['DonationTypes'], true);
+            } else {
+                $donationTypes = '';
+            }
+        }
+        if (!isset($donorId)) {
+            if (isset($_REQUEST['DonorId'])) { $donorId = $_REQUEST['DonorId']; } else { $donorId = null; }
+        }
+        if (!isset($beneficiaryId)) {
+            if (isset($_REQUEST['BeneficiaryId'])) { $beneficiaryId = $_REQUEST['BeneficiaryId']; } else { $beneficiaryId = null; }
+        }
+        if (!isset($driverId)) {
+            if (isset($_REQUEST['DriverId'])) { $driverId = $_REQUEST['DriverId']; } else { $driverId = null; }
+        }
+
+        if (isset($_REQUEST['Role'])) {
+            switch ($_REQUEST['Role']) {
+                case 'Donor': $donorId = $_SESSION['CompanyID']; break;
+                case 'Beneficiary': $beneficiaryId = $_SESSION['CompanyID']; break;
+                case 'Driver': $driverId = $_SESSION['MemberID']; break;
+            }
+        }
+
+        $donationId = ($donationId == null ? 'null' : $db->real_escape_string($donationId));
         $status = ($status == null ? 'null' : $db->real_escape_string($status));
         $active = ($active == null ? 'null' : $db->real_escape_string($active));
-        $DBResult = DB::callProcWithRecordset("CALL GetCompanies($status, $active)");
+        $donationTypes = $db->real_escape_string($donationTypes);
+        $donorId = ($donorId == null ? 'null' : $db->real_escape_string($donorId));
+        $beneficiaryId = ($beneficiaryId == null ? 'null' : $db->real_escape_string($beneficiaryId));
+        $driverId = ($driverId == null ? 'null' : $db->real_escape_string($driverId));
+        $call = "CALL GetDonations($donationId, $status, $active, '$donationTypes', $donorId, $beneficiaryId, $driverId)";
+        $DBResult = DB::callProcWithRecordset($call);
 
         if (is_null($DBResult)) {
             $isError = true;
             $message = $db->error;
+        } else {
+            $message = $call;
         }
 
         $result = array('error' => $isError, 'message' => $message, 'data' => $DBResult);
-        return Utilities::ReturnAppropriateResult('company', $result);        
+        return Utilities::ReturnAppropriateResult('donation', $result);        
     }
     
     public static function add($companyId = null, $pickupTime = null, $donationTypes = null, $numBoxes = null, $weight = null) {
@@ -48,7 +85,7 @@ class DonationController {
         $db = DB::getInstance();
 
         if (!isset($companyId)) {
-            if (isset($_REQUEST['companyId'])) { $companyId = $_REQUEST['companyId']; } else { $companyId = $_SESSION['CompanyID']; }
+            if (isset($_REQUEST['CompanyId'])) { $companyId = $_REQUEST['CompanyId']; } else { $companyId = $_SESSION['CompanyID']; }
         }
         
         if (!isset($donationTypes)) {
@@ -74,9 +111,15 @@ class DonationController {
         if (is_null($DBResult)) {
             $isError = true;
             $message = $db->error;
+        } else if ($DBResult[0][0]['Error'] != 0) {
+            $isError = true;
+            $message = 'ERROR: donation could not be added';
         } else {
             $message = 'Thank you for your donation!';
         }
+
+        // get rid of first resultset: error codes
+        array_splice($DBResult, 0, 1);
 
         $result = array('error' => $isError, 'message' => $message, 'data' => $DBResult);
         return Utilities::ReturnAppropriateResult('donation', $result);

@@ -18,7 +18,7 @@ $(document).on('click', '#companySettingsSchedule_AddModeButton', function(e) {
 $(document).on('click', '#companySettingsSchedule_AddButton', function(e) {
     e.preventDefault();
 
-    $.post('../controllers/company.php?action=addSchedule', $('#companySettingsSchedule_form').serialize(), function(data) {
+    $.post('/controllers/company.php?action=addSchedule', $('#companySettingsSchedule_form').serialize(), function(data) {
         if (data.error) {
             $('#companySettingsSchedule_Error').html(data.message);
         } else {
@@ -31,7 +31,7 @@ $(document).on('click', '#companySettingsSchedule_AddButton', function(e) {
 $(document).on('click', '#companySettingsSchedule_schedule .timeslot .remove', function(e) {
     var schedId = $(this).parent().data('id');
 
-    $.post('../controllers/company.php?action=removeSchedule', { companyScheduleId: schedId }, function(data) {
+    $.post('/controllers/company.php?action=removeSchedule', { companyScheduleId: schedId }, function(data) {
         if (data.error) {
             $('#companySettingsSchedule_Error').html(data.message);
         } else {
@@ -45,7 +45,7 @@ $(document).on('click', '#companySettingsDonationTypes_button', function(e) {
     e.preventDefault();
     $('#companySettingsDonationTypes_Error').html('');
 
-    $.post('../controllers/company.php?action=updateDonationTypes', $('#companySettingsDonationTypes_form').serialize(), function(data) {
+    $.post('/controllers/company.php?action=updateDonationTypes', $('#companySettingsDonationTypes_form').serialize(), function(data) {
         if (data.error) {
             $('#companySettingsDonationTypes_Error').html(data.message);
         } else {

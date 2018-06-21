@@ -28,13 +28,13 @@ class DB {
     }
 
     public static function callProcWithRecordset($sql) {
-        $recordset = NULL;
+        $recordset = array();
         $db = self::getInstance();
 
         if ($db->multi_query($sql)) {
             do {
                 if ($result = $db->store_result()) {
-                    $recordset = $result->fetch_all(MYSQLI_ASSOC);
+                    $recordset[] = $result->fetch_all(MYSQLI_ASSOC);
                     $result->free();
                 }
                 //if ($db->more_results()) { } // 2nd recordset
@@ -44,7 +44,12 @@ class DB {
         }
 
         // $db->close();
-        return $recordset;
+
+        if (count($recordset) == 1) {
+            return $recordset[0];
+        } else {
+            return $recordset;
+        }
     }
 }
 

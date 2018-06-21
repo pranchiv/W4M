@@ -18,7 +18,7 @@
         <?php include($top."includes/banner.php"); ?>
 
         <div class="form_headers">
-            <h3 style="flex-grow: 4;">Scheduled Donations</h3>
+            <h3 style="flex-grow: 4;">Pending Donations</h3>
 
             <a href="" data-transition="flip" style="flex-grow: 1;">Donation History</a>
 
@@ -27,14 +27,12 @@
             </div>
         </div>
 
-        <div style="margin-bottom: 32px;">
-            No donations are currently scheduled for pickup.
-        </div>
+        <div id="donation_Pending" style="margin-bottom: 32px;"></div>
 
-        <button id="donation_AddModeButton" class="ui-btn ui-btn-b ui-corner-all ui-btn-inline">Schedule a Donation</button>
+        <button id="donation_AddModeButton" class="ui-btn ui-btn-b ui-corner-all ui-btn-inline">Submit a Donation</button>
 
         <form id="donation_form" style="display: none">
-            <h5>Schedule a Donation:</h5>
+            <h5>Submit a Donation:</h5>
 
             <div class="inline-form" style="border: 1px solid lightgray;">
 
@@ -104,7 +102,7 @@
 
             <button id="donation_AddButton" class="ui-btn ui-btn-b ui-corner-all ui-btn-inline">Donate</button>
 
-            <div id="donation_Error" class="error" style="margin: 6px 4px;"></div>
+            <div id="donation_AddError" class="error" style="margin: 6px 4px;"></div>
         </form>
 
         <?php include($top."includes/debug.php"); ?>
