@@ -201,30 +201,79 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
 
 #donation_Pending > * {
     margin: 0 16px 16px 0;
-    flex: 0 0 250px;
+    flex: 0 0 280px;
 }
 
 .donationCard {
     min-height: 90px;
     border: 1px solid gray;
     border-radius: 8px;
-    padding: 4px;
     box-shadow: black 6px 6px 12px;
     background: #f5e1c9;
+    position: relative;
+}
+
+.donationCard .title {
+    background: #BB7722;
+    color: white;
+    text-align: center;
+    text-shadow: none;
+    border-radius: 8px 8px 0 0;
+}
+
+.donationCard .title a {
+    position: absolute;
+    top: 0px;
+    right: 0px;    
+}
+
+.donationCard .id {
+    position: absolute;
+    top: 2px;
+    left: 4px;
+    font-size: 12px;
 }
 
 .donationCard .status {
-    background: #BB7722;
-    text-transform: capitalize;
-    text-align: center;
+    text-transform: uppercase;
     font-weight: bold;
-    text-shadow: none;
 }
 
-.donationCard .name {
-    font-size: 20px;
+.donationCard .body {
+    padding: 4px;
+}
+
+.donationCard .label {
+    margin: 6px 0 -2px 0;
+    text-transform: uppercase;
+    font-size: 9px;
+}
+
+.donationCard .company {
+    font-size: 18px;
     font-weight: bold;
-    margin-bottom: 12px;
+}
+
+.donationCard .driver {
+    font-size: 14px;
+}
+
+.donationCard .horizgroup {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+    border-top: 1px solid #afafaf;
+    padding-bottom: 2px;    
+}
+
+.donationCard .horizgroup > * {
+    flex: auto;
+    text-align: center;
+}
+
+.donationCard .detail {
+    font-size: 12px;
+    font-weight: bold;
 }
 
 /* responsive grids */
