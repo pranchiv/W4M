@@ -49,11 +49,11 @@
                 <div id="admin_activeCompanies">
                     <div>
                         <div class="ui-bar ui-bar-a ui-corner-all" style="margin-bottom: 12px;">DONORS</div>
-                        <div id="admin_activeCompanies_Donors" class="cardContainer"></div>
+                        <div id="admin_activeCompanies_Donors" class="companyCardContainer"></div>
                     </div>
                     <div>
                         <div class="ui-bar ui-bar-a ui-corner-all" style="margin-bottom: 12px;">BENEFICIARIES</div>
-                        <div id="admin_activeCompanies_Beneficiaries" class="cardContainer"></div>
+                        <div id="admin_activeCompanies_Beneficiaries" class="companyCardContainer"></div>
                     </div>
                 </div>
             </div>

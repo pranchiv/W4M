@@ -1,12 +1,16 @@
+/////////////////////////////////
+// DONOR PAGE
 $(document).on('pagecreate', '#donation_page', function() {
-    $('#donation_Pending').html('<span style="font-size: 16px; font-style: italic;">Loading ...</span>');
+    var $container = $('#donation_Pending');
+    $container.html('<span class="loading">Loading ...</span>');
 
     $.get('/controllers/donation.php?action=getDonations', { Role: 'Donor', Active: 1 }, function(data) {
         if (data.error) {
-            $('#donation_Pending').html(data.message);
+            $container.html(data.message);
         } else {
-            $('#donation_Pending').html(data.message);
-            LoadCompanyDonationData(data.data, 'Donor');
+            if (! LoadDonationData($container, data.data, 'Donor')) {
+                $container.html('No donations are pending.');
+            }
         }
     }, 'json');
 });
@@ -25,13 +29,114 @@ $(document).on('click', '#donation_AddButton', function(e) {
             $('#donation_AddError').html(data.message);
         } else {
             $('#donation_AddError').html(data.message);
-            LoadCompanyDonationData(data.data, 'Donor');
+
+            if (! LoadDonationData($('#donation_Pending'), data.data, 'Donor')) {
+                $('#donation_Pending').html('No donations are pending.');
+            }
+        }
+    }, 'json');
+});
+/////////////////////////////////
+
+/////////////////////////////////
+// DRIVER PAGE
+$(document).on('pagecreate', '#driver_page', function() {
+    var $container = $('#driver_Scheduled');
+    $container.html('<span class="loading">Loading ...</span>');
+
+    $.get('/controllers/donation.php?action=getDonations', { Active: 1, Role: 'Driver' }, function(data) {
+        if (data.error) {
+            $container.html(data.message);
+        } else {
+            if (! LoadDonationData($container, data.data, 'Donor')) {
+                $container.html('You have no donations scheduled.');
+            }
+        }
+    }, 'json');
+
+    var $container2 = $('#driver_Pending');
+    $container2.html('<span class="loading">Loading ...</span>');
+
+    $.get('/controllers/donation.php?action=getDonations', { Status: 2 }, function(data) {
+        if (data.error) {
+            $container2.html(data.message);
+        } else {
+            if (! LoadDonationData($container2, data.data, 'Donor')) {
+                $container2.html('No donations are pending.');
+            }
+        }
+    }, 'json');
+});
+/////////////////////////////////
+
+/////////////////////////////////
+// BENEFICIARY PAGE
+$(document).on('pagecreate', '#beneficiary_page', function() {
+    $container = $('#beneficiary_Scheduled');
+    $container.html('<span class="loading">Loading ...</span>');
+
+    $.get('/controllers/donation.php?action=getDonations', { Active: 1, Role: 'Beneficiary' }, function(data) {
+        if (data.error) {
+            $container.html(data.message);
+        } else {
+            if (! LoadDonationData($container, data.data, 'Beneficiary')) {
+                $container.html('You have no donations scheduled.');
+            }
+        }
+    }, 'json');
+
+    var $container2 = $('#beneficiary_Available');
+    $container2.html('<span class="loading">Loading ...</span>');
+
+    $.get('/controllers/donation.php?action=getDonations', { Status: 1 }, function(data) {
+        if (data.error) {
+            $container2.html(data.message);
+        } else {
+            if (! LoadDonationData($container2, data.data, 'Beneficiary')) {
+                $container2.html('No donations are available.');
+            }
+        }
+    }, 'json');
+});
+/////////////////////////////////
+
+$(document).on('click', '.donationCard', function(e) {
+    if (!$(e.target).hasClass('action')) {
+        var $menu = $(this).find('.menu');
+
+        if ($menu.is(':visible')) {
+            $menu.slideUp();
+        } else {
+            $menu.slideDown();
+        }
+    }
+});
+
+$(document).on('click', '.action', function(e) {
+    var $container = $(this).parents('.donationCardContainer');
+    var $card = $(this).parents('.donationCard');
+    var action = $(this).data('action');
+    var donationId = $card.data('id');
+    var statusId = $card.find('.status').data('id');
+    var beneficiaryId = $card.find('.beneficiary').data('id');
+    var driverId = $card.find('.driver').data('id');
+
+    $.get('/controllers/donation.php?action=updateStatus', { DonationId: donationId, Action: action, PreviousStatus: statusId, 
+                                                             PreviousBeneficiaryId: beneficiaryId, PreviousDriverId: driverId }, function(data) {
+        if (data.error) {
+            $container.html(data.message);
+        } else {
+            var role = $container.data('role');
+
+            if (! LoadDonationData($container, data.data, role)) {
+                $container.html('No donations.');
+            }
         }
     }, 'json');
 });
 
-function LoadCompanyDonationData(data, role) {
-    var empty = ($('#donation_Pending .donationCard').length == 0);
+function LoadDonationData($container, data, role) {
+    var empty = ($container.find('.donationCard').length == 0);
 
     if (data) {
         var donations = data[0];
@@ -39,19 +144,22 @@ function LoadCompanyDonationData(data, role) {
         var donationLogs = data[2];
 
         $.each(donations, function(i, donation) {
-            var $existingCardCheck = $('#donation_Pending .donationCard[data-id=' + donation['DonationID'] + ']');
+            var $existingCardCheck = $container.find('.donationCard[data-id=' + donation['DonationID'] + ']');
             var $existingCard = null;
 
-            if (empty && i == 0) { $('#donation_Pending').empty(); }
-            empty = false;
-            if ($existingCardCheck.length) { $existingCard = $existingCardCheck[0]; }
+            if (i == 0) {
+                if (empty) { $container.empty(); } // remove any "loading" or other messages
+                empty = false; // for next items, don't consider it empty anymore, since we're starting to load it up
+            }
+
+            if ($existingCardCheck.length) { $existingCard = $existingCardCheck; }
 
             var cardClass = 'class="donationCard ' + donation['Status'] + ' ' + role + '"';
 
             var cardTitle = '<div class="title">'
                             + '<div class="id">#' + donation['DonationID'] + '</div>'
-                            + '<div class="status">' + donation['Status'] + '</div>'
-                            + '<a href="#" class="ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>'
+                            + '<div class="status" data-id="' + donation['DonationStatusID'] + '">' + donation['Status'] + '</div>'
+                            + '<a href="#" class="ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext menuicon">Menu</a>'
                           + '</div>';
 
             var cardStats = '<div class="horizgroup">\r\n'
@@ -71,29 +179,67 @@ function LoadCompanyDonationData(data, role) {
 
             var card = '<div ' + cardClass + ' data-id="' + donation['DonationID'] + '">\r\n'
                             + cardTitle + '\r\n'
+                            + BuildCardMenu(role, donation['Status']) + '\r\n'
                             + '<div class="body">\r\n'
                                 + '<div class="label">Donor</div>\r\n'
                                 + '<div class="company">' + donation['Donor'] + '</div>\r\n'
                                 + '<div class="label">Beneficiary</div>\r\n'
-                                + '<div class="company">' + (donation['Beneficiary'] || '--') + '</div>\r\n'
+                                + '<div class="beneficiary company" data-id="' + (donation['BeneficiaryCompanyID'] || '0') + '">' + (donation['Beneficiary'] || '--') + '</div>\r\n'
                                 + '<div class="label">Driver</div>\r\n'
-                                + '<div class="driver">--</div>\r\n'
+                                + '<div class="driver" data-id="' + (donation['DriverMemberID'] || '0') + '">' + (donation['Driver'] || '--') + '</div>\r\n'
                                 + cardStats + '\r\n'
                                 + BuildCardTimes(donation['DonationID'], donationLogs) + '\r\n'
                             + '</div>\r\n';
                      + '</div>\r\n';
 
             if ($existingCard) {
-                $existingCard.html(card);
+                $existingCard.replaceWith(card);
             } else {
-                $('#donation_Pending').append(card);
+                $container.append(card);
             }
         });
     }
 
-    if (empty) {
-        $('#donation_Pending').html('No donations are pending.');
+    if (!empty) { $container.trigger('create'); }
+
+    return (!empty);
+}
+
+function BuildCardMenu(role, status) {
+    var result = '';
+    var actions = [];
+
+    switch (role) {
+        case 'Donor':
+            if (status == 'Posted' || status == 'Scheduled') { actions.push(['Cancel', 'Cancel']); }
+            break;
+        case 'Beneficiary':
+            if (status == 'Posted') { actions.push(['Claim', 'Claim']); }
+            if (status == 'Claimed' || status == 'Scheduled') { actions.push(['Unclaim', 'Unclaim']); }
+            if (status == 'Dropped Off') { actions.push(['Receive', 'Confirm Receipt']); }
+            break;
+        case 'Driver':
+            if (status == 'Claimed') { actions.push(['Schedule', 'Pick Up']); }
+            if (status == 'Scheduled') {
+                actions.push(['Unschedule', 'Cancel Pickup']);
+                actions.push(['Pick Up', 'Confirm Pickup']);
+                actions.push(['Lost', 'Mark as Lost']);
+                actions.push(['Damaged', 'Mark as Damaged']);
+            }
+            if (status == 'Picked Up') {
+                actions.push(['Drop Off', 'Mark as Delivered']);
+                actions.push(['Lost', 'Mark as Lost']);
+                actions.push(['Damaged', 'Mark as Damaged']);
+            }
+            break;
     }
+
+    $.each(actions, function(i, settings) {
+        result += '<input type="button" class="action" data-action="' + settings[0] + '" data-inline="true" data-theme="b" data-icon="check" value="' + settings[1] + '">';
+    });
+
+    if (result != '') { result = '<div class="menu">' + result + '</div>'; }
+    return result;
 }
 
 function BuildCardTimes(donationId, data) {

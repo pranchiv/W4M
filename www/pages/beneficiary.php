@@ -7,6 +7,8 @@
 </head>
 <body>
 
+<?php require_once($top."connection.php"); ?>
+
 <div id="beneficiary_page" data-role="page">
     <div data-role="header" data-position="fixed">
         <?php include($top.'includes/header.php'); ?>
@@ -16,8 +18,6 @@
         <?php include($top."includes/banner.php"); ?>
 
         <div class="form_headers">
-            <h3 style="flex-grow: 4;">Scheduled Donations</h3>
-
             <a href="<?= $top ?>pages/companySettings.php" data-transition="flip" style="flex-grow: 1;">Settings</a>
 
             <a href="" data-transition="flip" style="flex-grow: 1;">Donation History</a>
@@ -27,11 +27,11 @@
             </div>
         </div>
 
-        <div style="margin-bottom: 32px;">
-            No donations are currently scheduled for delivery.
-        </div>
+        <h3>Scheduled Donations</h3>
+        <div id="beneficiary_Scheduled" class="donationCardContainer" data-role="Beneficiary" style="margin-bottom: 32px;"></div>
 
         <h3>Available Donations</h3>
+        <div id="beneficiary_Available" class="donationCardContainer" data-role="Beneficiary" style="margin-bottom: 32px;"></div>
 
         <?php include($top."includes/debug.php"); ?>
     </div><!-- /content -->

@@ -7,6 +7,8 @@
 </head>
 <body>
 
+<?php require_once($top."connection.php"); ?>
+
 <div id="driver_page" data-role="page">
     <div data-role="header" data-position="fixed">
         <?php include($top.'includes/header.php'); ?>
@@ -15,7 +17,15 @@
     <div role="main" class="ui-content">
         <?php include($top."includes/banner.php"); ?>
 
-        <h3>Driver Stuff</h3>
+        <div class="form_headers">
+            <a href="" data-transition="flip" style="flex-grow: 1;">Donation History</a>
+        </div>
+
+        <h3>Your Active Donations</h3>
+        <div id="driver_Scheduled" class="donationCardContainer" style="margin-bottom: 32px;"></div>
+
+        <h3>Donations Needing a Driver</h3>
+        <div id="driver_Pending" class="donationCardContainer" style="margin-bottom: 32px;"></div>
 
         <?php include($top."includes/debug.php"); ?>        
     </div><!-- /content -->

@@ -4,6 +4,19 @@ if (!isset($top)) { require_once('../includes/common.php'); }
 require_once($top.'connection.php');
 require_once($top.'controllers/notification.php');
 
+abstract class DonationStatus {
+    const Posted	    = 1;
+    const Claimed	    = 2;
+    const Scheduled	    = 3;
+    const PickedUp	    = 4;
+    const DroppedOff	= 5;
+    const Received	    = 6;
+    const Canceled	    = 7;
+    const Lost	        = 8;
+    const Damaged	    = 9;
+    const Expired	    = 10;    
+}
+
 if (Utilities::PageWasCalledDirectly('donation')) {
     $donationController = new DonationController();
     header('content-type:application/json');
@@ -70,7 +83,7 @@ class DonationController {
             $isError = true;
             $message = $db->error;
         } else {
-            $message = $call;
+            //$message = $call;
         }
 
         $result = array('error' => $isError, 'message' => $message, 'data' => $DBResult);
@@ -120,6 +133,109 @@ class DonationController {
 
         // get rid of first resultset: error codes
         array_splice($DBResult, 0, 1);
+
+        $result = array('error' => $isError, 'message' => $message, 'data' => $DBResult);
+        return Utilities::ReturnAppropriateResult('donation', $result);
+    }
+    
+    public static function updateStatus($donationId = null, $action = null, $previousStatusId = null, $previousBeneficiaryId = null, $previousDriverId = null) {
+        $result = null;
+        $isError = false;
+        $message = '';
+        $statusId = null;
+        $beneficiaryId = null;
+        $driverId = null;
+        $DBResult = null;
+
+        $db = DB::getInstance();
+
+        // the combination of these variables and the "action" indicated will determine what values are sent to the DB
+        $memberId = $_SESSION['MemberID'];
+        $companyId = $_SESSION['CompanyID'];
+        
+        if (isset($_REQUEST['Role'])) {
+            $role = $_REQUEST['Role'];
+        } else {
+            switch ($_SESSION['MemberTypeID']) {
+                case 1: $role = 'Admin'; break;
+                case 2: $role = 'Driver'; break;
+                case 3: $role = 'Donor'; break;
+                case 4: $role = 'Beneficiary'; break;
+            }
+        }
+
+        if (!isset($donationId)) {
+            if (isset($_REQUEST['DonationId'])) { $donationId = $_REQUEST['DonationId']; }
+        }
+        if (!isset($previousStatusId)) {
+            if (isset($_REQUEST['PreviousStatus'])) { $previousStatusId = $_REQUEST['PreviousStatus']; }
+        }
+        if (!isset($previousBeneficiaryId)) {
+            if (isset($_REQUEST['PreviousBeneficiaryId']) && $_REQUEST['PreviousBeneficiaryId'] != 0) { $previousBeneficiaryId = $_REQUEST['PreviousBeneficiaryId']; }
+        }
+        if (!isset($previousDriverId)) {
+            if (isset($_REQUEST['PreviousDriverId']) && $_REQUEST['PreviousDriverId'] != 0) { $previousDriverId = $_REQUEST['PreviousDriverId']; }
+        }
+
+        if (!isset($action)) { if (isset($_REQUEST['Action'])) { $action = $_REQUEST['Action']; } }
+        if (isset($action)) {
+            switch ($action) {
+                case 'Claim'        : $statusId = DonationStatus::Claimed;       $beneficiaryId = $companyId;             $driverId = $previousDriverId; break;
+                case 'Schedule'     : $statusId = DonationStatus::Scheduled;     $beneficiaryId = $previousBeneficiaryId; $driverId = $memberId;         break;
+                case 'Pick Up'      : $statusId = DonationStatus::PickedUp;      $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId; break;
+                case 'Drop Off'     : $statusId = DonationStatus::DroppedOff;    $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId; break;
+                case 'Receive'      : $statusId = DonationStatus::Received;      $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId; break;
+                case 'Cancel'       : $statusId = DonationStatus::Canceled;      $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId; break;
+                case 'Lost'         : $statusId = DonationStatus::Lost;          $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId; break;
+                case 'Damaged'      : $statusId = DonationStatus::Damaged;       $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId; break;
+                case 'Unclaim'      :
+                    if ($previousStatusId == DonationStatus::Claimed) {
+                        $statusId = DonationStatus::Posted;
+                    } else {
+                        $statusId = $previousStatusId;
+                    }
+                    $beneficiaryId = null;
+                    $driverId = $previousDriverId;
+                    break;
+                case 'Unschedule'   :
+                    if ($previousBeneficiaryId == null) {
+                        $statusId = DonationStatus::Posted;
+                    } else {
+                        $statusId = DonationStatus::Claimed;
+                    }
+                    $beneficiaryId = $previousBeneficiaryId;
+                    $driverId = null;
+                    break;
+            }
+        }
+        
+        // security
+        if (isset($beneficiaryId) && $role == 'Beneficiary' && $beneficiaryId != $companyId) {
+            $isError = true;
+            $message = 'Illegal update';
+        }
+
+        if (! $isError) {
+            $donationId = ($donationId == null ? 'null' : $db->real_escape_string($donationId));
+            $statusId = ($statusId == null ? 'null' : $db->real_escape_string($statusId));
+            $beneficiaryId = ($beneficiaryId == null ? 'null' : $db->real_escape_string($beneficiaryId));
+            $driverId = ($driverId == null ? 'null' : $db->real_escape_string($driverId));
+            $call = "CALL UpdateDonationStatus($donationId, $statusId, $beneficiaryId, $driverId, $memberId)";
+            $DBResult = DB::callProcWithRecordset($call);
+
+            if (is_null($DBResult)) {
+                $isError = true;
+                $message = $db->error;
+            } else if ($DBResult[0][0]['Error'] != 0) {
+                $isError = true;
+                $message = 'ERROR: donation could not be updated';
+            } else {
+                $message = 'Donation has been updated';
+            }
+
+            // get rid of first resultset: error codes
+            array_splice($DBResult, 0, 1);
+        }
 
         $result = array('error' => $isError, 'message' => $message, 'data' => $DBResult);
         return Utilities::ReturnAppropriateResult('donation', $result);

@@ -56,6 +56,11 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
     text-align: center;
 }
 
+.loading {
+    font-size: 16px;
+    font-style: italic;
+}
+
 .error {
     color: red;
     font-style: italic;
@@ -186,20 +191,20 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
     font-weight: bold;
 }
 
-.cardContainer {
+.companyCardContainer {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
 
-#donation_Pending {
+.donationCardContainer {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-content: flex-start;
 }
 
-#donation_Pending > * {
+.donationCardContainer > * {
     margin: 0 16px 16px 0;
     flex: 0 0 280px;
 }
@@ -221,6 +226,10 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
     border-radius: 8px 8px 0 0;
 }
 
+.donationCard.Claimed .title {
+    background: #13523e;
+}
+
 .donationCard .title a {
     position: absolute;
     top: 0px;
@@ -237,6 +246,11 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
 .donationCard .status {
     text-transform: uppercase;
     font-weight: bold;
+}
+
+.donationCard .menu {
+    display: none;
+    padding: 0 16px;
 }
 
 .donationCard .body {
