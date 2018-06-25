@@ -227,6 +227,14 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
 }
 
 .donationCard.Claimed .title {
+    background: #659183;
+}
+
+.donationCard.Scheduled .title {
+    background: #489c81;
+}
+
+.donationCard.PickedUp .title {
     background: #13523e;
 }
 

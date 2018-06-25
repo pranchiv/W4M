@@ -1,4 +1,31 @@
 /////////////////////////////////
+// ADMIN PAGE
+$(document).on('pagecreate', '#admin_page', function() {
+    var $container = $('#admin_activeDonations');
+    $container.html('<span class="loading">Loading ...</span>');
+
+    $.get('/controllers/donation.php?action=getDonations', { Role: 'Admin', Active: 1 }, function(data) {
+        if (data.error) {
+            $container.html(data.message);
+        } else {
+            // sort by status, then date posted
+            data.data[0].sort(function(a, b) {
+                if (a['DonationStatusID'] == b['DonationStatusID']) {
+                    return (a['CreateDate'] < a['CreateDate'] ? -1 : 1);
+                } else {
+                    return (a['DonationStatusID'] - b['DonationStatusID']);
+                }
+            });
+
+            if (! LoadDonationData($container, data.data, 'Admin')) {
+                $container.html('No active donations.');
+            }
+        }
+    }, 'json');
+});
+/////////////////////////////////
+
+/////////////////////////////////
 // DONOR PAGE
 $(document).on('pagecreate', '#donation_page', function() {
     var $container = $('#donation_Pending');
@@ -44,11 +71,11 @@ $(document).on('pagecreate', '#driver_page', function() {
     var $container = $('#driver_Scheduled');
     $container.html('<span class="loading">Loading ...</span>');
 
-    $.get('/controllers/donation.php?action=getDonations', { Active: 1, Role: 'Driver' }, function(data) {
+    $.get('/controllers/donation.php?action=getDonations', { Role: 'Driver', Active: 1 }, function(data) {
         if (data.error) {
             $container.html(data.message);
         } else {
-            if (! LoadDonationData($container, data.data, 'Donor')) {
+            if (! LoadDonationData($container, data.data, 'Driver')) {
                 $container.html('You have no donations scheduled.');
             }
         }
@@ -61,7 +88,7 @@ $(document).on('pagecreate', '#driver_page', function() {
         if (data.error) {
             $container2.html(data.message);
         } else {
-            if (! LoadDonationData($container2, data.data, 'Donor')) {
+            if (! LoadDonationData($container2, data.data, 'Driver')) {
                 $container2.html('No donations are pending.');
             }
         }
@@ -154,7 +181,7 @@ function LoadDonationData($container, data, role) {
 
             if ($existingCardCheck.length) { $existingCard = $existingCardCheck; }
 
-            var cardClass = 'class="donationCard ' + donation['Status'] + ' ' + role + '"';
+            var cardClass = 'class="donationCard ' + donation['Status'].replace(' ', '') + ' ' + role + '"';
 
             var cardTitle = '<div class="title">'
                             + '<div class="id">#' + donation['DonationID'] + '</div>'
@@ -221,8 +248,8 @@ function BuildCardMenu(role, status) {
         case 'Driver':
             if (status == 'Claimed') { actions.push(['Schedule', 'Pick Up']); }
             if (status == 'Scheduled') {
-                actions.push(['Unschedule', 'Cancel Pickup']);
                 actions.push(['Pick Up', 'Confirm Pickup']);
+                actions.push(['Unschedule', 'Cancel Pickup']);
                 actions.push(['Lost', 'Mark as Lost']);
                 actions.push(['Damaged', 'Mark as Damaged']);
             }
@@ -267,6 +294,9 @@ function BuildCardTimes(donationId, data) {
             case 'DroppedOff'   : timeDroppedOff = row; break;
         }
     });
+
+    // TODO: don't show status times that have been "undone"
+    // for example, if it was claimed, then unclaimed, don't show the claimed time
 
     $.each([timePosted, timeClaimed, timeScheduled, timePickedUp, timeDroppedOff], function(i, row) {
         if (row) {

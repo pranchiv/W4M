@@ -58,6 +58,14 @@
                 </div>
             </div>
         </div>
+        <div class="ui-corner-all custom-corners">
+            <div class="ui-bar ui-bar-b">
+                <h3>Active Donations</h3>
+            </div>
+            <div class="ui-body ui-body-a">
+                <div id="admin_activeDonations" class="donationCardContainer"></div>
+            </div>
+        </div>
 
         <?php include($top."includes/debug.php"); ?>
     </div><!-- /content -->
