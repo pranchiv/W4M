@@ -47,7 +47,7 @@ class CompanyController {
         if (is_null($DBResult)) {
             $result = array('error' => true, 'errorMessage' => 'Database error');
         } else {
-            $company = $DBResult[0];
+            $company = $DBResult[1][0]; // 1st recordset is from UpdateCompanyStatus embedded call
 
             if ($company['Exists'] == 1) {
                 $result = array('error' => false, 'exists' => true);
