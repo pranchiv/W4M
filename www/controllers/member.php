@@ -66,7 +66,7 @@ class MemberController {
             if ($member['Exists'] == 0) {
                 self::setSessionVariables($member);
                 $nextPage = self::determineStartPage();        
-                $notifications = NotificationController::send(NotificationType::NewMember, $_SESSION['MemberName']);
+                $notifications = NotificationController::send(null, NotificationType::NewMember, $_SESSION['MemberName']);
                 $result = array('error' => false, 'exists' => false, 'member' => $member, 'notifications' => $notifications, 'nextPage' => $nextPage);
             } else {
                 $result = array('error' => false, 'exists' => true, 'existsType' => $member['Exists']);

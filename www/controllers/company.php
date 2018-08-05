@@ -54,7 +54,7 @@ class CompanyController {
             } else {
                 $_SESSION['CompanyID'] = $company['CompanyID'];
                 $_SESSION['Company'] = $company['Name'];
-                $notifications = NotificationController::send(NotificationType::NewCompany, $CompanyName);
+                $notifications = NotificationController::send(null, NotificationType::NewCompany, $CompanyName);
                 $result = array('error' => false, 'exists' => false, 'company' => $company, 'notifications' => $notifications);
             }
         }
