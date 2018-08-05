@@ -11,7 +11,9 @@
 
 <div id="admin_page" data-role="page">
     <div data-role="header" data-position="fixed">
-        <?php include($top.'includes/header.php'); ?>
+        <?php 
+        include($top.'includes/header.php'); 
+        ?>
     </div>
 
     <div role="main" class="ui-content">

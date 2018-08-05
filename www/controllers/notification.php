@@ -4,16 +4,20 @@ if (!isset($top)) { require_once('../includes/common.php'); }
 require_once($top.'connection.php');
 
 abstract class NotificationType {
-    const NewCompany        = 1;
-    const NewMember         = 2;
-    const DonationPosted    = 3;
-    const DonationClaimed   = 4;
-    const DonationScheduled = 5;
-    const DonationDroppedOff= 6;
-    const DonationReceived  = 7;
-    const DonationUnclaimed = 8;
-    const DonationModified  = 9;
-    const DonationExpired   = 10;
+    const NewCompany                = 1;
+    const NewMember                 = 2;
+    const DonationPosted            = 3;
+    const DonationClaimed           = 4;
+    const DonationScheduled         = 5;
+    const DonationDroppedOff        = 6;
+    const DonationReceived          = 7;
+    const DonationUnclaimed         = 8;
+    const DonationModified          = 9;
+    const DonationExpired           = 10;
+    const MemberApproved            = 11;
+    const CompanyApproved           = 12;
+    const SecondMemberVerification  = 13;
+
 }
 
 if (Utilities::PageWasCalledDirectly('notification')) {
@@ -26,29 +30,36 @@ if (Utilities::PageWasCalledDirectly('notification')) {
 }
 
 class NotificationController {
-    public static function send($donationId = null, $type = null, $description = null) {
+    public static function send($type = null, $description = null) {
         $result = null;
         $db = DB::getInstance();
 
-        if ($donationId == null) { $donationId = 'null'; }
         if ($type == null) { $type = NotificationType::NewCompany; }
         if ($description == null) { $description = $_POST['CompanyName']; }
 
         switch ($type) {
             case NotificationType::NewCompany :
-                $subject = 'New company registered (' . $description . ')';
+                $subject = 'New company registered';
                 $description = 'New company "' . $description . '" registered';
                 break;
             case NotificationType::NewMember :
-                $subject = 'New member registered (' . $description . ')';
+                $subject = 'New member registered';
                 $description = 'New member "' . $description . '" registered';
                 break;
+            case NotificationType::DonationPosted :
+                $subject = 'Donation Posted';
+                $description = $description . ' has posted a donation';
+                break;
+            case NotificationType::DonationClaimed :
+                $subject = 'Donation Claimed';
+                $description = $description . ' has claimed a donation';
+                break;        
             default:
                 $subject = 'Notification';
                 break;
         }
 
-        $DBResult = DB::callProcWithRecordset("CALL GetNotificationRecipients($donationId, $type)");
+        $DBResult = DB::callProcWithRecordset("CALL GetNotificationRecipients($type)");
 
         if (is_null($DBResult)) {
             $result = array('error' => true, 'errorMessage' => 'Database error');
