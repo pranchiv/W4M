@@ -17,7 +17,6 @@ abstract class NotificationType {
     const MemberApproved            = 11;
     const CompanyApproved           = 12;
     const SecondMemberVerification  = 13;
-
 }
 
 if (Utilities::PageWasCalledDirectly('notification')) {
@@ -30,10 +29,11 @@ if (Utilities::PageWasCalledDirectly('notification')) {
 }
 
 class NotificationController {
-    public static function send($type = null, $description = null) {
+    public static function send($donationId = null, $type = null, $description = null) {
         $result = null;
         $db = DB::getInstance();
 
+        if ($donationId == null) { $donationId = 'null'; }
         if ($type == null) { $type = NotificationType::NewCompany; }
         if ($description == null) { $description = $_POST['CompanyName']; }
 
@@ -53,13 +53,13 @@ class NotificationController {
             case NotificationType::DonationClaimed :
                 $subject = 'Donation Claimed';
                 $description = $description . ' has claimed a donation';
-                break;        
+                break;
             default:
                 $subject = 'Notification';
                 break;
         }
 
-        $DBResult = DB::callProcWithRecordset("CALL GetNotificationRecipients($type)");
+        $DBResult = DB::callProcWithRecordset("CALL GetNotificationRecipients($donationId, $type)");
 
         if (is_null($DBResult)) {
             $result = array('error' => true, 'errorMessage' => 'Database error');
