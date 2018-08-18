@@ -54,6 +54,43 @@ class NotificationController {
                 $subject = 'Donation Claimed';
                 $description = $description . ' has claimed a donation';
                 break;
+            case NotificationType::DonationScheduled :
+                $subject = 'Donation Scheduled';
+                $description = $description . ' has scheduled a donation';
+                break;
+            case NotificationType::DonationDroppedOff :
+                $subject = 'Donation Dropped Off';
+                $description = $description . ' has dropped off a donation';
+                break;
+           case NotificationType::DonationReceived :
+                $subject = 'Donation Received';
+                $description = $description . ' has received a donation';
+                break;
+            case NotificationType::DonationUnclaimed :
+                $subject = 'Donation Unclaimed';
+                $description = $description . ' has unclaimed a donation';
+                break;
+            case NotificationType::DonationModified :
+                $subject = 'Donation Modified';
+                $description = $description . ' has modified a donation';
+                break;
+            case NotificationType::DonationExpired :
+                $subject = 'Donation Expired';
+                $description = $description . 's donation has expired';
+                break;
+            case NotificationType::MemberApproved :
+                $subject = 'Member Approved';
+                $description = $description . ' has been approved';
+                break;
+            case NotificationType::CompanyApproved :
+                $subject = 'Company Approved';
+                $description = $description . ' has been approved';
+                break;
+            case NotificationType::SecondMemberVerification :
+                $subject = 'Second Member Verification';
+                $description = $description . ' has been verified as a second member';
+                break;
+
             default:
                 $subject = 'Notification';
                 break;
