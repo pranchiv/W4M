@@ -17,6 +17,8 @@ abstract class NotificationType {
     const MemberApproved            = 11;
     const CompanyApproved           = 12;
     const SecondMemberVerification  = 13;
+    const DonationPickedUp          = 14;
+    const DonationUnscheduled       = 15;
 }
 
 if (Utilities::PageWasCalledDirectly('notification')) {
@@ -56,19 +58,19 @@ class NotificationController {
                 break;
             case NotificationType::DonationScheduled :
                 $subject = 'Donation Scheduled';
-                $description = $description . ' has scheduled a donation';
+                $description = $description . ' has scheduled to pick up the donation';
                 break;
             case NotificationType::DonationDroppedOff :
                 $subject = 'Donation Dropped Off';
                 $description = $description . ' has dropped off a donation';
                 break;
-           case NotificationType::DonationReceived :
+            case NotificationType::DonationReceived :
                 $subject = 'Donation Received';
                 $description = $description . ' has received a donation';
                 break;
             case NotificationType::DonationUnclaimed :
                 $subject = 'Donation Unclaimed';
-                $description = $description . ' has unclaimed a donation';
+                $description = $description . ' has unclaimed your donation. Please deliver to the Levittown Emergency Shelter if possible or dispose of at your convenience.';
                 break;
             case NotificationType::DonationModified :
                 $subject = 'Donation Modified';
@@ -90,7 +92,15 @@ class NotificationController {
                 $subject = 'Second Member Verification';
                 $description = $description . ' has been verified as a second member';
                 break;
-
+            case NotificationType::DonationPickedUp :
+                $subject = 'Donation Picked Up';
+                $description = $description . ' has picked up a donation';
+                break;
+            case NotificationType::DonationUnscheduled :
+                $subject = 'Driver Canceled Pickup';
+                $description = $description . ' has canceled pickup. Your donation has been reposted for other drivers to schedule for pickup.';
+                break;
+                
             default:
                 $subject = 'Notification';
                 break;
