@@ -155,8 +155,9 @@ $(document).on('click', '.action', function(e) {
             $container.html(data.message);
         } else {
             var role = $container.data('role');
-
-            if (! LoadDonationData($container, data.data, role)) {
+            if (data.notifications) { ShowToastFromNotificationSend(data.notifications); }
+            
+            if (! LoadDonationData($container, data.data, role)) { 
                 $container.html('No donations.');
             }
         }

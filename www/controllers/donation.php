@@ -133,7 +133,7 @@ class DonationController {
             $donation = $DBResult[1][0][0]; // 1 = skips the error; 0 = donation data vs types; 0 = first record
             $notifications = NotificationController::send($donation['DonationID'], NotificationType::DonationPosted, $_SESSION['Company']);
             $message = 'Thank you for your donation!';
-            
+
             // get rid of first resultset: error codes
             array_splice($DBResult, 0, 1);
 
@@ -184,29 +184,28 @@ class DonationController {
         if (!isset($action)) { if (isset($_REQUEST['Action'])) { $action = $_REQUEST['Action']; } }
         if (isset($action)) {
             switch ($action) {
-                case 'Claim'        : $statusId = DonationStatus::Claimed;       $beneficiaryId = $companyId;             $driverId = $previousDriverId; break;
-                case 'Schedule'     : $statusId = DonationStatus::Scheduled;     $beneficiaryId = $previousBeneficiaryId; $driverId = $memberId;         break;
-                case 'Pick Up'      : $statusId = DonationStatus::PickedUp;      $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId; break;
-                case 'Drop Off'     : $statusId = DonationStatus::DroppedOff;    $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId; break;
-                case 'Receive'      : $statusId = DonationStatus::Received;      $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId; break;
-                case 'Cancel'       : $statusId = DonationStatus::Canceled;      $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId; break;
-                case 'Lost'         : $statusId = DonationStatus::Lost;          $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId; break;
-                case 'Damaged'      : $statusId = DonationStatus::Damaged;       $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId; break;
-                case 'Unclaim'      :
+                case 'Claim'        : $statusId = DonationStatus::Claimed;              $beneficiaryId = $companyId;             $driverId = $previousDriverId;    $NotificationType = NotificationType::DonationClaimed;          break;
+                case 'Schedule'     : $statusId = DonationStatus::Scheduled;            $beneficiaryId = $previousBeneficiaryId; $driverId = $memberId;            $NotificationType = NotificationType::DonationScheduled;        break;
+                case 'Pick Up'      : $statusId = DonationStatus::PickedUp;             $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId;    $NotificationType = NotificationType::DonationPickedUp;         break;
+                case 'Drop Off'     : $statusId = DonationStatus::DroppedOff;           $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId;    $NotificationType = NotificationType::DonationDroppedOff;       break;
+                case 'Receive'      : $statusId = DonationStatus::Received;             $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId;    $NotificationType = NotificationType::DonationReceived;         break;
+                case 'Cancel'       : $statusId = DonationStatus::Canceled;             $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId;    $NotificationType = NotificationType::DonationCanceled;         break;
+                case 'Lost'         : $statusId = DonationStatus::Lost;                 $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId;    $NotificationType = NotificationType::DonationLost;             break;
+                case 'Damaged'      : $statusId = DonationStatus::Damaged;              $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId;    $NotificationType = NotificationType::DonationDamaged;          break;
+                case 'Unclaim'      : 
                     if ($previousStatusId == DonationStatus::Claimed) {
                         $statusId = DonationStatus::Posted;
+                        $NotificationType = NotificationType::DonationPosted;
                     } else {
                         $statusId = $previousStatusId;
+                        $NotificationType = NotificationType::DonationUnclaimed;
                     }
                     $beneficiaryId = null;
                     $driverId = $previousDriverId;
                     break;
                 case 'Unschedule'   :
-                    if ($previousBeneficiaryId == null) {
-                        $statusId = DonationStatus::Posted;
-                    } else {
-                        $statusId = DonationStatus::Claimed;
-                    }
+                    $statusId = DonationStatus::Claimed;
+                    $NotificationType = NotificationType::DonationUnscheduled;
                     $beneficiaryId = $previousBeneficiaryId;
                     $driverId = null;
                     break;
@@ -230,19 +229,33 @@ class DonationController {
             if (is_null($DBResult)) {
                 $isError = true;
                 $message = $db->error;
+                $result = array('error' => $isError, 'message' => $message);
             } else if ($DBResult[0][0]['Error'] != 0) {
                 $isError = true;
                 $message = 'ERROR: donation could not be updated';
+                $result = array('error' => $isError, 'message' => $message);
             } else {
                 $message = 'Donation has been updated';
+
+                // get rid of first resultset: error codes
+                array_splice($DBResult, 0, 1);
+                switch ($NotificationType) {
+                    case NotificationType::DonationScheduled:
+                    case NotificationType::DonationDroppedOff:
+                    case NotificationType::DonationPickedUp:
+                        $description = $_SESSION['MemberName'];
+                        break;
+
+                    default:
+                        $description = $_SESSION['Company'];
+                        break;
+                }
+                $notifications = NotificationController::send($donation['DonationID'], $NotificationType, $description);
+                $result = array('error' => $isError, 'message' => $message, 'data' => $DBResult, 'notifications' => $notifications);
+                return Utilities::ReturnAppropriateResult('donation', $result);
             }
 
-            // get rid of first resultset: error codes
-            array_splice($DBResult, 0, 1);
         }
-
-        $result = array('error' => $isError, 'message' => $message, 'data' => $DBResult);
-        return Utilities::ReturnAppropriateResult('donation', $result);
     }
 }
 ?>
