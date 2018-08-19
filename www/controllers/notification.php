@@ -62,7 +62,7 @@ class NotificationController {
                 $subject = 'Donation Dropped Off';
                 $description = $description . ' has dropped off a donation';
                 break;
-            case NotificationType::DonationReceived :
+           case NotificationType::DonationReceived :
                 $subject = 'Donation Received';
                 $description = $description . ' has received a donation';
                 break;
