@@ -124,18 +124,22 @@ class DonationController {
         if (is_null($DBResult)) {
             $isError = true;
             $message = $db->error;
+            $result = array('error' => $isError, 'message' => $message);
         } else if ($DBResult[0][0]['Error'] != 0) {
             $isError = true;
             $message = 'ERROR: donation could not be added';
+            $result = array('error' => $isError, 'message' => $message);
         } else {
+            $donation = $DBResult[1][0][0]; // 1 = skips the error; 0 = donation data vs types; 0 = first record
+            $notifications = NotificationController::send($donation['DonationID'], NotificationType::DonationPosted, $_SESSION['Company']);
             $message = 'Thank you for your donation!';
+            
+            // get rid of first resultset: error codes
+            array_splice($DBResult, 0, 1);
+
+            $result = array('error' => $isError, 'message' => $message, 'data' => $DBResult, 'notifications' => $notifications);
+            return Utilities::ReturnAppropriateResult('donation', $result);
         }
-
-        // get rid of first resultset: error codes
-        array_splice($DBResult, 0, 1);
-
-        $result = array('error' => $isError, 'message' => $message, 'data' => $DBResult);
-        return Utilities::ReturnAppropriateResult('donation', $result);
     }
     
     public static function updateStatus($donationId = null, $action = null, $previousStatusId = null, $previousBeneficiaryId = null, $previousDriverId = null) {

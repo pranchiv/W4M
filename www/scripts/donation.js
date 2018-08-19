@@ -56,7 +56,8 @@ $(document).on('click', '#donation_AddButton', function(e) {
             $('#donation_AddError').html(data.message);
         } else {
             $('#donation_AddError').html(data.message);
-
+            if (data.notifications) { ShowToastFromNotificationSend(data.notifications); }
+            
             if (! LoadDonationData($('#donation_Pending'), data.data, 'Donor')) {
                 $('#donation_Pending').html('No donations are pending.');
             }
