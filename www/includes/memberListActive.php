@@ -1,13 +1,13 @@
 <?php require_once($top.'controllers/member.php'); ?>
 
-<table id="memberList_table" class="adminGrid ui-responsive" data-role="table">
+<table id="memberListActive_table" class="adminGrid ui-responsive" data-role="table">
     <thead>
         <tr>
-            <th></th>
             <th>Created</th>
             <th>ID</th>
             <th>Type</th>
             <th>Name</th>
+            <th>Username</th>
             <th>Email</th>
             <th>Phone</th>
             <th>Company</th>

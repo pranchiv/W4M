@@ -1,6 +1,7 @@
 $(document).on('pagecreate', '#admin_page', function() {
     LoadProspectiveCompanyList();
-    LoadProspectiveMemberList();
+    LoadMemberList(1);
+    LoadMemberList(2);
     LoadActiveCompanyList();
 });
 
@@ -47,16 +48,26 @@ function LoadProspectiveCompanyList(message) {
     }, 'json');
 }
 
-function LoadProspectiveMemberList(message) {
-    var memberColumns = ['[checkbox=MemberID]', 'CreateDate', 'MemberID', 'MemberType', 'Name', 'Email', 'CellNumber', 'CompanyName', 'CompanyStatus'];
-    var $memberTablebody = $('#memberList_table tbody');
-    var $memberTablefoot = $('#memberList_table tfoot');
+function LoadMemberList(status, message) {
+    var memberColumns = null;
+    var $memberTable = null;
+
+    if (status == 1) {
+        memberColumns = ['[checkbox=MemberID]', 'CreateDate', 'MemberID', 'MemberType', 'Name', 'Email', 'CellNumber', 'CompanyName', 'CompanyStatus'];
+        $memberTable = $('#memberListProspective_table');
+    } else {
+        memberColumns = ['CreateDate', 'MemberID', 'MemberType', 'Name', 'Username', 'Email', 'CellNumber', 'CompanyName', 'CompanyStatus'];
+        $memberTable = $('#memberListActive_table');
+    }
+
+    var $memberTablebody = $memberTable.find('tbody');
+    var $memberTablefoot = $memberTable.find('tfoot');
     var memberLoadingRow = '<tr class="loading"><td colspan="' + memberColumns.length + '">Loading ...</td></tr>';
     var memberMessageRow = '<tr class="message"><td colspan="' + memberColumns.length + '"></td></tr>';
     $memberTablefoot.html(memberLoadingRow);
     $memberTablefoot.append(memberMessageRow);
 
-    $.get('/controllers/member.php?action=getMembers', { status: 1 }, function(data) {
+    $.get('/controllers/member.php?action=getMembers', { status: status }, function(data) {
         $memberTablefoot.find('.loading').hide();
 
         if (data.error) {
@@ -67,7 +78,7 @@ function LoadProspectiveMemberList(message) {
             message = (message ? message + '<br/>': '') + data.data.length + ' matching members found';
             var dataRows = BuildHtmlTableFromJson(data.data, memberColumns);
             $memberTablebody.html(dataRows);
-            $('#memberList_table').table('refresh');
+            $memberTable.table('refresh');
         }
 
         $memberTablefoot.find('.message td').html(message);
@@ -118,7 +129,7 @@ function UpdateSelectedCompanyStatuses(status) {
             $('#companyList_table .message td').html('<span class="error">' + data.message + '</span>');
         } else {
             LoadProspectiveCompanyList(data.data[0]['count'] + ' companies updated');
-            LoadProspectiveMemberList();
+            LoadMemberList(1);
             LoadActiveCompanyList();
         }
     }, 'json');
@@ -135,9 +146,10 @@ function UpdateSelectedMemberStatuses(status) {
 
     $.post('/controllers/member.php?action=updateStatus', { status: status, selected: selected }, function(data) {
         if (data.error) {
-            $('#memberList_table .message td').html('<span class="error">' + data.message + '</span>');
+            $('#memberListProspective_table .message td').html('<span class="error">' + data.message + '</span>');
         } else {
-            LoadProspectiveMemberList(data.data[0]['count'] + ' members updated');
+            LoadMemberList(1, data.data[0]['count'] + ' members updated');
+            LoadMemberList(2);
         }
     }, 'json');
 }

@@ -29,7 +29,7 @@
                     <input type="button" id="admin_companyList_approveButton" data-inline="true" data-theme="b" data-icon="check" value="Approve">
                     <input type="button" id="admin_companyList_denyButton" data-inline="true" data-icon="delete" value="Deny">
                 </form>
-            </div>            
+            </div>
         </div>
         <div class="ui-corner-all custom-corners">
             <div class="ui-bar ui-bar-b">
@@ -37,9 +37,19 @@
             </div>
             <div class="ui-body ui-body-a">
                 <form id="admin_memberList_form">
-                    <?php include($top."includes/memberList.php"); ?>
+                    <?php include($top."includes/memberListProspective.php"); ?>
                     <input type="button" id="admin_memberList_approveButton" data-inline="true" data-theme="b" data-icon="check" value="Approve">
                     <input type="button" id="admin_memberList_denyButton" data-inline="true" data-icon="delete" value="Deny">
+                </form>
+            </div>
+        </div>
+        <div class="ui-corner-all custom-corners">
+            <div class="ui-bar ui-bar-b">
+                <h3>Active Members</h3>
+            </div>
+            <div class="ui-body ui-body-a">
+                <form id="admin_memberList_form">
+                    <?php include($top."includes/memberListActive.php"); ?>
                 </form>
             </div>
         </div>
