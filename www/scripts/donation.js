@@ -125,6 +125,33 @@ $(document).on('pagecreate', '#beneficiary_page', function() {
             }
         }
     }, 'json');
+    var $container3 = $('#beneficiary_History');
+    $container3.html('<span class="loading">Loading ...</span>');
+
+    $.get('/controllers/donation.php?action=getDonations', { Active: 0, Role: 'Beneficiary' }, function(data) {
+        if (data.error) {
+            $container3.html(data.message);
+        } else {
+            if (! LoadDonationData($container3, data.data, 'Beneficiary')) {
+                $container3.html('You have no donation history.');
+            }
+        }
+    }, 'json');
+});
+///////DONATION HISTORY PAGE
+$(document).on('pagecreate', '#donationHistory_page', function() {
+    var $container = $('#beneficiary_History');
+    $container.html('<span class="loading">Loading ...</span>');
+
+    $.get('/controllers/donation.php?action=getDonations', { Active: 0, Role: 'Beneficiary' }, function(data) {
+        if (data.error) {
+            $container.html(data.message);
+        } else {
+            if (! LoadDonationData($container, data.data, 'Beneficiary')) {
+                $container.html('You have no donation history.');
+            }
+        }
+    }, 'json');
 });
 /////////////////////////////////
 
@@ -156,7 +183,7 @@ $(document).on('click', '.action', function(e) {
         } else {
             var role = $container.data('role');
             if (data.notifications) { ShowToastFromNotificationSend(data.notifications); }
-            
+
             if (! LoadDonationData($container, data.data, role)) { 
                 $container.html('No donations.');
             }
