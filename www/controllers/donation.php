@@ -130,7 +130,7 @@ class DonationController {
             $message = 'ERROR: donation could not be added';
             $result = array('error' => $isError, 'message' => $message);
         } else {
-            $donation = $DBResult[1][0][0]; // 1 = skips the error; 0 = donation data vs types; 0 = first record
+            $donation = $DBResult[1][0]; // 1 = skips the error; 0 = donation data vs types
             $notifications = NotificationController::send($donation['DonationID'], NotificationType::DonationPosted, $_SESSION['Company']);
             $message = 'Thank you for your donation!';
 
@@ -189,7 +189,7 @@ class DonationController {
                 case 'Pick Up'      : $statusId = DonationStatus::PickedUp;             $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId;    $NotificationType = NotificationType::DonationPickedUp;         break;
                 case 'Drop Off'     : $statusId = DonationStatus::DroppedOff;           $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId;    $NotificationType = NotificationType::DonationDroppedOff;       break;
                 case 'Receive'      : $statusId = DonationStatus::Received;             $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId;    $NotificationType = NotificationType::DonationReceived;         break;
-                case 'Cancel'       : $statusId = DonationStatus::Canceled;             $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId;    $NotificationType = NotificationType::DonationCanceled;         break;
+                case 'Cancel'       : $statusId = DonationStatus::Canceled;             $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId;    $NotificationType = null;         break;
                 case 'Lost'         : $statusId = DonationStatus::Lost;                 $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId;    $NotificationType = NotificationType::DonationLost;             break;
                 case 'Damaged'      : $statusId = DonationStatus::Damaged;              $beneficiaryId = $previousBeneficiaryId; $driverId = $previousDriverId;    $NotificationType = NotificationType::DonationDamaged;          break;
                 case 'Unclaim'      : 
@@ -250,7 +250,10 @@ class DonationController {
                         $description = $_SESSION['Company'];
                         break;
                 }
-                $notifications = NotificationController::send($donation['DonationID'], $NotificationType, $description);
+
+                $notifications = null;
+                if ($NotificationType != null) { $notifications = NotificationController::send($donationId, $NotificationType, $description); }
+
                 $result = array('error' => $isError, 'message' => $message, 'data' => $DBResult, 'notifications' => $notifications);
                 return Utilities::ReturnAppropriateResult('donation', $result);
             }

@@ -87,9 +87,12 @@
 
                             <?php foreach (['am', 'pm'] as $ampm) { ?>
                                 <?php for ($x = 0; $x <= 11; $x++) { ?>
-                                    <?php $h = ($x == 0 ? $h = 12 : $h = $x); ?>
-                                    <option value="<?= $h.":00 ".$ampm ?>"><?= $h.":00 ".$ampm; ?></option>
-                                    <option value="<?= $h.":30 ".$ampm ?>"><?= $h.":30 ".$ampm; ?></option>
+                                    <?php
+                                        $h24 = ($ampm == 'am' ? $x : $x + 12);
+                                        $h = ($x == 0 ? $h = 12 : $h = $x);
+                                    ?>
+                                    <option value="<?= $h24.":00" ?>"><?= $h.":00 ".$ampm; ?></option>
+                                    <option value="<?= $h24.":30" ?>"><?= $h.":30 ".$ampm; ?></option>
                                 <?php } ?>
                             <?php } ?>
                         </select>
@@ -103,9 +106,12 @@
 
                             <?php foreach (['am', 'pm'] as $ampm) { ?>
                                 <?php for ($x = 0; $x <= 11; $x++) { ?>
-                                    <?php $h = ($x == 0 ? $h = 12 : $h = $x); ?>
-                                    <option value="<?= $h.":00 ".$ampm ?>"><?= $h.":00 ".$ampm; ?></option>
-                                    <option value="<?= $h.":30 ".$ampm ?>"><?= $h.":30 ".$ampm; ?></option>
+                                    <?php
+                                        $h24 = ($ampm == 'am' ? $x : $x + 12);
+                                        $h = ($x == 0 ? $h = 12 : $h = $x);
+                                    ?>
+                                    <option value="<?= $h24.":00" ?>"><?= $h.":00 ".$ampm; ?></option>
+                                    <option value="<?= $h24.":30" ?>"><?= $h.":30 ".$ampm; ?></option>
                                 <?php } ?>
                             <?php } ?>
                         </select>
