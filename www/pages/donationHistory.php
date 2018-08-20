@@ -16,13 +16,21 @@
     </div>
 
     <div role="main" class="ui-content">
-        <?php include($top."includes/banner.php"); ?>
+        <div class="form_headers">
+            <?php include($top."includes/banner.php"); ?>
 
-        <h3>Donation History</h3>
+            <h3>Donation History</h3>
 
-        <a href="<?= $top ?>pages/beneficiary.php" data-rel="back">Back to Main Page</a>
-        
-        <div id="beneficiary_History" class="donationCardContainer" data-role="Beneficiary" style="margin-bottom: 32px;"></div>
+            <a href="<?= $top ?>pages/<?php echo $_SESSION['MemberType'] ?>.php" data-rel="back">Back to Main Page</a>
+
+            <div style="display: flex; justify-content: flex-end; font-weight: bold;">
+                <?= $_SESSION['Company'] ?>
+            </div>
+        </div>
+
+        <div id="donation_History" class="donationCardContainer" data-role="<?php echo $_SESSION['MemberType'] ?>" style="margin-bottom: 32px;"></div>
+
+        <?php include($top."includes/debug.php"); ?>
     </div><!-- /content -->
 
     <div data-role="footer" data-position="fixed">

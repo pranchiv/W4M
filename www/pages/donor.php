@@ -20,7 +20,7 @@
         <div class="form_headers">
             <h3 style="flex-grow: 4;">Pending Donations</h3>
 
-            <a href="" data-transition="flip" style="flex-grow: 1;">Donation History</a>
+            <a href="<?= $top ?>pages/donationHistory.php" data-transition="flip" style="flex-grow: 1;">Donation History</a>
 
             <div style="flex-grow: 1; display: flex; justify-content: flex-end; font-weight: bold;">
                 <?= $_SESSION['Company'] ?>

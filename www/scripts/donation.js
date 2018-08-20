@@ -138,16 +138,19 @@ $(document).on('pagecreate', '#beneficiary_page', function() {
         }
     }, 'json');
 });
-///////DONATION HISTORY PAGE
+
+/////////////////////////////////
+// DONATION HISTORY PAGE
 $(document).on('pagecreate', '#donationHistory_page', function() {
-    var $container = $('#beneficiary_History');
+    var $container = $('#donation_History');
+    var role = $container.data('role');
     $container.html('<span class="loading">Loading ...</span>');
 
-    $.get('/controllers/donation.php?action=getDonations', { Active: 0, Role: 'Beneficiary' }, function(data) {
+    $.get('/controllers/donation.php?action=getDonations', { Active: 0, Role: role }, function(data) {
         if (data.error) {
             $container.html(data.message);
         } else {
-            if (! LoadDonationData($container, data.data, 'Beneficiary')) {
+            if (! LoadDonationData($container, data.data, role)) {
                 $container.html('You have no donation history.');
             }
         }

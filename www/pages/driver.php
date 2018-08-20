@@ -18,7 +18,7 @@
         <?php include($top."includes/banner.php"); ?>
 
         <div class="form_headers">
-            <a href="" data-transition="flip" style="flex-grow: 1;">Donation History</a>
+            <a href="<?= $top ?>pages/donationHistory.php" data-transition="flip" style="flex-grow: 1;">Donation History</a>
         </div>
 
         <h3>Your Active Donations</h3>
