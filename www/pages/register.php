@@ -14,7 +14,7 @@
     </div>
 
     <div role="main" class="ui-content">
-        <?php include($top."includes/banner.php"); ?>
+        <?php include($top."includes/banner.php"); ?><!-- Brian's test comment -->
 
         <form id="register_form">
             <div class="ui-grid-a responsive-grid padded">
