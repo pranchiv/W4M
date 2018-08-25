@@ -28,7 +28,7 @@ Licence URI: http://www.os-templates.com/template-terms
 				<!-- <li class="active"><a href="index.html">Home</a></li> -->
 				<li><a href="#">Home</a></li>
 				<li>
-					<a href="#" scroll-to="#testimonials">Join</a>
+					<a href="#" scroll-to="#howItWorks">How It Works</a>
 
 					<!-- <ul>
 						<li><a href="#">Donor</a></li>
@@ -37,7 +37,7 @@ Licence URI: http://www.os-templates.com/template-terms
 					</ul> -->
 				</li>
 				<li>
-					<a href="#" scroll-to="#howItWorks">How It Works</a></li>
+					<a href="#" scroll-to="#testimonials">Join</a></li>
 				<li>
 					<i class="fa fa-envelope" style="font-size:10px; position:absolute; top:5px;"></i>
 					<a href="#" scroll-to="#contactus" style="white-space:nowrap; padding-left:15px;">Launch W4M In Your City</a>

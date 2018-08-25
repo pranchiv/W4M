@@ -20,13 +20,13 @@
             <div class="ui-grid-a responsive-grid padded">
                 <div class="ui-block-a">
                     <div class="ui-field-contain">
-                        <label for="RegistrationType">What role?</label>
+                        <label for="RegistrationType">What is your role?</label>
 
                         <select id="register_RegistrationType" name="RegistrationType" data-native-menu="false" data-inline="false">
                             <option value="" data-placeholder="true"></option>
-                            <option value="Beneficiary">Beneficiary</option>
-                            <option value="Donor">Donor</option>
-                            <option value="Driver">Driver</option>
+                            <option value="Beneficiary">Charity Organization</option>
+                            <option value="Donor">Donor Organization</option>
+                            <option value="Driver">Volunteer Driver</option>
                         </select>
                     </div>
                 </div>
