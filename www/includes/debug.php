@@ -1,3 +1,5 @@
+<?php if (ENV == 'local') { ?>
+
 <style>
     .debugtable {
         border: 1px solid;
@@ -8,7 +10,7 @@
         font-size: 10px;
         box-shadow: black 6px 6px 10px;
         background: #ecdec8d9;
-        z-index: 2000;    
+        z-index: 2000;
     }
 
     .debugtable th, td {
@@ -23,3 +25,5 @@
     <tr><td>Member Status</td><td><?php echo $_SESSION['MemberStatus'].' ('.$_SESSION['MemberStatusID'].')' ?></td></tr>
     <tr><td>Company</td><td><?php echo $_SESSION['Company'].' ('.$_SESSION['CompanyID'].')' ?></td></tr>
 </table>
+
+<?php } ?>
