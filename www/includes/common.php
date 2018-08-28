@@ -1,6 +1,10 @@
 <?php
     session_start();
-    $root = 'http://' . $_SERVER["SERVER_NAME"];
+
+    $protocol = 'http';
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') { $protocol .= 's'; }
+    $root = $protocol . '://' . $_SERVER["SERVER_NAME"];
+    
     $top = Utilities::DeterminePathToTop();
     $showBanner = true; // this is the default value. Override on any page if necessary.
 

@@ -92,6 +92,7 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
 
 [id^=companySettingsSchedule_Day] {
     color: gray;
+    display: inline-block;
 }
 
 .timeslot .times {

@@ -46,13 +46,13 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td id="companySettingsSchedule_Day2"></td>
-                        <td id="companySettingsSchedule_Day3"></td>
-                        <td id="companySettingsSchedule_Day4"></td>
-                        <td id="companySettingsSchedule_Day5"></td>
-                        <td id="companySettingsSchedule_Day6"></td>
-                        <td id="companySettingsSchedule_Day7"></td>
-                        <td id="companySettingsSchedule_Day1"></td>
+                        <td><div id="companySettingsSchedule_Day2"></div></td>
+                        <td><div id="companySettingsSchedule_Day3"></div></td>
+                        <td><div id="companySettingsSchedule_Day4"></div></td>
+                        <td><div id="companySettingsSchedule_Day5"></div></td>
+                        <td><div id="companySettingsSchedule_Day6"></div></td>
+                        <td><div id="companySettingsSchedule_Day7"></div></td>
+                        <td><div id="companySettingsSchedule_Day1"></div></td>
                     </tr>
                 </tbody>
             </table>

@@ -1,4 +1,4 @@
-<?php if (ENV == 'local') { ?>
+<?php if (DEBUG) { ?>
 
 <style>
     .debugtable {

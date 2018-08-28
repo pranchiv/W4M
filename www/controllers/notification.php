@@ -115,7 +115,7 @@ class NotificationController {
                 $result = array('error' => false, 'subject' => $subject, 'body' => $description, 'recipients' => $DBResult);
             } else {
                 foreach ($DBResult as $row) {
-                    sendEmail($row["TextAddress"], $subject, $description);
+                    self::sendEmail($row["TextAddress"], $subject, $description);
                 }
 
                 $result = array('error' => false);
