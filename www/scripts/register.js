@@ -22,15 +22,20 @@ $(document).on('click', '#register_registerButton', function(e) {
         $('#register_registerError').html('ZIP ' + zip + ' is out of our current range.');
     } else {
         $.post('../controllers/company.php?action=startRegistration', $('#register_form').serialize(), function(data) {
-            var nextPage = '';
-
-            if (regType == 'Driver') {
-                nextPage = 'registerMember';
+            if (data.error) {
+                // don't proceed
+                $('#register_registerError').html('Invalid');
             } else {
-                nextPage = 'registerCompany';
-            }
+                var nextPage = '';
 
-            $(':mobile-pagecontainer').pagecontainer('change', '/pages/' + nextPage + '.php', { transition: 'flip' } );
+                if (regType == 'Driver') {
+                    nextPage = 'registerMember';
+                } else {
+                    nextPage = 'registerCompany';
+                }
+
+                $(':mobile-pagecontainer').pagecontainer('change', '/pages/' + nextPage + '.php', { transition: 'flip' } );
+            }
         }, 'json');
     }
 });

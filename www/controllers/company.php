@@ -15,10 +15,27 @@ if (Utilities::PageWasCalledDirectly('company')) {
 
 class CompanyController {
     public function startRegistration() {
-        $_SESSION['RegistrationType'] = $_POST['RegistrationType'];
-        $_SESSION['Zip'] = $_POST['Zip'];
+        $error = false;
 
-        echo true;
+        switch ($_POST['RegistrationType']) {
+            case 'Driver':
+            case 'Donor':       
+            case 'Beneficiary': 
+                // valid
+                break;
+            default:
+                // someone trying to hack
+                $error = true;
+                break;
+        }
+
+        if (! $error) {
+            $_SESSION['RegistrationType'] = $_POST['RegistrationType'];
+            $_SESSION['Zip'] = $_POST['Zip'];
+        }
+
+        $result = array('error' => $error);
+        return Utilities::ReturnAppropriateResult('company', $result);
     }
 
     public function register() {
