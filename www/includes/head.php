@@ -5,7 +5,7 @@
 <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 <script src="<?= $root ?>/scripts/jquery.toast.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/js/swiper.min.js"></script>
-<script src="<?= $root ?>/scripts/common.js"></script>
+<script src="<?= $root ?>/scripts/common.js?3"></script>
 <script src="<?= $root ?>/scripts/admin.js"></script>
 <script src="<?= $root ?>/scripts/register.js"></script>
 <script src="<?= $root ?>/scripts/company.js"></script>

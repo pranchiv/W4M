@@ -105,7 +105,11 @@ function FormatDate(dateString, includeDate, includeTime) {
     
     if (dateString) {
         if (!dateString.includes(' ')) { dateString = '01-01-01 ' + dateString; }
-        d = new Date(dateString);
+
+        // Apply each element to the Date function
+        var t = dateString.split(/[- :]/);
+        var temp = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+        d = new Date(temp);
     } else {
         d = new Date();
     }
