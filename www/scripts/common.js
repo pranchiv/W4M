@@ -36,7 +36,7 @@ $(document).on('click', '#login_button', function(e) {
         if (data.error) {
             $('#login_error').html(data.errorMessage);
         } else {
-            $('#login_error').html(data.errorMessage);
+            $('#login_error').html('');
 
             $(':mobile-pagecontainer').pagecontainer('change', '/' + data.nextPage, { transition: 'flip' } );
         }
@@ -99,6 +99,10 @@ function ShowToastFromNotificationSend(data) {
     }
 }
 
+function FormatPhone(phoneNumber) {
+    return phoneNumber.replace(/(\d{3})(\d{3})/, '$1-$2-');
+}
+
 function FormatDate(dateString, includeDate, includeTime) {
     var result = '';
     var d, month, day, year, hr, min, ampm;
@@ -143,4 +147,8 @@ function FormatDate(dateString, includeDate, includeTime) {
     }
 
     return result;
+}
+
+function GetDayOfWeek(dayNumber) {
+    return ['PLACEHOLDER','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][dayNumber];
 }

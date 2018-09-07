@@ -51,7 +51,7 @@ $(document).on('click', '#registerCompany_registerButton', function(e) {
         } else if (data.exists) {
             $('#registerCompany_registerError').html('Error: "' + name + '" already exists.');
         } else {
-            $('#registerCompany_registerError').html('Company created (ID ' + data.company.CompanyID + ')');
+            $('#registerCompany_registerError').html('');
             if (data.notifications) { ShowToastFromNotificationSend(data.notifications); }
             $(':mobile-pagecontainer').pagecontainer('change', '/pages/registerMember.php', { transition: 'flip' } );
         }
@@ -77,7 +77,7 @@ $(document).on('click', '#registerMember_registerButton', function(e) {
             }
             $('#registerMember_registerError').html($error);
         } else {
-            $('#registerMember_registerError').html('Member created (ID ' + data.member.MemberID + ')');
+            $('#registerMember_registerError').html('');
             if (data.notifications) { ShowToastFromNotificationSend(data.notifications); }
             $(':mobile-pagecontainer').pagecontainer('change', '/' + data.nextPage, { transition: 'flip' } );
         }

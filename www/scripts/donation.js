@@ -156,6 +156,25 @@ $(document).on('pagecreate', '#donationHistory_page', function() {
         }
     }, 'json');
 });
+
+$(document).on('click', '.toggleFails', function() {
+    var show = ($(this).attr('title') == 'Show Fails');
+    var $fails = $('#donation_History .donationCard').not('.Received');
+    var newClass = 'ui-btn-a';
+    var oldClass = 'ui-btn-b';
+
+    if (show) {
+        newClass = 'ui-btn-b';
+        oldClass = 'ui-btn-a';
+        $fails.show();
+    } else {
+        $fails.hide();
+    }
+
+    $(this).addClass(newClass).removeClass(oldClass);
+    $(this).attr('title', (show ? 'Hide Fails' : 'Show Fails'));
+    $(this).attr('title', (show ? 'Hide Fails' : 'Show Fails'));
+});
 /////////////////////////////////
 
 $(document).on('click', '.donationCard', function(e) {

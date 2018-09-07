@@ -96,6 +96,12 @@ class CompanyController {
         $active = ($active == null ? 'null' : $db->real_escape_string($active));
         $DBResult = DB::callProcWithRecordset("CALL GetCompanies($status, $active)");
 
+        /* GetCompanies returns 3 recordsets:
+            [0] companies
+            [1] donation types
+            [2] schedules
+        */
+
         if (is_null($DBResult)) {
             $isError = true;
             $message = $db->error;

@@ -5,9 +5,10 @@
 <html>
 <head>
     <?php include($top."includes/head.php"); ?>
-    <!-- <script src="<?= $top ?>scripts/admin.js"></script> -->
 </head>
 <body>
+
+<?php require_once($top."connection.php"); ?>
 
 <div id="admin_page" data-role="page">
     <div data-role="header" data-position="fixed">
@@ -48,9 +49,7 @@
                 <h3>Active Members</h3>
             </div>
             <div class="ui-body ui-body-a">
-                <form id="admin_memberList_form">
-                    <?php include($top."includes/memberListActive.php"); ?>
-                </form>
+                <?php include($top."includes/memberListActive.php"); ?>
             </div>
         </div>
         <div class="ui-corner-all custom-corners">
@@ -68,14 +67,6 @@
                         <div id="admin_activeCompanies_Beneficiaries" class="companyCardContainer"></div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="ui-corner-all custom-corners">
-            <div class="ui-bar ui-bar-b">
-                <h3>Active Donations</h3>
-            </div>
-            <div class="ui-body ui-body-a">
-                <div id="admin_activeDonations" class="donationCardContainer"></div>
             </div>
         </div>
 

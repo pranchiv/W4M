@@ -21,6 +21,16 @@ $(document).on('click', '#admin_memberList_denyButton', function() {
     UpdateSelectedMemberStatuses(4);
 });
 
+$(document).on('click', '.companyCard .settingsicon', function(e) {
+    var $settings = $(this).parent().find('.settings');
+
+    if ($settings.is(':visible')) {
+        $settings.slideUp();
+    } else {
+        $settings.slideDown();
+    }
+});
+
 function LoadProspectiveCompanyList(message) {
     var companyColumns = ['[checkbox=CompanyID]', 'CreateDate', 'CompanyID', 'Type', 'Name', 'Address', 'City', 'ZIP', 'Phone', 'MemberCount'];
     var $companyTablebody = $('#companyList_table tbody');
@@ -35,13 +45,17 @@ function LoadProspectiveCompanyList(message) {
 
         if (data.error) {
             message = (message ? message + '<br/>': '') + data.message;
-        } else if (data.data.length == 0) {
-            if (!message) { message = 'no matching companies found'; }
         } else {
-            message = (message ? message + '<br/>': '') + data.data.length + ' matching companies found';
-            var dataRows = BuildHtmlTableFromJson(data.data, companyColumns);
-            $companyTablebody.html(dataRows);
-            $('#companyList_table').table('refresh');
+            var companies = data.data[0];
+
+            if (companies.length == 0) {
+                if (!message) { message = 'no matching companies found'; }
+            } else {
+                message = (message ? message + '<br/>': '') + companies.length + ' matching companies found';
+                var dataRows = BuildHtmlTableFromJson(companies, companyColumns);
+                $companyTablebody.html(dataRows);
+                $('#companyList_table').table('refresh');
+            }            
         }
 
         $companyTablefoot.find('.message td').html(message);
@@ -91,18 +105,55 @@ function LoadActiveCompanyList() {
             $('#admin_activeCompanies_Donors').empty();
             $('#admin_activeCompanies_Beneficiaries').empty();
 
-            $.each(data.data, function(i, company) {
+            var companies       = data.data[0];
+            var donationTypes   = data.data[1];
+            var schedules       = data.data[2];
+
+            $.each(companies, function(i, company) {
                 var address = (company['Address1'] || '') + ' ' 
                             + (company['Address2'] || '') + ' ' 
                             + (company['City'] || '')
                             + (company['ZIP'] ? ' (' + company['ZIP'] + ')' : '');
 
+                var settings = '';
+                var types = '';
+                var schedule = '';
+                var typesArray = $.grep(donationTypes,   function(item) { return item['CompanyID'] == company['CompanyID']; });
+                var schedArray = $.grep(schedules,       function(item) { return item['CompanyID'] == company['CompanyID']; });
+
+                if (company['PrimaryContactID']) {
+                    settings += '<div><b>Primary:</b> ' + company['PrimaryFirstName'] + ' ' + company['PrimaryLastName']
+                              + ' (' + FormatPhone(company['PrimaryPhone']) + ', ' + company['PrimaryEmail'] + ')'
+                              + '</div>';
+                }
+
+                if (company['SecondaryContactID']) {
+                    settings += '<div><b>Secondary:</b> ' + company['SecondaryFirstName'] + ' ' + company['SecondaryLastName']
+                              + ' (' + FormatPhone(company['SecondaryPhone']) + ', ' + company['SecondaryEmail'] + ')'
+                              + '</div>';
+                }
+
+                $.each(schedArray, function(i, schedTime) {
+                    var startTime = FormatDate(schedTime['StartTime'], false, true);
+                    var endTime = FormatDate(schedTime['EndTime'], false, true);
+                    schedule += '<br/>' + GetDayOfWeek(schedTime['DayOfWeek']) + ' ' + startTime + ' - ' + endTime;
+                });
+                if (schedule != '') { settings += '<div><b>Schedule:</b> ' + schedule + '</div>'; }
+
+                $.each(typesArray, function(i, dtype) {
+                    if (i > 0) { types += ', '; }
+                    types += dtype['Name'];
+                });
+                if (types != '') { settings += '<div><b>Donation Types:</b> ' + types + '</div>'; }
+
                 var card = '<div class="companyCard ' + company['Status'] + '">\r\n'
+                                + '<a href="#" class="ui-shadow ui-corner-all ui-icon-gear ui-btn-icon-notext settingsicon">Settings</a>\r\n'
                                 + '<div class="name">' + company['Name'] + '</div>\r\n'
                                 + '<div class="address">' + address + '</div>\r\n'
                                 + '<div class="phone">' + (company['Phone'] || '') + '</div>\r\n'
                                 + '<div class="memberCountContainer">MEMBERS <div class="memberCount">' + company['MemberCount'] + '</div></div>\r\n'
                                 + '<div class="donationCountContainer">DONATIONS <div class="donationCount">' + company['DonationCount'] + '</div></div>\r\n'
+                                + '<div class="settings">' + settings + '</div>\r\n'
                          + '</div>\r\n';
 
                 if (company['CompanyTypeID'] == 1) {
@@ -111,6 +162,8 @@ function LoadActiveCompanyList() {
                     $('#admin_activeCompanies_Beneficiaries').append(card);
                 }
             });
+
+            $('#admin_activeCompanies_Donors, #admin_activeCompanies_Beneficiaries').trigger('create');
         }
     }, 'json');
 }

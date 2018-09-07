@@ -25,6 +25,22 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
     text-transform: uppercase;
 }
 
+.header a, .header a:visited {
+    color: #f8e2b9;
+    text-decoration: none;
+}
+
+.header a:hover {
+    color: white;
+}
+
+.header .menu {
+    margin: 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
 .logout {
     cursor: pointer;
 }
@@ -152,17 +168,35 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
 
 .companyCard {
     width: 250px;
-    min-height: 90px;
+    min-height: 170px;
     border: 1px solid gray;
     border-radius: 8px;
     margin-bottom: 16px;
     padding: 4px;
     box-shadow: black 6px 6px 12px;
     background: #f5e1c9;
+    position: relative;
 }
 
 .companyCard.Active {
     background: lightgreen;
+}
+
+.companyCard .settingsicon {
+    position: absolute;
+    top: 0px;
+    right: 0px;    
+}
+
+.companyCard .settings {
+    display: none;
+    clear: both;
+    width: 242px;
+    background: #e6e5db;
+    border-top: 1px solid gray;
+    margin-top: 4px;
+    padding: 4px;
+    font-size: 11px;
 }
 
 .companyCard .name {
@@ -196,6 +230,7 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    align-items: flex-start;
 }
 
 .donationCardContainer {
@@ -203,6 +238,7 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
     flex-wrap: wrap;
     justify-content: center;
     align-content: flex-start;
+    align-items: flex-start;
 }
 
 .donationCardContainer > * {
@@ -237,6 +273,14 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
 
 .donationCard.PickedUp .title {
     background: #13523e;
+}
+
+.donationCard.Received .title {
+    background: #22bb4b;
+}
+
+.donationCard.Canceled .title {
+    background: rgb(109, 109, 109);
 }
 
 .donationCard .title a {
