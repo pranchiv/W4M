@@ -15,6 +15,8 @@ $body = 'New company registered';
 $headers = "From: admin@wheels4meals.org" . PHP_EOL;
 $headers .= "Cc: brimer@gmail.com" . PHP_EOL;
 
+$body .= ' ' . PHP_EOL . 'http://wheels4meals.org';
+
 try {
     $isError = ! mail($to, $subject, $body, $headers);
 } catch (Exception $ex) {

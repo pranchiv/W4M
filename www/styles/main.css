@@ -343,6 +343,14 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
     font-weight: bold;
 }
 
+.maplink {
+    display: inline-block;
+}
+
+.maplink img {
+    vertical-align: bottom;
+}
+
 /* responsive grids */
 .responsive-grid.padded .ui-block-b,
 .responsive-grid.padded .ui-block-c,

@@ -1,5 +1,5 @@
 <div class="header">
-    <a href="<?= $root ?>" data-ajax="false"><img src="<?= $root ?>/images/logo.svg" height="40px;" /></a>
+    <a href="<?= $root ?>" data-ajax="false"><img src="<?= $root ?>/images/logo.svg" style="height:40px;" /></a>
 
     <?php if ($_SESSION['MemberTypeID'] == 1) { ?>
         <div class="menu" style="flex-grow: 1;">
