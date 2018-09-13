@@ -43,7 +43,7 @@ class MemberController {
         $FirstName  = $db->real_escape_string($_POST['FirstName']);
         $LastName   = $db->real_escape_string($_POST['LastName']);
         $Email      = $db->real_escape_string($_POST['Email']);
-        $CellNumber = $db->real_escape_string($_POST['CellNumber']);
+        $CellNumber = preg_replace('/\D/', '', $_POST['CellNumber']); // special treatment: remove anything that's not a digit
         $CarrierID  = $db->real_escape_string($_POST['CellCarrier']);
         $Username   = $db->real_escape_string($_POST['Username']);
     

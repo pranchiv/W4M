@@ -136,7 +136,7 @@ class NotificationController {
         $headers = "From: admin@wheels4meals.org" . PHP_EOL;
         $headers .= "Cc: brian@brimer.net" . PHP_EOL;
 
-        $body .= ' ' . PHP_EOL . 'http://wheels4meals.org';
+        $body .= ' ' . PHP_EOL . 'https://wheels4meals.org';
 
         try {
             $isError = ! mail($to, $subject, $body, $headers);

@@ -56,7 +56,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div id="companySettingsSchedule_Error" class="error" style="margin: 6px 4px;"></div>
+            <div id="companySettingsSchedule_Error" class="errormessage" style="margin: 6px 4px;"></div>
 
             <button id="companySettingsSchedule_AddModeButton" class="ui-btn ui-btn-b ui-corner-all ui-btn-inline">Add a Time Period</button>
 
@@ -120,7 +120,7 @@
 
                 <button id="companySettingsSchedule_AddButton" class="ui-btn ui-btn-b ui-corner-all ui-btn-inline">Add</button>
 
-                <div id="companySettings_Error" class="error" style="margin: 6px 4px;"></div>
+                <div id="companySettings_Error" class="errormessage" style="margin: 6px 4px;"></div>
             </form>
 
             <h4>What types of donations would <?= $_SESSION['Company'] ?> like to receive?</h4>
@@ -140,7 +140,7 @@
             </form>
 
             <button id="companySettingsDonationTypes_button" class="ui-btn ui-btn-b ui-corner-all ui-btn-inline">Save Donation Types</button>
-            <div id="companySettingsDonationTypes_Error" class="error" style="margin: 6px 4px;"></div>
+            <div id="companySettingsDonationTypes_Error" class="errormessage" style="margin: 6px 4px;"></div>
         </div>
     </div><!-- /content -->
 

@@ -100,7 +100,7 @@ function ShowToastFromNotificationSend(data) {
 }
 
 function FormatPhone(phoneNumber) {
-    return phoneNumber.replace(/(\d{3})(\d{3})/, '$1-$2-');
+    return phoneNumber ? phoneNumber.replace(/(\d{3})(\d{3})/, '$1-$2-') : '--';
 }
 
 function FormatDate(dateString, includeDate, includeTime) {

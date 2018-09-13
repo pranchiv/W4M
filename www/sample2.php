@@ -71,7 +71,7 @@
 
             <button id="sample_notificationButton" class="ui-btn ui-btn-b ui-corner-all" data-env="<?= ENV; ?>">Generate Notification(s)</button>
 
-            <div id="register_registerError" class="error" style="margin: 6px 4px;"></div>
+            <div id="register_registerError" class="errormessage" style="margin: 6px 4px;"></div>
 
             <?php
             DB::closeConnection();

@@ -3,11 +3,50 @@ $(document).on('pagecreate', '#register_page', function() {
 });
 
 $(document).on('pagecreate', '#registerCompany_page', function() {
-
+    $('#registerCompany_form').validate({
+        rules: {
+            CompanyName: { required: true, maxlength: 80 },
+            Address1: { required: true, maxlength: 40 },
+            Address2: { maxlength: 40 },
+            City: { required: true, letterswithbasicpunc: true, maxlength: 40 },
+            Phone: { required: true, phoneUS: true }
+        },
+        errorPlacement: function (error, element) {
+            error.appendTo(element.parent().parent());
+        },
+        submitHandler: function (form) {
+            // form is valid
+            RegisterCompany();
+            return false; 
+        }
+    });
 });
 
 $(document).on('pagecreate', '#registerMember_page', function() {
+    $('#registerMember_form').validate({
+        rules: {
+            FirstName: { required: true, letterswithbasicpunc: true, maxlength: 40 },
+            LastName: { required: true, letterswithbasicpunc: true, maxlength: 40 },
+            Email: { required: true, email: true, maxlength: 100 },
+            CellNumber: { required: true, phoneUS: true },
+            CellCarrier: { required: true },
+            Username: { required: true, minlength: 5, maxlength: 30 },
+            Password: { required: true, minlength: 8, maxlength: 64 },
+            ConfirmPassword: { required: true, equalTo: '#registerMember_Password' }
+        },
+        errorPlacement: function (error, element) {
+            error.appendTo(element.parent().parent());
+        },
+        submitHandler: function (form) {
+            // form is valid
+            RegisterMember();
+            return false; 
+        }
+    });
 
+    $.validator.addMethod('selected', function (value) {
+        return (value != '0');
+    }, 'This field is required.');
 });
 
 $(document).on('click', '#register_registerButton', function(e) {
@@ -40,10 +79,7 @@ $(document).on('click', '#register_registerButton', function(e) {
     }
 });
 
-$(document).on('click', '#registerCompany_registerButton', function(e) {
-    e.preventDefault();
-    var name = $('#registerCompany_Name').val();
-
+function RegisterCompany() {
     $.post('/controllers/company.php?action=register', $('#registerCompany_form').serialize(), function(data) {
 
         if (data.error) {
@@ -57,14 +93,12 @@ $(document).on('click', '#registerCompany_registerButton', function(e) {
         }
 
     }, 'json');
-});
+}
 
-$(document).on('click', '#registerMember_registerButton', function(e) {
-    e.preventDefault();
+function RegisterMember() {
     var name = $('#registerMember_FirstName').val() + ' ' + $('#registerMember_LastName').val();
 
     $.post('/controllers/member.php?action=register', $('#registerMember_form').serialize(), function(data) {
-
         if (data.error) {
             $('#registerMember_registerError').html(data.errorMessage);
         } else if (data.exists) {
@@ -83,4 +117,4 @@ $(document).on('click', '#registerMember_registerButton', function(e) {
         }
 
     }, 'json');
-});
+}

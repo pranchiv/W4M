@@ -77,10 +77,21 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
     font-style: italic;
 }
 
-.error {
+.errormessage {
     color: red;
     font-style: italic;
     font-size: 12px;
+}
+
+/* produced by jQuery Validate */
+form label.error {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    width: auto;
+    color: red;
+    font-style: italic;
+    font-size: 14px;
 }
 
 /* forms */
@@ -171,7 +182,7 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
     min-height: 170px;
     border: 1px solid gray;
     border-radius: 8px;
-    margin-bottom: 16px;
+    margin: 0px 8px 16px 0px;
     padding: 4px;
     box-shadow: black 6px 6px 12px;
     background: #f5e1c9;

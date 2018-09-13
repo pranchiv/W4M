@@ -56,6 +56,8 @@ $(document).on('click', '#donation_AddButton', function(e) {
             $('#donation_AddError').html(data.message);
         } else {
             $('#donation_AddError').html(data.message);
+            ResetDonationForm();
+
             if (data.notifications) { ShowToastFromNotificationSend(data.notifications); }
             
             if (! LoadDonationData($('#donation_Pending'), data.data, 'Donor')) {
@@ -63,6 +65,11 @@ $(document).on('click', '#donation_AddButton', function(e) {
             }
         }
     }, 'json');
+});
+
+$(document).on('click', '#donation_ResetButton', function(e) {
+    e.preventDefault();
+    ResetDonationForm();
 });
 /////////////////////////////////
 
@@ -398,4 +405,11 @@ function BuildCardAddress(role, companyName, address1, address2, city, state, zi
     }
 
     return result;
+}
+
+function ResetDonationForm() {
+    $('#donation_pickuptime').val('0').selectmenu('refresh', true);
+    $('#donation_form input[type="checkbox"]').attr('checked', false).checkboxradio('refresh');
+    $('#donation_boxes').val('');
+    $('#donation_weight').val('');
 }

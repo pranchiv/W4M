@@ -73,14 +73,14 @@
                             $cellCarriers = DB::callProcWithRecordset('CALL GetCellCarriers()');
 
                             if (is_null($cellCarriers)) {
-                                echo '<p style="color: red; font-style: italic;">GetCellCarriers() query failed</p>' . "\n";
+                                echo '<p style="color: red; font-style: italic;">couldn\'t get cell carriers</p>' . "\n";
                             } else {
                                 ?>
                                 <div class="ui-field-contain">
                                     <label for="CellCarrier">Cell Carrier:</label>
 
                                     <select id="registerMember_CellCarrier" name="CellCarrier" data-native-menu="false" data-inline="false">
-                                        <option value="0" data-placeholder="true"></option>
+                                        <option value="" data-placeholder="true"></option>
 
                                         <?php foreach ($cellCarriers as $row) { ?>
                                             <option value="<?= $row["CellCarrierID"]; ?>"><?= $row["Name"]; ?></option>
@@ -105,11 +105,16 @@
                             <input type="password" id="registerMember_Password" name="Password">
                         </div>
                     </div>
+                    <div class="ui-block-c">
+                        <div class="ui-field-contain">
+                            <label for="ConfirmPassword">Confirm Password:</label>
+                            <input type="password" id="registerMember_ConfirmPassword" name="ConfirmPassword">
+                        </div>
+                    </div>
                 </div>
 
-                <button id="registerMember_registerButton" class="ui-btn ui-btn-b ui-corner-all ui-btn-inline">Register Member</button>
-
-                <div id="registerMember_registerError" class="error" style="margin: 6px 4px;"></div>
+                <button type="submit" id="registerMember_registerButton" class="ui-btn ui-btn-b ui-corner-all ui-btn-inline">Register Member</button>
+                <div id="registerMember_registerError" class="errormessage" style="margin: 6px 4px;"></div>
             </form>
         </div>
     </div><!-- /content -->

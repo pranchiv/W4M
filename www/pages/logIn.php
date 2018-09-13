@@ -20,7 +20,7 @@
             <input type="text" id="login_username" name="Username" placeholder="username">
             <input type="password" id="login_password" name="Password" placeholder="password">
             <button id="login_button" class="ui-btn ui-btn-b ui-corner-all">Log In</button>
-            <div id="login_error" class="error" style="margin: 6px 4px;"></div>
+            <div id="login_error" class="errormessage" style="margin: 6px 4px;"></div>
 
             <label><input type="checkbox" id="login_persist" name="Persist">Keep me signed in</label>
             <a href="#">Forgot password?</a>

@@ -179,7 +179,7 @@ function UpdateSelectedCompanyStatuses(status) {
 
     $.post('/controllers/company.php?action=updateStatus', { status: status, selected: selected }, function(data) {
         if (data.error) {
-            $('#companyList_table .message td').html('<span class="error">' + data.message + '</span>');
+            $('#companyList_table .message td').html('<span class="errormessage">' + data.message + '</span>');
         } else {
             LoadProspectiveCompanyList(data.data[0]['count'] + ' companies updated');
             LoadMemberList(1);
@@ -199,7 +199,7 @@ function UpdateSelectedMemberStatuses(status) {
 
     $.post('/controllers/member.php?action=updateStatus', { status: status, selected: selected }, function(data) {
         if (data.error) {
-            $('#memberListProspective_table .message td').html('<span class="error">' + data.message + '</span>');
+            $('#memberListProspective_table .message td').html('<span class="errormessage">' + data.message + '</span>');
         } else {
             LoadMemberList(1, data.data[0]['count'] + ' members updated');
             LoadMemberList(2);
