@@ -96,10 +96,16 @@ class MemberController {
                 $isError = true;
                 $errorMessage = $db->error;
             } else {
-                if (count($DBResult) > 0) {
-                    $row = $DBResult[0];
+                $member = $DBResult[0];
+                $credentials = $DBResult[1];
+                $filter_type1 = self::filter_by_credentialtype(1);
+                $login_credentials = array_filter($credentials, $filter_type1);
 
-                    if (password_verify($password, $row["Password"])) {
+                if (count($member) > 0 && count($login_credentials) > 0) {
+                    $row = $member[0];
+                    $cred = $login_credentials[0];
+
+                    if (password_verify($password, $cred["Credential"])) {
                         $isError = false;
                         $errorMessage = "login successful (MemberID ".$row["MemberID"].")";
                         self::setSessionVariables($row);
@@ -128,6 +134,10 @@ class MemberController {
     public static function logOut() {
         self::setSessionVariables(null);
         return Utilities::ReturnAppropriateResult('member', true);
+    }
+
+    private static function filter_by_credentialtype($type) {
+        return function($test) use($type) { return ($test['CredentialTypeID'] == $type); };
     }
 
     private static function setSessionVariables($member) {
