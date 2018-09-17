@@ -23,7 +23,7 @@
             <div id="login_error" class="errormessage" style="margin: 6px 4px;"></div>
 
             <label><input type="checkbox" id="login_persist" name="Persist">Keep me signed in</label>
-            <a href="#">Forgot password?</a>
+            <a href="#" style="display: block; width: 100%; text-align: center;">Forgot password?</a>
         </form>
 
         <?php /* MemberController::logIn('', '') */ ?>

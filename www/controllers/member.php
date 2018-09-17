@@ -76,7 +76,7 @@ class MemberController {
         return Utilities::ReturnAppropriateResult('member', $result);
     }
 
-    public static function logIn($username = null, $password = null) {
+    public static function logIn($username = null, $password = null, $persist = null) {
         $result = null;
         $isError = false;
         $errorMessage = '';
@@ -87,6 +87,7 @@ class MemberController {
         try {
             if (!isset($username)) { $username = $_POST['Username']; }
             if (!isset($password)) { $password = $_POST['Password']; }
+            if (!isset($persist)) { $persist = array_key_exists('Persist', $_POST); }
 
             $username = $db->real_escape_string($username);
             $password = $db->real_escape_string($password);
@@ -98,7 +99,7 @@ class MemberController {
             } else {
                 $member = $DBResult[0];
                 $credentials = $DBResult[1];
-                $filter_type1 = self::filter_by_credentialtype(1);
+                $filter_type1 = self::filterByCredentialType(1);
                 $login_credentials = array_filter($credentials, $filter_type1);
 
                 if (count($member) > 0 && count($login_credentials) > 0) {
@@ -106,6 +107,8 @@ class MemberController {
                     $cred = $login_credentials[0];
 
                     if (password_verify($password, $cred["Credential"])) {
+                        if ($persist) { self::setPersistLogin($row["MemberID"]); }
+
                         $isError = false;
                         $errorMessage = "login successful (MemberID ".$row["MemberID"].")";
                         self::setSessionVariables($row);
@@ -133,10 +136,116 @@ class MemberController {
 
     public static function logOut() {
         self::setSessionVariables(null);
+        self::unsetPersistLogin();
         return Utilities::ReturnAppropriateResult('member', true);
     }
 
-    private static function filter_by_credentialtype($type) {
+    private static function setPersistLogin($memberID) {
+        $result = false;
+        $isError = false;
+        $errorMessage = '';
+
+        $token = self::generateToken();
+        $db = DB::getInstance();
+
+        try {
+            $hashtoken = password_hash($token, PASSWORD_DEFAULT);
+
+            // credential type 2 = persist
+            $DBResult = DB::callProcWithRecordset("CALL SetMemberCredential($memberID, 2, '$hashtoken', null)");
+
+            $cookieval = $token.str_pad($memberID, 3, '0', STR_PAD_LEFT);
+            $expiration = strtotime('+10 years'); // store cookie for 10 years
+            $domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
+
+            setcookie('persist', $cookieval, $expiration, '/', $domain, false);
+            $result = true;
+
+        } catch (Exception $ex) {
+            $isError = true;
+            $errorMessage = $ex->getMessage();
+        } catch (Error $er) {
+            $isError = true;
+            $errorMessage = 'ERROR: dunno';
+        }
+
+        return $result;
+    }
+
+    public static function usePersistLoginIfValid() {
+        if (isset($_COOKIE['persist'])) {
+            $isError = false;
+            $errorMessage = '';
+            $cookie = $_COOKIE['persist'];
+            $token = substr($cookie, 0, -3);
+            $memberID = substr($cookie, -3);
+
+            try {
+                $db = DB::getInstance();
+                $DBResult = DB::callProcWithRecordset("CALL GetMember($memberID, null)");
+
+                if (is_null($DBResult)) {
+                    $isError = true;
+                    $errorMessage = $db->error;
+                } else {
+                    $member = $DBResult[0];
+                    $credentials = $DBResult[1];
+                    $filter_type2 = self::filterByCredentialType(2);
+                    $persist_credentials = array_filter($credentials, $filter_type2);
+
+                    if (count($member) > 0 && count($persist_credentials) > 0) {
+                        $row = $member[0];
+                        $match = false;
+
+                        foreach ($persist_credentials as $cred) {
+                            if (password_verify($token, $cred["Credential"])) {
+                                $match = true;
+                                break;
+                            }
+                        }
+
+                        if ($match) {
+                            $isError = false;
+                            $errorMessage = "persist successful (MemberID ".$row["MemberID"].")";
+                            self::setSessionVariables($row);
+                        } else {
+                            $isError = true;
+                            $errorMessage = "token does not match";
+                        }
+                } else {
+                        $isError = true;
+                        $errorMessage = "no account matches those credentials";
+                    }
+
+                    // if this cookie doesn't match a valid member or credential anymore, get rid of it
+                    if ($isError) { self::unsetPersistLogin(); }
+                }
+            } catch (Exception $ex) {
+                $isError = true;
+                $errorMessage = $ex->getMessage();
+            } catch (Error $er) {
+                $isError = true;
+                $errorMessage = 'ERROR: dunno';
+            }
+        }
+    }
+
+    private static function unsetPersistLogin() {
+        if (isset($_COOKIE['persist'])) {
+            // also should clear from DB, since it can't be used anymore once the cookie is cleared
+
+            unset($_COOKIE['persist']);
+
+            $domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
+            setcookie('persist', '', 1, '/', $domain, false); // set it to expire
+        }
+    }
+
+    private static function generateToken($length = 20) {
+        return bin2hex(random_bytes($length));
+    }
+
+    private static function filterByCredentialType($type) {
         return function($test) use($type) { return ($test['CredentialTypeID'] == $type); };
     }
 

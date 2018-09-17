@@ -130,13 +130,10 @@ class NotificationController {
         $isError = false;
         $errorMessage = '';
 
-        //$to = 'brimer@gmail.com';
-        //$subject = 'Notification from W4M';
-        //$body = 'New company registered: ' . $_POST['CompanyName'];
         $headers = "From: admin@wheels4meals.org" . PHP_EOL;
-        $headers .= "Cc: brian@brimer.net" . PHP_EOL;
+        //$headers .= "Cc: brian@brimer.net" . PHP_EOL;
 
-        $body .= ' ' . PHP_EOL . 'https://wheels4meals.org';
+        $body .= ' ' . PHP_EOL . 'https://wheels4meals.org/pages/logIn.php';
 
         try {
             $isError = ! mail($to, $subject, $body, $headers);
