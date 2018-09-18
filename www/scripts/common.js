@@ -29,6 +29,18 @@ $(document).on('pageshow', '[data-role=page]', function() {
     })
 });
 
+$(document).on('click', '#backtotop', function () {
+    $('body,html').animate({ scrollTop: 0 }, 600);
+});
+
+$(window).on('scrollstop', function () {
+    if ($(window).scrollTop() > 150) {
+        $('#backtotop').addClass('visible');
+    } else {
+        $('#backtotop').removeClass('visible');
+    }
+});
+
 $(document).on('click', '#login_button', function(e) {
     e.preventDefault();
 

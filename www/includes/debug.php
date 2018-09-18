@@ -10,7 +10,7 @@
         font-size: 10px;
         box-shadow: black 6px 6px 10px;
         background: #ecdec8d9;
-        z-index: 2000;
+        z-index: 1500;
     }
 
     .debugtable th, td {

@@ -10,7 +10,7 @@
 
     require_once($top.'controllers/member.php');
 
-    Utilities::VerifyPageAccess();
+    Utilities::VerifyPageAccess($root.'/');
     
     class Utilities {
         public static function DeterminePathToTop() {
@@ -21,7 +21,7 @@
             return $result;
         }
 
-        public static function VerifyPageAccess() {
+        public static function VerifyPageAccess($root_local) {
             $verified = false;
             $path = preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI']);
             $requestedpage = str_replace('.php', '', basename($path));
@@ -73,7 +73,7 @@
 
             // if they can't be here, send them to the most useful page
             if (! $verified) {
-                header('Location: '.$root.'/'.$redirectpage);
+                header('Location: '.$root_local.$redirectpage);
                 die();
             }
         }
