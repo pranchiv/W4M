@@ -1,4 +1,4 @@
-<?php $version = time(); ?>
+<?php $version = 7 ?>
 
 <title>Wheels4Meals</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">

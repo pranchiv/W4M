@@ -64,7 +64,7 @@ class MemberController {
             $member = $DBResult[0];
 
             if ($member['Exists'] == 0) {
-                self::setSessionVariables($member);
+                self::setSessionVariables($member, false);
                 $nextPage = self::determineStartPage();        
                 $notifications = NotificationController::send(null, NotificationType::NewMember, $_SESSION['MemberName']);
                 $result = array('error' => false, 'exists' => false, 'member' => $member, 'notifications' => $notifications, 'nextPage' => $nextPage);
@@ -101,6 +101,7 @@ class MemberController {
                 $credentials = $DBResult[1];
                 $filter_type1 = self::filterByCredentialType(1);
                 $login_credentials = array_filter($credentials, $filter_type1);
+                $login_credentials = array_values($login_credentials);
 
                 if (count($member) > 0 && count($login_credentials) > 0) {
                     $row = $member[0];
@@ -111,11 +112,11 @@ class MemberController {
 
                         $isError = false;
                         $errorMessage = "login successful (MemberID ".$row["MemberID"].")";
-                        self::setSessionVariables($row);
+                        self::setSessionVariables($row, false);
                         $nextPage = self::determineStartPage();
                     } else {
                         $isError = true;
-                        $errorMessage = "passwords do not match";
+                        $errorMessage = "invalid password";
                     }
                 } else {
                     $isError = true;
@@ -135,7 +136,7 @@ class MemberController {
     }
 
     public static function logOut() {
-        self::setSessionVariables(null);
+        self::setSessionVariables(null, false);
         self::unsetPersistLogin();
         return Utilities::ReturnAppropriateResult('member', true);
     }
@@ -207,7 +208,7 @@ class MemberController {
                         if ($match) {
                             $isError = false;
                             $errorMessage = "persist successful (MemberID ".$row["MemberID"].")";
-                            self::setSessionVariables($row);
+                            self::setSessionVariables($row, false);
                         } else {
                             $isError = true;
                             $errorMessage = "token does not match";
@@ -241,6 +242,121 @@ class MemberController {
         }
     }
 
+    public static function getAccount() {
+        $result = null;
+        $isError = false;
+        $errorMessage = '';
+        $memberID = $_SESSION['MemberID'];
+
+        $db = DB::getInstance();
+
+        try {
+            $DBResult = DB::callProcWithRecordset("CALL GetMember($memberID, null)");
+
+            if (is_null($DBResult)) {
+                $isError = true;
+                $errorMessage = $db->error;
+            } else {
+                $member = $DBResult[0];
+                $credentials = $DBResult[1];
+                $filter_type1 = self::filterByCredentialType(1);
+                $login_credentials = array_filter($credentials, $filter_type1);
+                $login_credentials = array_values($login_credentials);
+
+                if (count($member) > 0 && count($login_credentials) > 0) {
+                    $member = $member[0];
+                    $cred = $login_credentials[0];
+                    $isError = false;
+                } else {
+                    $isError = true;
+                    $errorMessage = "couldn't get account info";
+                }
+            }
+        } catch (Exception $ex) {
+            $isError = true;
+            $errorMessage = $ex->getMessage();
+        } catch (Error $er) {
+            $isError = true;
+            $errorMessage = 'ERROR: dunno';
+        }
+
+        $result = array('error' => $isError, 'errorMessage' => $errorMessage, 'member' => $member);
+        return Utilities::ReturnAppropriateResult('member', $result);
+    }
+
+    public static function updateAccount() {
+        $result = null;
+        $isError = false;
+        $errorMessage = '';
+        $memberID = $_SESSION['MemberID'];
+
+        $db = DB::getInstance();
+
+        try {
+            // use form data $_POST array as parameters for DB call
+            // use real_escape_string function to allow quotes and prevent SQL injection hacks
+            $FirstName  = $db->real_escape_string($_POST['FirstName']);
+            $LastName   = $db->real_escape_string($_POST['LastName']);
+            $Email      = $db->real_escape_string($_POST['Email']);
+            $CellNumber = preg_replace('/\D/', '', $_POST['CellNumber']); // special treatment: remove anything that's not a digit
+            $CarrierID  = $db->real_escape_string($_POST['CellCarrier']);
+            $Username   = $db->real_escape_string($_POST['Username']);
+
+            $sql = "CALL UpdateMember($memberID, '$FirstName', '$LastName', '$CellNumber', $CarrierID, '$Email', '$Username')";
+            $DBResult = DB::callProcWithRecordset($sql);
+
+            if (is_null($DBResult)) {
+                $result = array('error' => true, 'errorMessage' => 'Database error');
+            } else {
+                $member = $DBResult[0];
+    
+                if ($member['Exists'] == 0) {
+                    self::setSessionVariables($member, false);
+                    $result = array('error' => false, 'exists' => false, 'member' => $member);
+                } else {
+                    $result = array('error' => false, 'exists' => true, 'existsType' => $member['Exists']);
+                }
+            }
+    
+        } catch (Exception $ex) {
+            $isError = true;
+            $errorMessage = $ex->getMessage();
+        } catch (Error $er) {
+            $isError = true;
+            $errorMessage = 'ERROR: dunno';
+        }
+
+        $result = array('error' => $isError, 'errorMessage' => $errorMessage);
+        return Utilities::ReturnAppropriateResult('member', $result);
+    }
+
+    public static function updatePassword() {
+        $isError = false;
+        $errorMessage = '';
+
+        $db = DB::getInstance();
+
+        $memberID = $_SESSION['MemberID'];
+        $raw = $db->real_escape_string($_POST['Password']);
+        $hashpass = password_hash($raw, PASSWORD_DEFAULT);
+
+        try {
+            // credential type 1 = password
+            $DBResult = DB::callProcWithRecordset("CALL SetMemberCredential($memberID, 1, '$hashpass', null)");
+            $_SESSION['ForgotPassword'] = null;
+
+        } catch (Exception $ex) {
+            $isError = true;
+            $errorMessage = $ex->getMessage();
+        } catch (Error $er) {
+            $isError = true;
+            $errorMessage = 'ERROR: dunno';
+        }
+
+        $result = array('error' => $isError, 'errorMessage' => $errorMessage);
+        return Utilities::ReturnAppropriateResult('member', $result);
+    }
+
     private static function generateToken($length = 20) {
         return bin2hex(random_bytes($length));
     }
@@ -249,7 +365,7 @@ class MemberController {
         return function($test) use($type) { return ($test['CredentialTypeID'] == $type); };
     }
 
-    private static function setSessionVariables($member) {
+    private static function setSessionVariables($member, $forgotPassword) {
         if ($member == null) {
             // clear them all
             $_SESSION['MemberID'] = null;
@@ -260,6 +376,7 @@ class MemberController {
             $_SESSION['MemberStatus'] = null;
             $_SESSION['CompanyID'] = null;
             $_SESSION['Company'] = null;
+            $_SESSION['ForgotPassword'] = null;
         } else {
             $_SESSION['MemberID'] = (int)$member['MemberID'];
             $_SESSION['MemberName'] = $member['FirstName'].' '.$member['LastName'];
@@ -269,6 +386,7 @@ class MemberController {
             $_SESSION['MemberStatus'] = $member['MemberStatus'];
             $_SESSION['CompanyID'] = Utilities::NullableInt($member['CompanyID']);
             $_SESSION['Company'] = $member['CompanyName'];
+            $_SESSION['ForgotPassword'] = ($forgotPassword ? true : null);
         }
     }
 

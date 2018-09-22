@@ -77,13 +77,6 @@
             DB::closeConnection();
             ?>
         </form>
-
-        <form id="sample_formPassword" style="margin-top: 40px">
-            <input type="text" id="sample_username" name="Username" placeholder="username">
-            <input type="password" id="sample_password" name="Password" placeholder="password">
-
-            <button id="store_passwordButton" class="ui-btn ui-btn-b ui-corner-all">Update Password</button>
-        </form>
     </div><!-- /content -->
 
     <div data-role="footer" data-position="fixed">

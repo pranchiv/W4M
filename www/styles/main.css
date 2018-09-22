@@ -41,8 +41,14 @@ h1, h2, h3, h4, h5, h6, .heading { font-family:Verdana, Geneva, sans-serif; }
     justify-content: space-evenly;
 }
 
+.account_settings_icon {
+    position: relative;
+    left: -12px;
+}
+
 .logout {
     cursor: pointer;
+    margin-left: 8px;
 }
 .logout:hover {
     text-shadow: black 2px 2px;

@@ -18,7 +18,7 @@
         <?php include($top."includes/banner.php"); ?>
 
         <div class="form_headers">
-            <a href="<?= $top ?>pages/companySettings.php" data-transition="flip" style="flex-grow: 1;">Settings</a>
+            <a href="<?= $top ?>pages/companySettings.php" data-transition="flip" style="flex-grow: 1;">Company Settings</a>
 
             <a href="<?= $top ?>pages/donationHistory.php" data-transition="flip" style="flex-grow: 1;">Donation History</a>
 

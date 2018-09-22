@@ -26,48 +26,56 @@
             $path = preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI']);
             $requestedpage = str_replace('.php', '', basename($path));
             $redirectpage = '';
+            $forgotpassword = isset($_SESSION['ForgotPassword']);
+            $loggedin = isset($_SESSION['MemberID']);
 
-            $loggedin = ($_SESSION['MemberID'] != null);
-
-            // check for persist cookie and log in automatically if valid
-            if (! $loggedin) {
-                MemberController::usePersistLoginIfValid();
-                $loggedin = ($_SESSION['MemberID'] != null);
-            }
-            
-            if ($loggedin) {
-                switch ($requestedpage) {
-                    case 'admin':           $types = array(MemberType::Admin); break;
-                    case 'adminDonations':  $types = array(MemberType::Admin); break;
-                    case 'beneficiary':     $types = array(MemberType::Beneficiary); break;
-                    case 'companySettings': $types = array(MemberType::Donor, MemberType::Beneficiary); break;
-                    case 'donationHistory': $types = array(MemberType::Admin, MemberType::Driver, MemberType::Donor, MemberType::Beneficiary); break;
-                    case 'donor':           $types = array(MemberType::Donor); break;
-                    case 'driver':          $types = array(MemberType::Driver); break;
-                    case 'company':         $types = array(MemberType::Admin, MemberType::Driver, MemberType::Donor, MemberType::Beneficiary); break; // controllers via ajax
-                    case 'donation':        $types = array(MemberType::Admin, MemberType::Driver, MemberType::Donor, MemberType::Beneficiary); break; // controllers via ajax
-                    case 'member':          $types = array(MemberType::Admin, MemberType::Driver, MemberType::Donor, MemberType::Beneficiary); break; // controllers via ajax
-                    case 'notification':    $types = array(MemberType::Admin, MemberType::Driver, MemberType::Donor, MemberType::Beneficiary); break; // controllers via ajax
-                    default:                $types = array(); break;
-                }
-
-                // if not allowed on requested page, set redirect to start page for member type
-                if (in_array($_SESSION['MemberTypeID'], $types)) {
-                    $verified = true;
+            // controllers via ajax
+            if (in_array($requestedpage, array('company', 'donation', 'member', 'notification'))) {
+                $verified = true;
+            } else { // "standard" pages
+                if ($forgotpassword && $requestedpage != 'logIn') {
+                    if ($requestedpage == 'password') {
+                        $verified = true;
+                    } else {
+                        $verified = false;
+                        $redirectpage = 'pages/password.php';
+                    }
                 } else {
-                    $redirectpage = MemberController::determineStartPage();
-                }
-            } else {
-                switch ($requestedpage) {
-                    case 'logIn':           $verified = true; break;
-                    case 'register':        $verified = true; break;
-                    case 'registerCompany': $verified = true; break;
-                    case 'registerMember':  $verified = true; break;
-                    case 'company':         $verified = true; break; // controllers via ajax
-                    case 'donation':        $verified = true; break; // controllers via ajax
-                    case 'member':          $verified = true; break; // controllers via ajax
-                    case 'notification':    $verified = true; break; // controllers via ajax
-                    default:                break;
+                    // check for persist cookie and log in automatically if valid
+                    if (! $forgotpassword && ! $loggedin) {
+                        MemberController::usePersistLoginIfValid();
+                        $loggedin = isset($_SESSION['MemberID']);
+                    }
+                    
+                    if ($loggedin) {
+                        switch ($requestedpage) {
+                            case 'accountSettings': $types = array(MemberType::Admin, MemberType::Driver, MemberType::Donor, MemberType::Beneficiary); break;
+                            case 'admin':           $types = array(MemberType::Admin); break;
+                            case 'adminDonations':  $types = array(MemberType::Admin); break;
+                            case 'beneficiary':     $types = array(MemberType::Beneficiary); break;
+                            case 'companySettings': $types = array(MemberType::Donor, MemberType::Beneficiary); break;
+                            case 'donationHistory': $types = array(MemberType::Admin, MemberType::Driver, MemberType::Donor, MemberType::Beneficiary); break;
+                            case 'donor':           $types = array(MemberType::Donor); break;
+                            case 'driver':          $types = array(MemberType::Driver); break;
+                            case 'password':        $types = array(MemberType::Admin, MemberType::Driver, MemberType::Donor, MemberType::Beneficiary); break;
+                            default:                $types = array(); break;
+                        }
+
+                        // if not allowed on requested page, set redirect to start page for member type
+                        if (in_array($_SESSION['MemberTypeID'], $types)) {
+                            $verified = true;
+                        } else {
+                            $redirectpage = MemberController::determineStartPage();
+                        }
+                    } else {
+                        switch ($requestedpage) {
+                            case 'logIn':           $verified = true; break;
+                            case 'register':        $verified = true; break;
+                            case 'registerCompany': $verified = true; break;
+                            case 'registerMember':  $verified = true; break;
+                            default:                break;
+                        }
+                    }
                 }
             }
 

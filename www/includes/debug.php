@@ -21,9 +21,10 @@
 <table class="debugtable">
     <tr><td>Member ID</td><td><?= $_SESSION['MemberID'] ?></td></tr>
     <tr><td>Name</td><td><?= $_SESSION['MemberName'] ?></td></tr>
-    <tr><td>Member Type</td><td><?php echo $_SESSION['MemberType'].' ('.$_SESSION['MemberTypeID'].')' ?></td></tr>
-    <tr><td>Member Status</td><td><?php echo $_SESSION['MemberStatus'].' ('.$_SESSION['MemberStatusID'].')' ?></td></tr>
-    <tr><td>Company</td><td><?php echo $_SESSION['Company'].' ('.$_SESSION['CompanyID'].')' ?></td></tr>
+    <tr><td>Member Type</td><td><?= $_SESSION['MemberType'].' ('.$_SESSION['MemberTypeID'].')' ?></td></tr>
+    <tr><td>Member Status</td><td><?= $_SESSION['MemberStatus'].' ('.$_SESSION['MemberStatusID'].')' ?></td></tr>
+    <tr><td>Company</td><td><?= $_SESSION['Company'].' ('.$_SESSION['CompanyID'].')' ?></td></tr>
+    <tr><td>Forgot?</td><td><?= $_SESSION['ForgotPassword'] ?></td></tr>
 </table>
 
 <?php } ?>
