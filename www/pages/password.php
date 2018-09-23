@@ -16,13 +16,11 @@
     </div>
 
     <div role="main" class="ui-content">
-        <?php include($top."includes/banner.php"); ?>
-
         <div class="form" style="max-width: 1080px; margin: 0 auto;">
             <div class="form_headers">
                 <h3>ACCOUNT SETTINGS</h3>
 
-                <a href="<?= $top ?>pages/logIn.php" data-rel="back">Back to Main Page</a>
+                <a href="<?= $top ?>pages/logIn.php">Back to Main Page</a>
 
                 <div style="display: flex; justify-content: flex-end; font-weight: bold;">
                     <?= $_SESSION['MemberName'] ?>

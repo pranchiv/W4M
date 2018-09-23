@@ -91,7 +91,7 @@ class MemberController {
 
             $username = $db->real_escape_string($username);
             $password = $db->real_escape_string($password);
-            $DBResult = DB::callProcWithRecordset("CALL GetMember(null, '$username')");
+            $DBResult = DB::callProcWithRecordset("CALL GetMember(null, '$username', null)");
 
             if (is_null($DBResult)) {
                 $isError = true;
@@ -108,7 +108,7 @@ class MemberController {
                     $cred = $login_credentials[0];
 
                     if (password_verify($password, $cred["Credential"])) {
-                        if ($persist) { self::setPersistLogin($row["MemberID"]); }
+                        if ($persist) { self::setMemberCredential($row["MemberID"], 2); }
 
                         $isError = false;
                         $errorMessage = "login successful (MemberID ".$row["MemberID"].")";
@@ -141,26 +141,30 @@ class MemberController {
         return Utilities::ReturnAppropriateResult('member', true);
     }
 
-    private static function setPersistLogin($memberID) {
-        $result = false;
+    private static function setMemberCredential($memberID, $credentialTypeID) {
+        $result = null;
         $isError = false;
         $errorMessage = '';
-
-        $token = self::generateToken();
         $db = DB::getInstance();
 
         try {
+            $token = self::generateToken();
             $hashtoken = password_hash($token, PASSWORD_DEFAULT);
+            $token = $token.str_pad($memberID, 3, '0', STR_PAD_LEFT); // append member ID for later lookup
 
-            // credential type 2 = persist
-            $DBResult = DB::callProcWithRecordset("CALL SetMemberCredential($memberID, 2, '$hashtoken', null)");
+            // credential type 2 = persist, type 3 = forgot
+            if ($credentialTypeID == 2) {
+                $expiration = strtotime('+10 years'); // store cookie for 10 years
+                $domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
+                $DBResult = DB::callProcWithRecordset("CALL SetMemberCredential($memberID, $credentialTypeID, '$hashtoken', null)");
+    
+                setcookie('persist', $token, $expiration, '/', $domain, false);
+            } else if ($credentialTypeID == 3) {
+                $expiration = date('Y-m-d H:i:s', strtotime('+1 hours'));
+                $DBResult = DB::callProcWithRecordset("CALL SetMemberCredential($memberID, $credentialTypeID, '$hashtoken', '$expiration')");
+            }
 
-            $cookieval = $token.str_pad($memberID, 3, '0', STR_PAD_LEFT);
-            $expiration = strtotime('+10 years'); // store cookie for 10 years
-            $domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
-
-            setcookie('persist', $cookieval, $expiration, '/', $domain, false);
-            $result = true;
+            $result = $token;
 
         } catch (Exception $ex) {
             $isError = true;
@@ -173,17 +177,41 @@ class MemberController {
         return $result;
     }
 
-    public static function usePersistLoginIfValid() {
-        if (isset($_COOKIE['persist'])) {
-            $isError = false;
-            $errorMessage = '';
-            $cookie = $_COOKIE['persist'];
-            $token = substr($cookie, 0, -3);
-            $memberID = substr($cookie, -3);
+    public static function useCredentialIfValid($credentialTypeID) {
+        $isError = false;
+        $errorMessage = '';
+        $continue = false;
+        $key = null;
+        $forgotPassword = false;
+
+        switch ($credentialTypeID) {
+            case 2:
+                if (isset($_COOKIE['persist'])) {
+                    $continue = true;
+                    $key = $_COOKIE['persist'];
+                }
+                break;
+            case 3:
+                //$querystring = null;
+                //parse_str($_SERVER['QUERY_STRING'], $querystring);
+                //$continue = (isset($querystring['token']));
+                //if ($continue) { $key = $querystring['token']; }
+                $forgotPassword = true;
+
+                if (isset($_GET['token'])) {
+                    $continue = true;
+                    $key = $_GET['token'];
+                }
+                break;
+        }
+
+        if ($continue) {
+            $token = substr($key, 0, -3);
+            $memberID = substr($key, -3);
 
             try {
                 $db = DB::getInstance();
-                $DBResult = DB::callProcWithRecordset("CALL GetMember($memberID, null)");
+                $DBResult = DB::callProcWithRecordset("CALL GetMember($memberID, null, null)");
 
                 if (is_null($DBResult)) {
                     $isError = true;
@@ -191,14 +219,14 @@ class MemberController {
                 } else {
                     $member = $DBResult[0];
                     $credentials = $DBResult[1];
-                    $filter_type2 = self::filterByCredentialType(2);
-                    $persist_credentials = array_filter($credentials, $filter_type2);
+                    $filter_type = self::filterByCredentialType($credentialTypeID);
+                    $credentialsOfType = array_filter($credentials, $filter_type);
 
-                    if (count($member) > 0 && count($persist_credentials) > 0) {
+                    if (count($member) > 0 && count($credentialsOfType) > 0) {
                         $row = $member[0];
                         $match = false;
 
-                        foreach ($persist_credentials as $cred) {
+                        foreach ($credentialsOfType as $cred) {
                             if (password_verify($token, $cred["Credential"])) {
                                 $match = true;
                                 break;
@@ -207,19 +235,19 @@ class MemberController {
 
                         if ($match) {
                             $isError = false;
-                            $errorMessage = "persist successful (MemberID ".$row["MemberID"].")";
-                            self::setSessionVariables($row, false);
+                            $errorMessage = "valid credentials (MemberID ".$row["MemberID"].")";
+                            self::setSessionVariables($row, $forgotPassword);
                         } else {
                             $isError = true;
                             $errorMessage = "token does not match";
                         }
-                } else {
+                    } else {
                         $isError = true;
                         $errorMessage = "no account matches those credentials";
                     }
 
-                    // if this cookie doesn't match a valid member or credential anymore, get rid of it
-                    if ($isError) { self::unsetPersistLogin(); }
+                    // if it's a "persist" cookie and doesn't match a valid member or credential anymore, get rid of it
+                    if ($isError && $credentialTypeID == 2) { self::unsetPersistLogin(); }
                 }
             } catch (Exception $ex) {
                 $isError = true;
@@ -229,6 +257,8 @@ class MemberController {
                 $errorMessage = 'ERROR: dunno';
             }
         }
+
+        return ($continue && ! $isError); // valid token used
     }
 
     private static function unsetPersistLogin() {
@@ -251,7 +281,7 @@ class MemberController {
         $db = DB::getInstance();
 
         try {
-            $DBResult = DB::callProcWithRecordset("CALL GetMember($memberID, null)");
+            $DBResult = DB::callProcWithRecordset("CALL GetMember($memberID, null, null)");
 
             if (is_null($DBResult)) {
                 $isError = true;
@@ -321,12 +351,13 @@ class MemberController {
         } catch (Exception $ex) {
             $isError = true;
             $errorMessage = $ex->getMessage();
+            $result = array('error' => $isError, 'errorMessage' => $errorMessage);
         } catch (Error $er) {
             $isError = true;
             $errorMessage = 'ERROR: dunno';
+            $result = array('error' => $isError, 'errorMessage' => $errorMessage);
         }
 
-        $result = array('error' => $isError, 'errorMessage' => $errorMessage);
         return Utilities::ReturnAppropriateResult('member', $result);
     }
 
@@ -345,6 +376,53 @@ class MemberController {
             $DBResult = DB::callProcWithRecordset("CALL SetMemberCredential($memberID, 1, '$hashpass', null)");
             $_SESSION['ForgotPassword'] = null;
 
+        } catch (Exception $ex) {
+            $isError = true;
+            $errorMessage = $ex->getMessage();
+        } catch (Error $er) {
+            $isError = true;
+            $errorMessage = 'ERROR: dunno';
+        }
+
+        $result = array('error' => $isError, 'errorMessage' => $errorMessage);
+        return Utilities::ReturnAppropriateResult('member', $result);
+    }
+
+    public static function forgotPassword($email = null) {
+        $isError = false;
+        $errorMessage = '';
+
+        $db = DB::getInstance();
+
+        try {
+            if (!isset($email)) { $email = $_POST['Email']; }
+            $email = $db->real_escape_string($email);
+
+            $DBResult = DB::callProcWithRecordset("CALL GetMember(null, null, '$email')");
+
+            if (is_null($DBResult)) {
+                $isError = true;
+                $errorMessage = $db->error;
+            } else {
+                $member = $DBResult[0];
+
+                if (count($member) > 0) {
+                    $member = $member[0];
+                    $token = self::setMemberCredential($member['MemberID'], 3);
+
+                    if ($token == null) {
+                        $isError = true;
+                        $errorMessage = 'unable to reset password';
+                    } else {
+                        $body = 'You have indicated that you forgot your password for wheels4meals.org. Follow the link below to reset your password:' . PHP_EOL . PHP_EOL
+                                . 'https://' . $_SERVER["SERVER_NAME"] . '/pages/password.php?token=' . $token;
+                        NotificationController::sendEmail($email, 'password reset', $body);
+                    }
+                } else {
+                    $isError = true;
+                    $errorMessage = 'no account with that email address';
+                }
+            }
         } catch (Exception $ex) {
             $isError = true;
             $errorMessage = $ex->getMessage();

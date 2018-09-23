@@ -114,6 +114,8 @@ class NotificationController {
             if (ENV == 'local') {
                 $result = array('error' => false, 'subject' => $subject, 'body' => $description, 'recipients' => $DBResult);
             } else {
+                $description .= ' ' . PHP_EOL . 'https://' . $_SERVER["SERVER_NAME"] . '/pages/logIn.php';
+
                 foreach ($DBResult as $row) {
                     self::sendEmail($row["TextAddress"], $subject, $description);
                 }
@@ -130,10 +132,7 @@ class NotificationController {
         $isError = false;
         $errorMessage = '';
 
-        $headers = "From: admin@wheels4meals.org" . PHP_EOL;
-        //$headers .= "Cc: brian@brimer.net" . PHP_EOL;
-
-        $body .= ' ' . PHP_EOL . 'https://wheels4meals.org/pages/logIn.php';
+        $headers = 'From: "Wheels4Meals Admin" <admin@wheels4meals.org>' . PHP_EOL;
 
         try {
             $isError = ! mail($to, $subject, $body, $headers);

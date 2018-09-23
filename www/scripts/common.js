@@ -1,7 +1,3 @@
-$(document).on('pagecreate', '#login_page', function() {
-
-});
-
 $(document).on('pagecreate', '[data-role=page]', function() {
     var page = $(this).attr('id');
 });
@@ -41,6 +37,10 @@ $(window).on('scrollstop', function () {
     }
 });
 
+$(document).on('pagecreate', '#login_page', function() {
+  
+});
+
 $(document).on('click', '#login_button', function(e) {
     e.preventDefault();
 
@@ -55,6 +55,27 @@ $(document).on('click', '#login_button', function(e) {
     }, 'json');
 });
 
+$(document).on('click', '#login_forgotlink', function(e) {
+    $('#login_forgotform').show();
+
+    $('#login_forgotform').validate({
+        rules: {
+            Email: { required: true, email: true, maxlength: 100 }
+        },
+        errorPlacement: function (error, element) {
+            error.appendTo(element.parent().parent());
+        },
+        submitHandler: function (form) {
+            // form is valid
+            SendForgotPasswordEmail();
+            return false; 
+        }
+    });  
+    
+    // make sure they notice the new form by scrolling down for them
+    $('html, body').animate({ scrollTop: $(document).height()-$(window).height() }, 'slow');
+});
+
 $(document).on('click', '.logout', function(e) {
     e.preventDefault();
 
@@ -62,6 +83,22 @@ $(document).on('click', '.logout', function(e) {
         window.location = '/';
     }, 'json');
 });
+
+function SendForgotPasswordEmail() {
+    $('#login_forgotbutton').prop('disabled', true);
+    $('#login_forgoterror').html('');
+
+    $.post('/controllers/member.php?action=forgotPassword', $('#login_forgotform').serialize(), function(data) {
+        if (data.error) {
+            $('#login_forgoterror').html(data.errorMessage);
+            $('#login_forgotbutton').prop('disabled', false);
+        } else {
+            $email = $('#login_forgotemail').val();
+
+            $('#login_forgoterror').html('Follow the link in the email that has just been sent, which will work for only one hour.');
+        }
+    }, 'json');
+}
 
 function BuildHtmlTableFromJson(data, columns) {
     var result = '';

@@ -26,15 +26,18 @@
             $path = preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI']);
             $requestedpage = str_replace('.php', '', basename($path));
             $redirectpage = '';
-            $forgotpassword = isset($_SESSION['ForgotPassword']);
-            $loggedin = isset($_SESSION['MemberID']);
+            $forgotpassword = false;
+            $loggedin = false;
 
             // controllers via ajax
             if (in_array($requestedpage, array('company', 'donation', 'member', 'notification'))) {
                 $verified = true;
             } else { // "standard" pages
-                if ($forgotpassword && $requestedpage != 'logIn') {
-                    if ($requestedpage == 'password') {
+                $forgotpassword = (isset($_SESSION['ForgotPassword']) || MemberController::useCredentialIfValid(3));
+                $loggedin = isset($_SESSION['MemberID']);
+
+                if ($forgotpassword) {
+                    if ($requestedpage == 'password' || $requestedpage == 'logIn') {
                         $verified = true;
                     } else {
                         $verified = false;
@@ -42,8 +45,8 @@
                     }
                 } else {
                     // check for persist cookie and log in automatically if valid
-                    if (! $forgotpassword && ! $loggedin) {
-                        MemberController::usePersistLoginIfValid();
+                    if (! $loggedin) {
+                        MemberController::useCredentialIfValid(2);
                         $loggedin = isset($_SESSION['MemberID']);
                     }
                     

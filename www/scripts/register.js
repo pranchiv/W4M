@@ -105,11 +105,7 @@ $(document).on('pagecreate', '#password_page', function() {
             UpdatePassword();
             return false; 
         }
-    });
-
-    $.validator.addMethod('selected', function (value) {
-        return (value != '0');
-    }, 'This field is required.');
+    });  
 });
 
 $(document).on('click', '#register_registerButton', function(e) {
