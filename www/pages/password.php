@@ -20,7 +20,9 @@
             <div class="form_headers">
                 <h3>ACCOUNT SETTINGS</h3>
 
-                <a href="<?= $top ?>pages/logIn.php">Back to Main Page</a>
+                <?php if (! isset($_SESSION['ForgotPassword'])) { ?>
+                    <a href="<?= $top ?>pages/<?= strtolower($_SESSION['MemberType']) ?>.php">Back to Main Page</a>
+                <?php } ?>
 
                 <div style="display: flex; justify-content: flex-end; font-weight: bold;">
                     <?= $_SESSION['MemberName'] ?>
