@@ -77,7 +77,7 @@ $(document).on('click', '#donation_ResetButton', function(e) {
 // DRIVER PAGE
 $(document).on('pagecreate', '#driver_page', function() {
     RefreshPage('Driver');
-    setInterval(function() { RefreshPage('Driver'); }, 20 * 1000); // refresh every minute
+    setInterval(function() { RefreshPage('Driver'); }, 60 * 1000); // refresh every minute
 });
 /////////////////////////////////
 
@@ -85,7 +85,7 @@ $(document).on('pagecreate', '#driver_page', function() {
 // BENEFICIARY PAGE
 $(document).on('pagecreate', '#beneficiary_page', function() {
     RefreshPage('Beneficiary');
-    setInterval(function() { RefreshPage('Beneficiary'); }, 20 * 1000); // refresh every minute
+    setInterval(function() { RefreshPage('Beneficiary'); }, 60 * 1000); // refresh every minute
 });
 
 /////////////////////////////////
