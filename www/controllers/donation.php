@@ -216,6 +216,7 @@ class DonationController {
         if (isset($beneficiaryId) && $role == 'Beneficiary' && $beneficiaryId != $companyId) {
             $isError = true;
             $message = 'Illegal update';
+            $result = array('error' => $isError, 'message' => $message);
         }
 
         if (! $isError) {
@@ -223,7 +224,7 @@ class DonationController {
             $statusId = ($statusId == null ? 'null' : $db->real_escape_string($statusId));
             $beneficiaryId = ($beneficiaryId == null ? 'null' : $db->real_escape_string($beneficiaryId));
             $driverId = ($driverId == null ? 'null' : $db->real_escape_string($driverId));
-            $call = "CALL UpdateDonationStatus($donationId, $statusId, $beneficiaryId, $driverId, $memberId)";
+            $call = "CALL UpdateDonationStatus($donationId, $statusId, $beneficiaryId, $driverId, $memberId, $previousStatusId)";
             $DBResult = DB::callProcWithRecordset($call);
 
             if (is_null($DBResult)) {
@@ -232,7 +233,7 @@ class DonationController {
                 $result = array('error' => $isError, 'message' => $message);
             } else if ($DBResult[0][0]['Error'] != 0) {
                 $isError = true;
-                $message = 'ERROR: donation could not be updated';
+                $message = 'Your update could <b>not</b> be completed because the donation status changed. Click to refresh with the latest status.';
                 $result = array('error' => $isError, 'message' => $message);
             } else {
                 $message = 'Donation has been updated';
@@ -255,9 +256,9 @@ class DonationController {
                 if ($NotificationType != null) { $notifications = NotificationController::send($donationId, $NotificationType, $description); }
 
                 $result = array('error' => $isError, 'message' => $message, 'data' => $DBResult, 'notifications' => $notifications);
-                return Utilities::ReturnAppropriateResult('donation', $result);
             }
 
+            return Utilities::ReturnAppropriateResult('donation', $result);
         }
     }
 }

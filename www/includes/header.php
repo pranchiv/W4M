@@ -18,3 +18,13 @@
         <?php } ?>
     <?php } ?>
 </div>
+
+<div data-role="popup" class="popup_refreshNeeded" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
+    <div data-role="header" data-theme="a">
+        <h1>Could Not Update</h1>
+    </div>
+    <div role="main" class="ui-content">
+        <p class="popup_refreshNeeded_message" class="ui-title"></p>
+        <button class="popup_refreshNeeded_button" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Refresh</button>
+    </div>
+</div>

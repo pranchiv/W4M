@@ -21,13 +21,13 @@
             <a href="<?= $top ?>pages/donationHistory.php" data-transition="flip" style="flex-grow: 1;">Donation History</a>
         </div>
 
-        <h3>Your Active Donations</h3>
-        <div id="driver_Scheduled" class="donationCardContainer" style="margin-bottom: 32px;"></div>
+        <h3>Your Active Donations <span id="driver_Scheduled_loading" class="loading" style="display: none;">(loading ...)</span></h3>
+        <div id="driver_Scheduled" class="donationCardContainer" data-role="Driver" style="margin-bottom: 32px;"></div>
 
-        <h3>Donations Needing a Driver</h3>
-        <div id="driver_Pending" class="donationCardContainer" style="margin-bottom: 32px;"></div>
+        <h3>Donations Needing a Driver <span id="driver_Pending_loading" class="loading" style="display: none;">(loading ...)</span></h3>
+        <div id="driver_Pending" class="donationCardContainer" data-role="Driver" style="margin-bottom: 32px;"></div>
 
-        <?php include($top."includes/debug.php"); ?>        
+        <?php include($top."includes/debug.php"); ?>
     </div><!-- /content -->
 
     <div data-role="footer" data-position="fixed">

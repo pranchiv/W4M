@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <div id="donation_Pending" class="donationCardContainer" style="margin-bottom: 32px;"></div>
+        <div id="donation_Pending" class="donationCardContainer" data-role="Donor" style="margin-bottom: 32px;"></div>
 
         <button id="donation_AddModeButton" class="ui-btn ui-btn-b ui-corner-all ui-btn-inline">Submit a Donation</button>
 
