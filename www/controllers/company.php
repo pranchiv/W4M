@@ -268,37 +268,5 @@ class CompanyController {
         $result = array('error' => $isError, 'errorMessage' => $errorMessage);
         return Utilities::ReturnAppropriateResult('company', $result);
     }
-
-    public function testStorePassword() {
-        $result = null;
-        $isError = false;
-        $errorMessage = '';
-
-        $db = DB::getInstance();
-
-        try {
-            $username = $db->real_escape_string($_POST['Username']);
-            $raw = $db->real_escape_string($_POST['Password']);
-            $hash = password_hash($raw, PASSWORD_DEFAULT);
-            $sql = "UPDATE Member SET Password = '$hash' WHERE username = '$username'";
-
-            if ($db->query($sql) === TRUE) {
-                $isError = false;
-                $errorMessage = 'stored "' . $hash . '"';
-            } else {
-                $isError = true;
-                $errorMessage = $db->error;
-            }
-        } catch (Exception $ex) {
-            $isError = true;
-            $errorMessage = $ex->getMessage();
-        } catch (Error $er) {
-            $isError = true;
-            $errorMessage = 'ERROR: dunno';
-        }
-
-        $result = array('error' => $isError, 'errorMessage' => $errorMessage);
-        return Utilities::ReturnAppropriateResult('company', $result);
-    }
 }
 ?>

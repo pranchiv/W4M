@@ -16,6 +16,16 @@ Licence URI: http://www.os-templates.com/template-terms
 
 <body id="top">
 
+<?php
+	$root = $_SERVER["SERVER_NAME"];
+
+	if (strpos($root, '.') !== false) {
+		$root = 'https://' . $root;
+	} else {
+		$root = 'http://' . $root;
+	}
+?>
+
 <!-- Top Background Image Wrapper -->
 <div class="bgded overlay" style="background-image:url('images/backgrounds/bread1.jpg');"> 
 	<header id="header" class="hoc clear"> 
@@ -50,7 +60,7 @@ Licence URI: http://www.os-templates.com/template-terms
 			
 				<li><a href="#" scroll-to="#footer">Contact Us</a></li>
 				<li><a href="#">About Us</a></li>
-				<li><a href="pages/logIn.php">Log In</a></li>
+				<li><a href="<?= $root ?>/pages/logIn.php">Log In</a></li>
 				
 				<!-- <li><a class="drop" href="#">[Dropdown]</a>
 					<ul>
@@ -68,7 +78,7 @@ Licence URI: http://www.os-templates.com/template-terms
 		<article class="introtxt">
 			<h2 class="heading">Wheels 4 Meals</h2>
 			<p>Seamlessly shuttling savory surplus to shelters.</p>
-			<footer><a class="btn inverse" href="/pages/register.php">Get Started</a></footer>
+			<footer><a class="btn inverse" href="<?= $root ?>/pages/register.php">Get Started</a></footer>
 		</article>
 		<div class="clear"></div>
 	</div>
@@ -247,7 +257,7 @@ Licence URI: http://www.os-templates.com/template-terms
 		<article class="center">
 			<h2 class="heading font-x3">Sign up as a donor, driver, or receiver and help eliminate food wastage once and for all!</h2>
 			<p style="margin-bottom: 30px;">Click below to find out where you fit in.</p>
-			<footer><a class="btn medium" href="/pages/register.php">Sign Up Here</a></footer>
+			<footer><a class="btn medium" href="<?= $root ?>/pages/register.php">Sign Up Here</a></footer>
 		</article>
 	</div>
 </div>

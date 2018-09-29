@@ -43,12 +43,4 @@ $(document).ready(function() {
 
         // }, 'json');
     });
-
-    $('#store_passwordButton').on('click', function(e) {
-        e.preventDefault();
-
-        $.post('controllers/company.php?action=testStorePassword', $('#sample_formPassword').serialize(), function(data) {
-            $('#register_registerError').html(data.errorMessage);
-        }, 'json');
-    });
 });

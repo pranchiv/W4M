@@ -1,7 +1,3 @@
-$(document).on('pagecreate', '#login_page', function() {
-
-});
-
 $(document).on('pagecreate', '[data-role=page]', function() {
     var page = $(this).attr('id');
 });
@@ -29,6 +25,22 @@ $(document).on('pageshow', '[data-role=page]', function() {
     })
 });
 
+$(document).on('click', '#backtotop', function () {
+    $('body,html').animate({ scrollTop: 0 }, 600);
+});
+
+$(window).on('scrollstop', function () {
+    if ($(window).scrollTop() > 150) {
+        $('#backtotop').addClass('visible');
+    } else {
+        $('#backtotop').removeClass('visible');
+    }
+});
+
+$(document).on('pagecreate', '#login_page', function() {
+  
+});
+
 $(document).on('click', '#login_button', function(e) {
     e.preventDefault();
 
@@ -43,6 +55,27 @@ $(document).on('click', '#login_button', function(e) {
     }, 'json');
 });
 
+$(document).on('click', '#login_forgotlink', function(e) {
+    $('#login_forgotform').show();
+
+    $('#login_forgotform').validate({
+        rules: {
+            Email: { required: true, email: true, maxlength: 100 }
+        },
+        errorPlacement: function (error, element) {
+            error.appendTo(element.parent().parent());
+        },
+        submitHandler: function (form) {
+            // form is valid
+            SendForgotPasswordEmail();
+            return false; 
+        }
+    });  
+    
+    // make sure they notice the new form by scrolling down for them
+    $('html, body').animate({ scrollTop: $(document).height()-$(window).height() }, 'slow');
+});
+
 $(document).on('click', '.logout', function(e) {
     e.preventDefault();
 
@@ -50,6 +83,22 @@ $(document).on('click', '.logout', function(e) {
         window.location = '/';
     }, 'json');
 });
+
+function SendForgotPasswordEmail() {
+    $('#login_forgotbutton').prop('disabled', true);
+    $('#login_forgoterror').html('');
+
+    $.post('/controllers/member.php?action=forgotPassword', $('#login_forgotform').serialize(), function(data) {
+        if (data.error) {
+            $('#login_forgoterror').html(data.errorMessage);
+            $('#login_forgotbutton').prop('disabled', false);
+        } else {
+            $email = $('#login_forgotemail').val();
+
+            $('#login_forgoterror').html('Follow the link in the email that has just been sent, which will work for only one hour.');
+        }
+    }, 'json');
+}
 
 function BuildHtmlTableFromJson(data, columns) {
     var result = '';
@@ -100,7 +149,7 @@ function ShowToastFromNotificationSend(data) {
 }
 
 function FormatPhone(phoneNumber) {
-    return phoneNumber.replace(/(\d{3})(\d{3})/, '$1-$2-');
+    return phoneNumber ? phoneNumber.replace(/(\d{3})(\d{3})/, '$1-$2-') : '--';
 }
 
 function FormatDate(dateString, includeDate, includeTime) {

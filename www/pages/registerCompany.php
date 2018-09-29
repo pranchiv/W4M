@@ -86,9 +86,8 @@
                     </div>
                 </div>
 
-                <button id="registerCompany_registerButton" class="ui-btn ui-btn-b ui-corner-all ui-btn-inline">Register Company</button>
-
-                <div id="registerCompany_registerError" class="error" style="margin: 6px 4px;"></div>
+                <button type="submit" id="registerCompany_registerButton" class="ui-btn ui-btn-b ui-corner-all ui-btn-inline">Register Company</button>
+                <div id="registerCompany_registerError" class="errormessage" style="margin: 6px 4px;"></div>
             </form>
 
         </div>

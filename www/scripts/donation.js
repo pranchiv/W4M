@@ -56,6 +56,8 @@ $(document).on('click', '#donation_AddButton', function(e) {
             $('#donation_AddError').html(data.message);
         } else {
             $('#donation_AddError').html(data.message);
+            ResetDonationForm();
+
             if (data.notifications) { ShowToastFromNotificationSend(data.notifications); }
             
             if (! LoadDonationData($('#donation_Pending'), data.data, 'Donor')) {
@@ -64,79 +66,26 @@ $(document).on('click', '#donation_AddButton', function(e) {
         }
     }, 'json');
 });
+
+$(document).on('click', '#donation_ResetButton', function(e) {
+    e.preventDefault();
+    ResetDonationForm();
+});
 /////////////////////////////////
 
 /////////////////////////////////
 // DRIVER PAGE
 $(document).on('pagecreate', '#driver_page', function() {
-    var $container = $('#driver_Scheduled');
-    $container.html('<span class="loading">Loading ...</span>');
-
-    $.get('/controllers/donation.php?action=getDonations', { Role: 'Driver', Active: 1 }, function(data) {
-        if (data.error) {
-            $container.html(data.message);
-        } else {
-            if (! LoadDonationData($container, data.data, 'Driver')) {
-                $container.html('You have no donations scheduled.');
-            }
-        }
-    }, 'json');
-
-    var $container2 = $('#driver_Pending');
-    $container2.html('<span class="loading">Loading ...</span>');
-
-    $.get('/controllers/donation.php?action=getDonations', { Status: 2 }, function(data) {
-        if (data.error) {
-            $container2.html(data.message);
-        } else {
-            if (! LoadDonationData($container2, data.data, 'Driver')) {
-                $container2.html('No donations are pending.');
-            }
-        }
-    }, 'json');
+    RefreshPage('Driver');
+    setInterval(function() { RefreshPage('Driver'); }, 60 * 1000); // refresh every minute
 });
 /////////////////////////////////
 
 /////////////////////////////////
 // BENEFICIARY PAGE
 $(document).on('pagecreate', '#beneficiary_page', function() {
-    $container = $('#beneficiary_Scheduled');
-    $container.html('<span class="loading">Loading ...</span>');
-
-    $.get('/controllers/donation.php?action=getDonations', { Active: 1, Role: 'Beneficiary' }, function(data) {
-        if (data.error) {
-            $container.html(data.message);
-        } else {
-            if (! LoadDonationData($container, data.data, 'Beneficiary')) {
-                $container.html('You have no donations scheduled.');
-            }
-        }
-    }, 'json');
-
-    var $container2 = $('#beneficiary_Available');
-    $container2.html('<span class="loading">Loading ...</span>');
-
-    $.get('/controllers/donation.php?action=getDonations', { Status: 1 }, function(data) {
-        if (data.error) {
-            $container2.html(data.message);
-        } else {
-            if (! LoadDonationData($container2, data.data, 'Beneficiary')) {
-                $container2.html('No donations are available.');
-            }
-        }
-    }, 'json');
-    var $container3 = $('#beneficiary_History');
-    $container3.html('<span class="loading">Loading ...</span>');
-
-    $.get('/controllers/donation.php?action=getDonations', { Active: 0, Role: 'Beneficiary' }, function(data) {
-        if (data.error) {
-            $container3.html(data.message);
-        } else {
-            if (! LoadDonationData($container3, data.data, 'Beneficiary')) {
-                $container3.html('You have no donation history.');
-            }
-        }
-    }, 'json');
+    RefreshPage('Beneficiary');
+    setInterval(function() { RefreshPage('Beneficiary'); }, 60 * 1000); // refresh every minute
 });
 
 /////////////////////////////////
@@ -177,6 +126,76 @@ $(document).on('click', '.toggleFails', function() {
 });
 /////////////////////////////////
 
+function RefreshPage(pagename) {
+    switch (pagename) {
+        case 'Driver':
+            var $container = $('#driver_Scheduled');
+            $('#driver_Scheduled_loading').show();
+        
+            $.get('/controllers/donation.php?action=getDonations', { Role: 'Driver', Active: 1 }, function(data) {
+                $('#driver_Scheduled_loading').hide();
+
+                if (data.error) {
+                    $container.html(data.message);
+                } else {
+                    if (! LoadDonationData($container, data.data, 'Driver')) {
+                        $container.html('You have no donations scheduled.');
+                    }
+                }
+            }, 'json');
+        
+            var $container2 = $('#driver_Pending');
+            $('#driver_Pending_loading').show();
+        
+            $.get('/controllers/donation.php?action=getDonations', { Status: 2 }, function(data) {
+                $('#driver_Pending_loading').hide();
+
+                if (data.error) {
+                    $container2.html(data.message);
+                } else {
+                    if (! LoadDonationData($container2, data.data, 'Driver')) {
+                        $container2.html('No donations are pending.');
+                    }
+                }
+            }, 'json');
+                
+            break;
+
+        case 'Beneficiary':
+            $container = $('#beneficiary_Scheduled');
+            $('#beneficiary_Scheduled_loading').show();
+        
+            $.get('/controllers/donation.php?action=getDonations', { Active: 1, Role: 'Beneficiary' }, function(data) {
+                $('#beneficiary_Scheduled_loading').hide();
+
+                if (data.error) {
+                    $container.html(data.message);
+                } else {
+                    if (! LoadDonationData($container, data.data, 'Beneficiary')) {
+                        $container.html('You have no donations scheduled.');
+                    }
+                }
+            }, 'json');
+        
+            var $container2 = $('#beneficiary_Available');
+            $('#beneficiary_Available_loading').show();
+        
+            $.get('/controllers/donation.php?action=getDonations', { Status: 1 }, function(data) {
+                $('#beneficiary_Available_loading').hide();
+
+                if (data.error) {
+                    $container2.html(data.message);
+                } else {
+                    if (! LoadDonationData($container2, data.data, 'Beneficiary')) {
+                        $container2.html('No donations are available.');
+                    }
+                }
+            }, 'json');
+    
+            break;
+    }
+}
+
 $(document).on('click', '.donationCard', function(e) {
     if (!$(e.target).hasClass('action')) {
         var $menu = $(this).find('.menu');
@@ -191,6 +210,7 @@ $(document).on('click', '.donationCard', function(e) {
 
 $(document).on('click', '.action', function(e) {
     var $container = $(this).parents('.donationCardContainer');
+    var role = $container.data('role');
     var $card = $(this).parents('.donationCard');
     var action = $(this).data('action');
     var donationId = $card.data('id');
@@ -201,9 +221,9 @@ $(document).on('click', '.action', function(e) {
     $.get('/controllers/donation.php?action=updateStatus', { DonationId: donationId, Action: action, PreviousStatus: statusId, 
                                                              PreviousBeneficiaryId: beneficiaryId, PreviousDriverId: driverId }, function(data) {
         if (data.error) {
-            $container.html(data.message);
+            $('#' + role.toLowerCase() + '_page .popup_refreshNeeded_message').html(data.message);
+            $('#' + role.toLowerCase() + '_page .popup_refreshNeeded').popup('open');
         } else {
-            var role = $container.data('role');
             if (data.notifications) { ShowToastFromNotificationSend(data.notifications); }
 
             if (! LoadDonationData($container, data.data, role)) { 
@@ -211,6 +231,16 @@ $(document).on('click', '.action', function(e) {
             }
         }
     }, 'json');
+});
+
+$(document).on('click', '#driver_page .popup_refreshNeeded_button', function(e) {
+    $('#driver_page .popup_refreshNeeded').popup('close');
+    RefreshPage('Driver');
+});
+
+$(document).on('click', '#beneficiary_page .popup_refreshNeeded_button', function(e) {
+    $('#beneficiary_page .popup_refreshNeeded').popup('close');
+    RefreshPage('Beneficiary');
 });
 
 function LoadDonationData($container, data, role) {
@@ -232,7 +262,7 @@ function LoadDonationData($container, data, role) {
 
             if ($existingCardCheck.length) { $existingCard = $existingCardCheck; }
 
-            var cardClass = 'class="donationCard ' + donation['Status'].replace(' ', '') + ' ' + role + '"';
+            var cardClass = 'class="donationCard new ' + donation['Status'].replace(' ', '') + ' ' + role + '"';
 
             var cardTitle = '<div class="title">'
                             + '<div class="id">#' + donation['DonationID'] + '</div>'
@@ -279,6 +309,18 @@ function LoadDonationData($container, data, role) {
                 $container.append(card);
             }
         });
+
+        // remove any cards that shouldn't be there anymore
+        var $oldcards = $container.find('.donationCard').not('.new');
+
+        if ($oldcards.length) {
+            $oldcards.hide(500, function() { 
+                $(this).remove();
+                $container.find('.donationCard').removeClass('new');
+            });
+        } else {
+            $container.find('.donationCard').removeClass('new');
+        }
     }
 
     if (!empty) { $container.trigger('create'); }
@@ -398,4 +440,11 @@ function BuildCardAddress(role, companyName, address1, address2, city, state, zi
     }
 
     return result;
+}
+
+function ResetDonationForm() {
+    $('#donation_pickuptime').val('0').selectmenu('refresh', true);
+    $('#donation_form input[type="checkbox"]').attr('checked', false).checkboxradio('refresh');
+    $('#donation_boxes').val('');
+    $('#donation_weight').val('');
 }

@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <div id="donation_Pending" class="donationCardContainer" style="margin-bottom: 32px;"></div>
+        <div id="donation_Pending" class="donationCardContainer" data-role="Donor" style="margin-bottom: 32px;"></div>
 
         <button id="donation_AddModeButton" class="ui-btn ui-btn-b ui-corner-all ui-btn-inline">Submit a Donation</button>
 
@@ -101,8 +101,9 @@
             </div>
 
             <button id="donation_AddButton" class="ui-btn ui-btn-b ui-corner-all ui-btn-inline">Donate</button>
+            <button id="donation_ResetButton" class="ui-btn ui-btn-a ui-corner-all ui-btn-inline">Reset</button>
 
-            <div id="donation_AddError" class="error" style="margin: 6px 4px;"></div>
+            <div id="donation_AddError" class="errormessage" style="margin: 6px 4px;"></div>
         </form>
 
         <?php include($top."includes/debug.php"); ?>

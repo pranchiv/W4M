@@ -4,58 +4,65 @@
 <html>
 <head>
     <?php include($top."includes/head.php"); ?>
-    <!-- <script src="<?= $top ?>scripts/register.js"></script> -->
 </head>
 <body>
 
-<?php require_once($top.'connection.php'); ?>
+<?php require_once($top."connection.php"); ?>
 
-<div id="registerMember_page" data-role="page">
+<div id="accountSettings_page" data-role="page">
  
     <div data-role="header" data-position="fixed">
         <?php require_once($top."includes/header.php"); ?>
     </div>
 
     <div role="main" class="ui-content">
-        <?php require_once($top."includes/banner.php"); ?>
-
-        <div class="form" style="max-width: 1080px; margin: 12px auto;">
+        <div class="form" style="max-width: 1080px; margin: 0 auto;">
             <div class="form_headers">
-                <h3>MEMBER REGISTRATION</h3>
+                <h3>ACCOUNT SETTINGS</h3>
 
-                <div style="display: flex; justify-content: flex-end;">
-                    <?php if ($_SESSION['RegistrationType'] != 'Driver') { ?>
-                        <div style="margin-right: 16px;">
-                            Company: <b><?= $_SESSION['Company'] ?></b>
-                        </div>
-                    <?php } ?>
-                    <div style="margin-right: 16px;">
-                        Type: <b><?= $_SESSION['RegistrationType'] ?></b>
-                    </div>
-                    <div style="">
-                        ZIP: <b><?= $_SESSION['Zip'] ?></b>
-                    </div>
+                <a href="<?= $top ?>pages/<?= strtolower($_SESSION['MemberType']) ?>.php">Back to Main Page</a>
+
+                <div style="display: flex; justify-content: flex-end; font-weight: bold;">
+                    <?= $_SESSION['MemberName'] ?>
                 </div>
             </div>
 
-            <form id="registerMember_form">
+            <form id="accountSettings_form">
+                <h4>Login Info</h4>
+
+                <div class="ui-grid-a responsive-grid padded">
+                    <div class="ui-block-a">
+                        <div class="ui-field-contain">
+                            <label for="Username">Username:</label>
+                            <input type="text" id="accountSettings_Username" name="Username">
+                        </div>
+                    </div>
+                    <div class="ui-block-b">
+                        <div class="ui-field-contain">
+                            <a href="<?= $top ?>pages/password.php" style="text-align: center;" data-transition="flip">Change password</a>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>Member Info</h4>
+
                 <div class="ui-grid-b responsive-grid padded">
                     <div class="ui-block-a">
                         <div class="ui-field-contain">
                             <label for="FirstName">First Name:</label>
-                            <input type="text" id="registerMember_FirstName" name="FirstName">
+                            <input type="text" id="accountSettings_FirstName" name="FirstName">
                         </div>
                     </div>
                     <div class="ui-block-b">
                         <div class="ui-field-contain">
                             <label for="LastName">Last Name:</label>
-                            <input type="text" id="registerMember_LastName" name="LastName">
+                            <input type="text" id="accountSettings_LastName" name="LastName">
                         </div>
                     </div>
                     <div class="ui-block-c">
                         <div class="ui-field-contain">
                             <label for="Email">Email:</label>
-                            <input type="text" id="registerMember_Email" name="Email">
+                            <input type="text" id="accountSettings_Email" name="Email">
                         </div>
                     </div>
                 </div>
@@ -64,7 +71,7 @@
                     <div class="ui-block-a">
                         <div class="ui-field-contain">
                             <label for="CellNumber">Cell Number:</label>
-                            <input type="text" id="registerMember_CellNumber" name="CellNumber">
+                            <input type="text" id="accountSettings_CellNumber" name="CellNumber">
                         </div>
                     </div>
                     <div class="ui-block-b">
@@ -79,7 +86,7 @@
                                 <div class="ui-field-contain">
                                     <label for="CellCarrier">Cell Carrier:</label>
 
-                                    <select id="registerMember_CellCarrier" name="CellCarrier" data-native-menu="false" data-inline="false">
+                                    <select id="accountSettings_CellCarrier" name="CellCarrier" data-native-menu="false" data-inline="false">
                                         <option value="" data-placeholder="true"></option>
 
                                         <?php foreach ($cellCarriers as $row) { ?>
@@ -92,31 +99,12 @@
                     </div>
                 </div>
 
-                <div class="ui-grid-a responsive-grid padded">
-                    <div class="ui-block-a">
-                        <div class="ui-field-contain">
-                            <label for="Username">Username:</label>
-                            <input type="text" id="registerMember_Username" name="Username">
-                        </div>
-                    </div>
-                    <div class="ui-block-b">
-                        <div class="ui-field-contain">
-                            <label for="Password">Password:</label>
-                            <input type="password" id="registerMember_Password" name="Password">
-                        </div>
-                    </div>
-                    <div class="ui-block-c">
-                        <div class="ui-field-contain">
-                            <label for="ConfirmPassword">Confirm Password:</label>
-                            <input type="password" id="registerMember_ConfirmPassword" name="ConfirmPassword">
-                        </div>
-                    </div>
-                </div>
-
-                <button type="submit" id="registerMember_registerButton" class="ui-btn ui-btn-b ui-corner-all ui-btn-inline">Register Member</button>
-                <div id="registerMember_registerError" class="errormessage" style="margin: 6px 4px;"></div>
+                <button type="submit" id="accountSettings_updateButton" class="ui-btn ui-btn-b ui-corner-all ui-btn-inline">Update Account Settings</button>
+                <span id="accountSettings_updateError" class="errormessage" style="margin: 6px 4px;"></span>
             </form>
         </div>
+
+        <?php include($top."includes/debug.php"); ?>
     </div><!-- /content -->
 
     <div data-role="footer" data-position="fixed">

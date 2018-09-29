@@ -18,7 +18,7 @@
         <?php include($top."includes/banner.php"); ?>
 
         <div class="form_headers">
-            <a href="<?= $top ?>pages/companySettings.php" data-transition="flip" style="flex-grow: 1;">Settings</a>
+            <a href="<?= $top ?>pages/companySettings.php" data-transition="flip" style="flex-grow: 1;">Company Settings</a>
 
             <a href="<?= $top ?>pages/donationHistory.php" data-transition="flip" style="flex-grow: 1;">Donation History</a>
 
@@ -27,10 +27,10 @@
             </div>
         </div>
 
-        <h3>Scheduled Donations</h3>
+        <h3>Scheduled Donations <span id="beneficiary_Scheduled_loading" class="loading" style="display: none;">(loading ...)</span></h3>
         <div id="beneficiary_Scheduled" class="donationCardContainer" data-role="Beneficiary" style="margin-bottom: 32px;"></div>
 
-        <h3>Available Donations</h3>
+        <h3>Available Donations <span id="beneficiary_Available_loading" class="loading" style="display: none;">(loading ...)</span></h3>
         <div id="beneficiary_Available" class="donationCardContainer" data-role="Beneficiary" style="margin-bottom: 32px;"></div>
 
         <?php include($top."includes/debug.php"); ?>

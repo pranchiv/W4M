@@ -41,7 +41,7 @@
 
             <button id="register_registerButton" class="ui-btn ui-btn-b ui-corner-all ui-btn-inline">Start Registration</button>
 
-            <div id="register_registerError" class="error" style="margin: 6px 4px;"></div>
+            <div id="register_registerError" class="errormessage" style="margin: 6px 4px;"></div>
         </form>
     </div><!-- /content -->
 

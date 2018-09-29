@@ -71,18 +71,11 @@
 
             <button id="sample_notificationButton" class="ui-btn ui-btn-b ui-corner-all" data-env="<?= ENV; ?>">Generate Notification(s)</button>
 
-            <div id="register_registerError" class="error" style="margin: 6px 4px;"></div>
+            <div id="register_registerError" class="errormessage" style="margin: 6px 4px;"></div>
 
             <?php
             DB::closeConnection();
             ?>
-        </form>
-
-        <form id="sample_formPassword" style="margin-top: 40px">
-            <input type="text" id="sample_username" name="Username" placeholder="username">
-            <input type="password" id="sample_password" name="Password" placeholder="password">
-
-            <button id="store_passwordButton" class="ui-btn ui-btn-b ui-corner-all">Update Password</button>
         </form>
     </div><!-- /content -->
 

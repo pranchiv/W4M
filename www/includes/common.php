@@ -8,6 +8,10 @@
     $top = Utilities::DeterminePathToTop();
     $showBanner = true; // this is the default value. Override on any page if necessary.
 
+    require_once($top.'controllers/member.php');
+
+    Utilities::VerifyPageAccess($root.'/');
+    
     class Utilities {
         public static function DeterminePathToTop() {
             $result = '';
@@ -15,6 +19,74 @@
             $result = str_repeat('../', $count - 1);
 
             return $result;
+        }
+
+        public static function VerifyPageAccess($root_local) {
+            $verified = false;
+            $path = preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI']);
+            $requestedpage = str_replace('.php', '', basename($path));
+            $redirectpage = '';
+            $forgotpassword = false;
+            $loggedin = false;
+
+            // controllers via ajax
+            if (in_array($requestedpage, array('company', 'donation', 'member', 'notification'))) {
+                $verified = true;
+            } else { // "standard" pages
+                $forgotpassword = (isset($_SESSION['ForgotPassword']) || MemberController::useCredentialIfValid(3));
+                $loggedin = isset($_SESSION['MemberID']);
+
+                if ($forgotpassword) {
+                    if ($requestedpage == 'password' || $requestedpage == 'logIn') {
+                        $verified = true;
+                    } else {
+                        $verified = false;
+                        $redirectpage = 'pages/password.php';
+                    }
+                } else {
+                    // check for persist cookie and log in automatically if valid
+                    if (! $loggedin) {
+                        MemberController::useCredentialIfValid(2);
+                        $loggedin = isset($_SESSION['MemberID']);
+                    }
+                    
+                    if ($loggedin) {
+                        switch ($requestedpage) {
+                            case 'accountSettings': $types = array(MemberType::Admin, MemberType::Driver, MemberType::Donor, MemberType::Beneficiary); break;
+                            case 'admin':           $types = array(MemberType::Admin); break;
+                            case 'adminDonations':  $types = array(MemberType::Admin); break;
+                            case 'beneficiary':     $types = array(MemberType::Beneficiary); break;
+                            case 'companySettings': $types = array(MemberType::Donor, MemberType::Beneficiary); break;
+                            case 'donationHistory': $types = array(MemberType::Admin, MemberType::Driver, MemberType::Donor, MemberType::Beneficiary); break;
+                            case 'donor':           $types = array(MemberType::Donor); break;
+                            case 'driver':          $types = array(MemberType::Driver); break;
+                            case 'password':        $types = array(MemberType::Admin, MemberType::Driver, MemberType::Donor, MemberType::Beneficiary); break;
+                            default:                $types = array(); break;
+                        }
+
+                        // if not allowed on requested page, set redirect to start page for member type
+                        if (in_array($_SESSION['MemberTypeID'], $types)) {
+                            $verified = true;
+                        } else {
+                            $redirectpage = MemberController::determineStartPage();
+                        }
+                    } else {
+                        switch ($requestedpage) {
+                            case 'logIn':           $verified = true; break;
+                            case 'register':        $verified = true; break;
+                            case 'registerCompany': $verified = true; break;
+                            case 'registerMember':  $verified = true; break;
+                            default:                break;
+                        }
+                    }
+                }
+            }
+
+            // if they can't be here, send them to the most useful page
+            if (! $verified) {
+                header('Location: '.$root_local.$redirectpage);
+                die();
+            }
         }
 
         // check $_SERVER['REQUEST_URI'] to see if page was called directly vs as include
