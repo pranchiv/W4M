@@ -26,7 +26,7 @@ Licence URI: http://www.os-templates.com/template-terms
 		<nav id="mainav" class="fl_right">
 			<ul class="clear">
 				<!-- <li class="active"><a href="index.html">Home</a></li> -->
-				<li><a href="#">Home</a></li>
+				<li><a href="#"></a></li>
 				<li>
 					<a href="#" scroll-to="#howItWorks">How It Works</a>
 
@@ -37,7 +37,12 @@ Licence URI: http://www.os-templates.com/template-terms
 					</ul> -->
 				</li>
 				<li>
-					<a href="#" scroll-to="#testimonials">Join</a></li>
+					<li><a href="pages/logIn.php">Join</a></li>
+					<ul>
+						<li><a href="donor.php">Donor</a></li>
+						<li><a href="beneficiary.php">Beneficiary</a></li>
+						<li><a href="driver.php">Driver</a></li>
+					</ul>
 				<li>
 					<i class="fa fa-envelope" style="font-size:10px; position:absolute; top:5px;"></i>
 					<a href="#" scroll-to="#contactus" style="white-space:nowrap; padding-left:15px;">Launch W4M In Your City</a>
