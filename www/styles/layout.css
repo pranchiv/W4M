@@ -11,7 +11,7 @@ File: Layout CSS
 @import url("fontawesome-4.5.0.min.css");
 @import url("framework.css");
 
-.launch {color: white; height: 12px; padding: 255px; text-align: center; font-weight: bolder; backgroud-color: rgba(0,0,0,0.4);}
+.launch {color: white; height: 12px; padding: 100px 250px; text-align: center; font-weight: bolder; background-color: rgba(0,0,0,0.4);}
 /* Header
 
 --------------------------------------------------------------------------------------------------------------- */
