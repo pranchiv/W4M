@@ -11,7 +11,9 @@ File: Layout CSS
 @import url("fontawesome-4.5.0.min.css");
 @import url("framework.css");
 
+#launch {color: white;}
 /* Header
+
 --------------------------------------------------------------------------------------------------------------- */
 #header { padding:50px 0; }
 #header #logo h1 { margin:0; padding:0; font-size:22px; }
