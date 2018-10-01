@@ -69,7 +69,7 @@ Licence URI: http://www.os-templates.com/template-terms
 				</li>
 			
 				<li><a href="#" scroll-to="#footer">Contact Us</a></li>
-				<li><a href="#">About Us</a></li>
+				<li><a href="aboutUs.html">About Us</a></li>
 				<li><a href="<?= $root ?>/pages/logIn.php">Log In</a></li>
 				
 				<!-- <li><a class="drop" href="#">[Dropdown]</a>
