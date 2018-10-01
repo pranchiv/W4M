@@ -173,7 +173,7 @@ Licence URI: http://www.os-templates.com/template-terms
 				<article>
 					<figure>
 						<img src="images/demo/320x210.png" alt="">
-						<figcaption><a class="btn medium" href="#">Details</a></figcaption>
+						<figcaption><a class="btn medium" href="donorInfo.html">Details</a></figcaption>
 					</figure>
 					<div class="excerpt">
 						<time datetime="2045-04-06">April 6<sup>th</sup></time>
