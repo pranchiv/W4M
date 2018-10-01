@@ -59,9 +59,9 @@ Licence URI: http://www.os-templates.com/template-terms
 				<li>
 					<a href="<?= $root ?>/pages/register.php">Join</a>
 					<ul>
-						<li><a href="donor.php">Donor</a></li>
-						<li><a href="beneficiary.php">Beneficiary</a></li>
-						<li><a href="driver.php">Driver</a></li>
+						<li><a href="<?= $root ?>/pages/register.php">Donor</a></li>
+						<li><a href="<?= $root ?>/pages/register.php">Beneficiary</a></li>
+						<li><a href="<?= $root ?>/pages/register.php">Driver</a></li>
 					</ul>
 				<li>
 					<i class="fa fa-envelope" style="font-size:10px; position:absolute; top:5px;"></i>
