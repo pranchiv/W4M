@@ -1,6 +1,7 @@
 <?php
     session_start();
-
+    date_default_timezone_set('America/New_York');
+    
     $protocol = 'http';
     if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') { $protocol .= 's'; }
     $root = $protocol . '://' . $_SERVER["SERVER_NAME"];
