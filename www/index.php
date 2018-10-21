@@ -173,7 +173,7 @@ Licence URI: http://www.os-templates.com/template-terms
 				<article>
 					<figure>
 						<img src="images/demo/320x210.png" alt="">
-						<figcaption><a class="btn medium" href="donorInfo.html">Details</a></figcaption>
+						<figcaption><a class="btn medium" href="donorInfo.php">Details</a></figcaption>
 					</figure>
 					<div class="excerpt">
 						<time datetime="2045-04-06">April 6<sup>th</sup></time>
@@ -186,7 +186,7 @@ Licence URI: http://www.os-templates.com/template-terms
 				<article>
 					<figure>
 						<img src="images/demo/320x210.png" alt="">
-						<figcaption><a class="btn medium" href="#">Details</a></figcaption>
+						<figcaption><a class="btn medium" href="driverInfo.php">Details</a></figcaption>
 					</figure>
 					<div class="excerpt">
 						<time datetime="2045-04-05">May 5<sup>th</sup></time>
@@ -199,7 +199,7 @@ Licence URI: http://www.os-templates.com/template-terms
 				<article>
 					<figure>
 						<img src="images/demo/320x210.png" alt="">
-						<figcaption><a class="btn medium" href="#">Details</a></figcaption>
+						<figcaption><a class="btn medium" href="beneficiaryInfo.php">Details</a></figcaption>
 					</figure>
 					<div class="excerpt">
 						<time datetime="2045-04-04">May 12<sup>th</sup></time>
@@ -301,8 +301,25 @@ Licence URI: http://www.os-templates.com/template-terms
 				<li><a href="#">Mr. Brian Stephens</a></li>
 				<li><a href="#">Mr. Brian Bozarth</a></li>
 				<li><a href="#">Mr. Chris Janzen</a></li>
-				<li><a href="#">The Boy Scouts of America</a></li>
-				<img src="https://www.kintera.org/AccountTempFiles//account16246/images/washington_crossing_council_stack_4c_(2).jpg"> 
+				<img src="https://www.kintera.org/AccountTempFiles//account16246/images/washington_crossing_council_stack_4c_(2).jpg">
+				<li><a href="#">The Boy Scouts of America</a></li> 
+				<!-- <li><a href="#">Augue placerat integer ligula</a></li> -->
+			</ul>
+		</div>
+
+		<div class="one_quarter">
+			<h6 class="title">Our Official Partners</h6>
+			<ul class="nospace linklist">
+				<img src="http://italianpeoplesbakery.com/IMG/IPB-logo.png">
+				<li><a href="#">The Italian People's Bakery</a></li>
+				<img src="http://beltwaybargainmom.com/wp-content/uploads/2014/01/Einstein_Bros_Bagels_DC.jpg">
+				<li><a href="#">Einstein Bros. Bagels</a></li>
+				<img src="https://s3-media4.fl.yelpcdn.com/bphoto/YrhMU06aV-wEBWfg36tn9w/o.jpg">
+				<li><a href="#">Fritz's Bakery</a></li>
+				<img src="https://i.ytimg.com/vi/b60njnLuQLE/maxresdefault.jpg">
+				<li><a href="#">The Bucks County Homeless Shelter</a></li>
+				<img src="http://s3.amazonaws.com/use-cache.salvationarmy.org/5ddde0d5-9f93-4b52-a4d3-49a249a566a1_Home%20Collage%20Carousel%20copy.jpg">
+				<li><a href="#">The Salvation Army of Levittown</a></li>
 				<!-- <li><a href="#">Augue placerat integer ligula</a></li> -->
 			</ul>
 		</div>

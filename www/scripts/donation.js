@@ -337,12 +337,12 @@ function BuildCardMenu(role, status) {
             if (status == 'Posted' || status == 'Scheduled') { actions.push(['Cancel', 'Cancel']); }
             break;
         case 'Beneficiary':
-            if (status == 'Posted') { actions.push(['Claim', 'Claim']); }
-            if (status == 'Claimed' || status == 'Scheduled') { actions.push(['Unclaim', 'Unclaim']); }
+            if (status == 'Posted') { actions.push(['Claim', 'Accept']); }
+            if (status == 'Claimed' || status == 'Scheduled') { actions.push(['Unclaim', 'Unaccept']); }
             if (status == 'Dropped Off') { actions.push(['Receive', 'Confirm Receipt']); }
             break;
         case 'Driver':
-            if (status == 'Claimed') { actions.push(['Schedule', 'Pick Up']); }
+            if (status == 'Claimed') { actions.push(['Schedule', 'Schedule']); }
             if (status == 'Scheduled') {
                 actions.push(['Pick Up', 'Confirm Pickup']);
                 actions.push(['Unschedule', 'Cancel Pickup']);

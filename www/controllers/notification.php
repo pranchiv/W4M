@@ -50,11 +50,11 @@ class NotificationController {
                 break;
             case NotificationType::DonationPosted :
                 $subject = 'Donation Posted';
-                $description = $description . ' has posted a donation';
+                $description = $description . ' has posted a donation. Log in to accept this donation';
                 break;
             case NotificationType::DonationClaimed :
-                $subject = 'Donation Claimed';
-                $description = $description . ' has claimed a donation';
+                $subject = 'Donation Accepted by a Charity';
+                $description = $description . ' has accepted a donation. Log in to be the driver for this donation';
                 break;
             case NotificationType::DonationScheduled :
                 $subject = 'Donation Scheduled';
@@ -69,8 +69,8 @@ class NotificationController {
                 $description = $description . ' has received a donation';
                 break;
             case NotificationType::DonationUnclaimed :
-                $subject = 'Donation Unclaimed';
-                $description = $description . ' has unclaimed your donation. Please deliver to the Levittown Emergency Shelter if possible or dispose of at your convenience.';
+                $subject = 'Donation Unaccepted';
+                $description = $description . ' has unaccepted your donation. Please deliver to the Levittown Emergency Shelter if possible or dispose of at your convenience.';
                 break;
             case NotificationType::DonationModified :
                 $subject = 'Donation Modified';

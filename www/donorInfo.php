@@ -11,7 +11,7 @@
 
             <p>
 				<li>
-                        <a href="<?= $root ?>/pages/register.php">Join</a>
+                        <a href="<?= $root ?>/pages/register.php">Click Here to Become a Donor Today!</a>
                 </li>
                         
             </p>                
