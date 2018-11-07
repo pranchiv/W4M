@@ -192,7 +192,7 @@ function FormatDate(dateString, includeDate, includeTime) {
     if (includeDate) { result = month + '/' + day + '/' + year; }
     if (includeTime) {
         if (includeDate) { result += ' '; }
-        result += hr + ':' + min + ' ' + ampm;
+        result += hr + ':' + min + '&nbsp;' + ampm;
     }
 
     return result;

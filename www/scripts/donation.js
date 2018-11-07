@@ -367,6 +367,7 @@ function BuildCardMenu(role, status) {
 
 function BuildCardTimes(donationId, data) {
     var result = '';
+    var numTimes = 0;
     var timePosted = null;
     var timeClaimed = null;
     var timeScheduled = null;
@@ -386,8 +387,8 @@ function BuildCardTimes(donationId, data) {
             case 'Posted'       : if (!timePosted) { timePosted = row; } break;
             case 'Claimed'      : timeClaimed = row; break;
             case 'Scheduled'    : timeScheduled = row; break;
-            case 'PickedUp'     : timePickedUp = row; break;
-            case 'DroppedOff'   : timeDroppedOff = row; break;
+            case 'Picked Up'    : timePickedUp = row; break;
+            case 'Dropped Off'  : timeDroppedOff = row; break;
         }
     });
 
@@ -396,6 +397,7 @@ function BuildCardTimes(donationId, data) {
 
     $.each([timePosted, timeClaimed, timeScheduled, timePickedUp, timeDroppedOff], function(i, row) {
         if (row) {
+            numTimes++;
             var isToday = ((new Date(row['ModifyDate'])).getTime() > todayTicks);
 
             result += '<div>'
@@ -405,7 +407,8 @@ function BuildCardTimes(donationId, data) {
         }
     });
 
-    result = '<div class="horizgroup">\r\n' + result + '</div>\r\n';
+    var altStyle = (numTimes > 3 ? ' style="flex-wrap: wrap;"' : '');
+    result = '<div class="horizgroup"' + altStyle + '>\r\n' + result + '</div>\r\n';
 
     return result;
 }
